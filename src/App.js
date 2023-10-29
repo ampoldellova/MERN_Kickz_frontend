@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Product from './Components/Product/Product';
 import Header from './Components/Layout/Header';
+import Home from './Components/Home';
 
 function App() {
   return (
@@ -9,7 +9,8 @@ function App() {
       <Router>
         <Header />
         <Routes>
-          <Route path="/" element={<Product />} exact="true" />
+          <Route path="/" element={<Home />} exact="true" />
+          <Route path="/search/:keyword" element={<Home />} exact="true" />
         </Routes>
       </Router>
     </div>

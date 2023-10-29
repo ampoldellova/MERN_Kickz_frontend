@@ -14,6 +14,7 @@
     "axios": "^1.5.1",
     "countries-list": "^3.0.6",
     "mdbreact": "^5.2.0",
+    "pagination": "^0.4.6",
     "rc-slider": "^9.7.5",
     "react": "^18.2.0",
     "react-bootstrap": "^2.9.0",
