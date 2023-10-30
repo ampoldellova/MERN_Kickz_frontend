@@ -8,8 +8,9 @@ import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom'
 
 const Product = ({ product }) => {
+
     return (
-        <div style={{ display: 'inline-block', flexWrap: 'wrap' }}>
+        <div style={{ display: 'inline-block', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
             <div style={{ width: '345px', margin: '10px' }}>
                 <Card variant="outlined" sx={{ maxWidth: 350 }}>
                     <CardMedia
@@ -19,6 +20,9 @@ const Product = ({ product }) => {
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
                             {product.name}
+                        </Typography>
+                        <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'left' }}>
+                            Price: ₱ {product.price}
                         </Typography>
                         <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'left' }}>
                             Colorway: {product.colorway}

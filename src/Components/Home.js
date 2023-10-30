@@ -7,6 +7,7 @@ import Pagination from 'react-js-pagination';
 import Slider from 'rc-slider';
 import axios from 'axios';
 import 'rc-slider/assets/index.css';
+import './App.css';
 
 const categories = [
     'Nike',
@@ -110,7 +111,7 @@ const Home = () => {
             {loading ? <Loader /> : (
                 <Fragment>
                     <MetaData title={'Home'} />
-                    <div className="container container-fluid">
+                    <div className="container">
                         {keyword ? (
                             <Fragment>
                                 <div className="col-6 col-md-3 mt-5 mb-5">
