@@ -5,14 +5,15 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { Link } from 'react-router-dom'
 
 const Product = ({ product }) => {
     return (
-        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+        <div style={{ display: 'inline-block', flexWrap: 'wrap' }}>
             <div style={{ width: '345px', margin: '10px' }}>
-                <Card sx={{ maxWidth: 345 }}>
+                <Card variant="outlined" sx={{ maxWidth: 350 }}>
                     <CardMedia
-                        sx={{ height: 200 }}
+                        sx={{ height: 300 }}
                         image={product.images[0].url}
                     />
                     <CardContent>
@@ -31,7 +32,7 @@ const Product = ({ product }) => {
                     </CardContent>
                     <CardActions>
                         <Button size="small">Add to cart</Button>
-                        <Button size="small">Details</Button>
+                        <Link to={`/product/${product._id}`} size="small"><Button size="small">Details</Button></Link>
                     </CardActions>
                 </Card>
             </div>
