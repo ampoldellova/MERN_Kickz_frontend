@@ -29,7 +29,7 @@ const Home = () => {
     const Range = createSliderWithTooltip(Slider.Range);
 
     const getProducts = async (currentPage = 1, keyword = '', price, category = '') => {
-        let link = `http://localhost:4002/api/v1/products?page=${currentPage}&keyword=${keyword}`
+        let link = `http://localhost:4002/api/v1/products?keyword=${keyword}&page=${currentPage}`
 
         if (category) {
             link = `http://localhost:4002/api/v1/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}`
@@ -110,7 +110,7 @@ const Home = () => {
             {loading ? <Loader /> : (
                 <Fragment>
                     <MetaData title={'Home'} />
-                    <div className="container">
+                    <div className="container-fluid" style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
                         {keyword ? (
                             <Fragment>
                                 <div className="col-6 col-md-3 mt-5 mb-5">

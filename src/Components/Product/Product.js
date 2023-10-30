@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 const Product = ({ product }) => {
 
     return (
-        <div style={{ display: 'inline-block', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
+        <div style={{ display: 'inline-block' }}>
             <div style={{ width: '345px', margin: '10px' }}>
                 <Card variant="outlined" sx={{ maxWidth: 350 }}>
                     <CardMedia

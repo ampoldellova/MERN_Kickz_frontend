@@ -1,93 +1,204 @@
-import * as React from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { getUser, logout } from '../../utils/helpers';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
+import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
-import { Link } from 'react-router-dom';
-import Search from './Search';
-import '../../App.css';
+import Menu from '@mui/material/Menu';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import MoreIcon from '@mui/icons-material/MoreVert';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Button from '@mui/material/Button';
+import Searcher from './Searcher';
+import axios from 'axios';
+// import '../../App.css'
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const Header = ({ cartItems }) => {
+  const [user, setUser] = useState('')
+  const navigate = useNavigate()
+  const logoutUser = async () => {
 
-function Header() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+    try {
+      await axios.get(`http://localhost:4002/api/v1/logout`)
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
+      setUser('')
+
+      logout(() => navigate('/'))
+    } catch (error) {
+      toast.error(error.response.data.message)
+
+    }
+  }
+  const logoutHandler = () => {
+    logoutUser();
+    toast.success('log out', {
+      position: toast.POSITION.BOTTOM_RIGHT
+    });
+  }
+  useEffect(() => {
+    setUser(getUser())
+  }, [])
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+
+  const isMenuOpen = Boolean(anchorEl);
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
   };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
+
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null);
   };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    handleMobileMenuClose();
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
+  const handleMobileMenuOpen = (event) => {
+    setMobileMoreAnchorEl(event.currentTarget);
   };
+
+  const menuId = 'primary-search-account-menu';
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+    </Menu>
+  );
+
+  const mobileMenuId = 'primary-search-account-menu-mobile';
+  const renderMobileMenu = (
+    <Menu
+      anchorEl={mobileMoreAnchorEl}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      id={mobileMenuId}
+      keepMounted
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      open={isMobileMenuOpen}
+      onClose={handleMobileMenuClose}
+    >
+      <MenuItem>
+        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+          <Badge badgeContent={4} color="error">
+            <ShoppingCartIcon />
+          </Badge>
+        </IconButton>
+        <p>Shopping Cart</p>
+      </MenuItem>
+
+      <MenuItem onClick={handleProfileMenuOpen}>
+        <IconButton
+          size="large"
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <AccountCircle />
+        </IconButton>
+        <p>Profile</p>
+      </MenuItem>
+    </Menu>
+  );
 
   return (
-    <AppBar position="static" variant="colorful" sx={{ backgroundColor: 'black' }}>
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Link to="/"> <img src="./images/kickz.png" style={{ width: 40, height: 40, cursor: 'pointer', margin: 10 }} /></Link>
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+    <Fragment>
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static" sx={{ backgroundColor: 'black' }}>
+          <Toolbar>
             <IconButton
               size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
+              edge="start"
               color="inherit"
+              aria-label="open drawer"
+              sx={{ mr: 2 }}
             >
+              <Link to="/"> <img src="./images/kickz.png" style={{ width: 40, height: 40, cursor: 'pointer' }} /></Link>
             </IconButton>
-          </Box>
-          <Box sx={{ display: 'flex', flexGrow: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <div className="col-12 col-md-6 mt-2 mt-md-0">
-              <Search />
-            </div>
-          </Box>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="John Paul" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ display: { xs: 'none', sm: 'block' } }}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
-  );
+            </Typography>
+
+            <Box sx={{ flexGrow: 1 }} />
+
+            <Searcher />
+
+            {user ? (
+              <Fragment><Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+                  <Badge badgeContent={4} color="error">
+                    <ShoppingCartIcon />
+                  </Badge>
+                </IconButton>
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+              </Box>
+                <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                  <IconButton
+                    size="large"
+                    aria-label="show more"
+                    aria-controls={mobileMenuId}
+                    aria-haspopup="true"
+                    onClick={handleMobileMenuOpen}
+                    color="inherit"
+                  >
+                    <MoreIcon />
+                  </IconButton>
+                </Box>
+              </Fragment>) :
+              <Link to="/login" className="btn ml-4" id="login_btn">
+                <Button variant="contained" style={{ backgroundColor: 'white', color: 'black' }}>Login</Button>
+              </Link>}
+          </Toolbar>
+        </AppBar>
+        {renderMobileMenu}
+        {renderMenu}
+      </Box>
+    </Fragment>
+  )
 }
 
-export default Header;
+export default Header
