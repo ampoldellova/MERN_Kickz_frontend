@@ -14,6 +14,7 @@ import Menu from '@mui/material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import LogoutIcon from '@mui/icons-material/Logout';
 import Button from '@mui/material/Button';
 import Searcher from './Searcher';
 import axios from 'axios';
@@ -26,9 +27,7 @@ const Header = ({ cartItems }) => {
 
     try {
       await axios.get(`http://localhost:4002/api/v1/logout`)
-
       setUser('')
-
       logout(() => navigate('/'))
     } catch (error) {
       toast.error(error.response.data.message)
@@ -37,6 +36,7 @@ const Header = ({ cartItems }) => {
   }
   const logoutHandler = () => {
     logoutUser();
+    handleMenuClose();
     toast.success('log out', {
       position: toast.POSITION.BOTTOM_RIGHT
     });
@@ -85,8 +85,8 @@ const Header = ({ cartItems }) => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}><AccountCircle style={{ marginRight: 10 }} />Profile</MenuItem>
+      <MenuItem onClick={logoutHandler}><LogoutIcon style={{ marginRight: 10 }} /> Logout</MenuItem>
     </Menu>
   );
 
@@ -113,10 +113,10 @@ const Header = ({ cartItems }) => {
             <ShoppingCartIcon />
           </Badge>
         </IconButton>
-        <p>Shopping Cart</p>
+        <p>Cart</p>
       </MenuItem>
 
-      <MenuItem onClick={handleProfileMenuOpen}>
+      <MenuItem>
         <IconButton
           size="large"
           aria-label="account of current user"
@@ -127,6 +127,19 @@ const Header = ({ cartItems }) => {
           <AccountCircle />
         </IconButton>
         <p>Profile</p>
+      </MenuItem>
+
+      <MenuItem onClick={logoutHandler}>
+        <IconButton
+          size="large"
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <LogoutIcon />
+        </IconButton>
+        <p>Logout</p>
       </MenuItem>
     </Menu>
   );
@@ -157,25 +170,29 @@ const Header = ({ cartItems }) => {
 
             <Searcher />
 
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+                <Badge badgeContent={4} color="error">
+                  <ShoppingCartIcon />
+                </Badge>
+              </IconButton>
+            </Box>
+
             {user ? (
-              <Fragment><Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                  <Badge badgeContent={4} color="error">
-                    <ShoppingCartIcon />
-                  </Badge>
-                </IconButton>
-                <IconButton
-                  size="large"
-                  edge="end"
-                  aria-label="account of current user"
-                  aria-controls={menuId}
-                  aria-haspopup="true"
-                  onClick={handleProfileMenuOpen}
-                  color="inherit"
-                >
-                  <AccountCircle />
-                </IconButton>
-              </Box>
+              <Fragment>
+                <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                  <IconButton
+                    size="large"
+                    edge="end"
+                    aria-label="account of current user"
+                    aria-controls={menuId}
+                    aria-haspopup="true"
+                    onClick={handleProfileMenuOpen}
+                    color="inherit"
+                  >
+                    <AccountCircle />
+                  </IconButton>
+                </Box>
                 <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                   <IconButton
                     size="large"

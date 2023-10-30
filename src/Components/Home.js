@@ -4,6 +4,7 @@ import MetaData from './Layout/Metadata';
 import Product from './Product/Product';
 import Loader from './Layout/Loader';
 import Pagination from 'react-js-pagination';
+import Carousel from 'react-bootstrap/Carousel';
 import Slider from 'rc-slider';
 import axios from 'axios';
 import 'rc-slider/assets/index.css';
@@ -59,28 +60,30 @@ const Home = () => {
     }, [currentPage, keyword, price, category])
 
     return (
-        <>
-            <div id="carouselExample" className="carousel slide" data-ride="carousel" style={{ marginTop: -1 }}>
-                <div className="carousel-inner">
-                    <div className="carousel-item active">
-                        <img className="d-block w-100" src="/images/banner2.png" alt="First slide" />
-                    </div>
-                    <div className="carousel-item">
-                        <img className="d-block w-100" src="/images/banner3.png" alt="Second slide" />
-                    </div>
-                    <div className="carousel-item">
-                        <img className="d-block w-100" src="/images/banner4.png" alt="Third slide" />
-                    </div>
-                </div>
-                <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span className="visually-hidden">Previous</span>
-                </button>
-                <button className="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span className="visually-hidden">Next</span>
-                </button>
-            </div>
+        <Fragment>
+            <Carousel data-bs-theme="dark" style={{ marginTop: -1 }} fade>
+                <Carousel.Item>
+                    <img
+                        className="d-block w-100"
+                        src="/images/banner2.png"
+                        alt="First slide"
+                    />
+                </Carousel.Item>
+                <Carousel.Item>
+                    <img
+                        className="d-block w-100"
+                        src="/images/banner3.png"
+                        alt="Second slide"
+                    />
+                </Carousel.Item>
+                <Carousel.Item>
+                    <img
+                        className="d-block w-100"
+                        src="/images/banner4.png"
+                        alt="Third slide"
+                    />
+                </Carousel.Item>
+            </Carousel>
 
             <div style={{
                 display: 'flex',
@@ -185,7 +188,7 @@ const Home = () => {
                         </div>)}
                 </Fragment>
             )}
-        </>
+        </Fragment>
 
     )
 }
