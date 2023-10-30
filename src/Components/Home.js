@@ -7,7 +7,6 @@ import Pagination from 'react-js-pagination';
 import Slider from 'rc-slider';
 import axios from 'axios';
 import 'rc-slider/assets/index.css';
-import './App.css';
 
 const categories = [
     'Nike',

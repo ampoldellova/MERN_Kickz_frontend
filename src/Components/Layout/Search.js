@@ -22,6 +22,7 @@ const Search = () => {
                     id="search_field"
                     className="form-control"
                     placeholder="Search Shoe Name ..."
+                    style={{height:35}}
                     onChange={(e) => setKeyword(e.target.value)}
                 />
             </div>
