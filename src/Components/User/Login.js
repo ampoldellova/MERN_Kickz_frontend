@@ -1,24 +1,21 @@
 import React, { Fragment, useState, useEffect } from 'react'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
-import Metadata from '../Layout/Metadata'
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { authenticate } from '../../utils/helpers';
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
-import { authenticate } from '../../utils/helpers'
 import { getUser } from '../../utils/helpers';
-
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Metadata from '../Layout/Metadata';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -41,10 +38,12 @@ const Login = () => {
             }
             const { data } = await axios.post(`http://localhost:4002/api/v1/login`, { email, password }, config)
             console.log(data)
-            authenticate(data, () => navigate("/"))
-
+            authenticate(data, () => {
+                navigate("/")
+                window.location.reload();
+            });
         } catch (error) {
-            toast.error("invalid user or password", {
+            toast.error("Invalid user or password", {
                 position: toast.POSITION.BOTTOM_RIGHT
             })
         }
@@ -121,10 +120,6 @@ const Login = () => {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                 />
-                                <FormControlLabel
-                                    control={<Checkbox value="remember" color="primary" />}
-                                    label="Remember me"
-                                />
                                 <Button
                                     type="submit"
                                     fullWidth
@@ -135,7 +130,7 @@ const Login = () => {
                                 </Button>
                                 <Grid container>
                                     <Grid item xs>
-                                        <Link href="#" variant="body2">
+                                        <Link to="/password/forgot" variant="body2">
                                             Forgot password?
                                         </Link>
                                     </Grid>
