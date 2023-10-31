@@ -18,7 +18,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import Button from '@mui/material/Button';
 import Searcher from './Searcher';
 import axios from 'axios';
-// import '../../App.css'
+import '../../CSS/Home.css';
 
 const Header = ({ cartItems }) => {
   const [user, setUser] = useState('')
@@ -147,7 +147,7 @@ const Header = ({ cartItems }) => {
   return (
     <Fragment>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" sx={{ backgroundColor: 'black' }}>
+        <AppBar position="fixed" sx={{ backgroundColor: 'black' }}>
           <Toolbar>
             <IconButton
               size="large"
