@@ -1,21 +1,13 @@
 import React, { Fragment, useEffect, useState } from 'react';
+import { AppBar, Avatar, Box, Toolbar, IconButton, Typography, Badge, MenuItem, Menu, Button } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { getUser, logout } from '../../utils/helpers';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Badge from '@mui/material/Badge';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LogoutIcon from '@mui/icons-material/Logout';
-import Button from '@mui/material/Button';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import Searcher from './Searcher';
 import axios from 'axios';
 import '../../CSS/Home.css';
@@ -85,7 +77,9 @@ const Header = ({ cartItems }) => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}><AccountCircle style={{ marginRight: 10 }} />Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose}><AccountCircle style={{ marginRight: 10 }} />
+        <Link className="dropdown-item" to="/me">Profile</Link>
+      </MenuItem>
       <MenuItem onClick={logoutHandler}><LogoutIcon style={{ marginRight: 10 }} /> Logout</MenuItem>
     </Menu>
   );
@@ -113,7 +107,7 @@ const Header = ({ cartItems }) => {
             <ShoppingCartIcon />
           </Badge>
         </IconButton>
-        <p>Cart</p>
+        Cart
       </MenuItem>
 
       <MenuItem>
@@ -124,9 +118,9 @@ const Header = ({ cartItems }) => {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+          <Link className="dropdown-item" to="/me"><AccountCircle /></Link>
         </IconButton>
-        <p>Profile</p>
+        <Link className="dropdown-item" to="/me">Profile</Link>
       </MenuItem>
 
       <MenuItem onClick={logoutHandler}>
@@ -139,7 +133,7 @@ const Header = ({ cartItems }) => {
         >
           <LogoutIcon />
         </IconButton>
-        <p>Logout</p>
+        Logout
       </MenuItem>
     </Menu>
   );
@@ -190,7 +184,7 @@ const Header = ({ cartItems }) => {
                     onClick={handleProfileMenuOpen}
                     color="inherit"
                   >
-                    <AccountCircle />
+                    <Avatar alt={user && user.name} src={user.avatar && user.avatar.url} />
                   </IconButton>
                 </Box>
                 <Box sx={{ display: { xs: 'flex', md: 'none' } }}>

@@ -63,7 +63,7 @@ const Login = () => {
         <Fragment>
             <Metadata title={'Login'} />
             <ThemeProvider theme={defaultTheme}>
-                <Grid container component="main" sx={{ height: '100vh', marginTop: 5 }}>
+                <Grid container component="main" sx={{ height: '100vh' }}>
                     <CssBaseline />
                     <Grid
                         item
@@ -79,7 +79,7 @@ const Login = () => {
                             backgroundPosition: 'center',
                         }}
                     />
-                    <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                    <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square >
                         <Box
                             sx={{
                                 my: 8,
@@ -87,6 +87,7 @@ const Login = () => {
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',
+                                marginTop: '35%'
                             }}
                         >
                             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -135,8 +136,8 @@ const Login = () => {
                                         </Link>
                                     </Grid>
                                     <Grid item>
-                                        <Link href="#" variant="body2">
-                                            {"Don't have an account?"}
+                                        <Link to="/register" variant="body2">
+                                            Dont have an account?
                                         </Link>
                                     </Grid>
                                 </Grid>
