@@ -109,7 +109,10 @@ const Profile = () => {
                             <MDBRow className="justify-content-center align-items-center h-100">
                                 <MDBCol lg="9" xl="7">
                                     <MDBCard>
-                                        <div className="rounded-top text-white d-flex flex-row" style={{ backgroundColor: '#000', height: '200px' }}>
+                                        <div className="rounded-top text-white d-flex flex-row" style={{
+                                            background: 'radial-gradient(circle at -8.9% 51.2%, rgb(255, 124, 0) 0%, rgb(255, 124, 0) 15.9%, rgb(255, 163, 77) 15.9%, rgb(255, 163, 77) 24.4%, rgb(19, 30, 37) 24.5%, rgb(19, 30, 37) 66%)',
+                                            height: '200px'
+                                        }}>
                                             <div className="ms-4 mt-5 d-flex flex-column" style={{ width: '150px' }}>
                                                 <Avatar src={user.avatar.url}
                                                     variant="rounded"
