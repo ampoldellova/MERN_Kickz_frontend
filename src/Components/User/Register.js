@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { CssBaseline, Typography, TextField, Container, Avatar, Button } from '@mui/material';
+import { CssBaseline, Typography, TextField, Container, Avatar, Button, InputLabel } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Metadata from '../Layout/Metadata';
@@ -154,11 +154,12 @@ const Register = () => {
                                 accept="images/*"
                                 onChange={onChange}
                             />
+                            <InputLabel htmlFor="customFile">Upload an image</InputLabel>
                             <Button
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{ mt: 3, mb: 2 }}
+                                sx={{ mt: 3, mb: 2, backgroundColor: 'black' }}
                             >
                                 Register
                             </Button>

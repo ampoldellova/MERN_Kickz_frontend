@@ -80,9 +80,9 @@ const ForgotPassword = () => {
                             <Button
                                 type="submit"
                                 fullWidth
-                                variant="contained"
                                 disabled={loading ? true : false}
-                                sx={{ mt: 3, mb: 2 }}
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2, backgroundColor: 'black' }}
                             >
                                 Send Email
                             </Button>

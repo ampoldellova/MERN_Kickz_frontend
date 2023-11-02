@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import { MDBCol, MDBContainer, MDBRow, MDBCard, MDBCardText, MDBCardImage, MDBTypography } from 'mdb-react-ui-kit';
-import { Button, Box, Menu, MenuItem, IconButton } from '@mui/material';
+import { Button, Box, Menu, MenuItem, IconButton, Avatar } from '@mui/material';
 import { getToken } from '../../utils/helpers';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
@@ -111,11 +111,28 @@ const Profile = () => {
                                     <MDBCard>
                                         <div className="rounded-top text-white d-flex flex-row" style={{ backgroundColor: '#000', height: '200px' }}>
                                             <div className="ms-4 mt-5 d-flex flex-column" style={{ width: '150px' }}>
-                                                <MDBCardImage src={user.avatar.url}
-                                                    alt="Generic placeholder image" className="mt-4 mb-2 img-thumbnail" fluid style={{ width: '150px', zIndex: '1' }} />
-                                                <Button variant='outlined' style={{ border: '1px solid black', color: 'black', overflow: 'visible' }}>
-                                                    Edit profile
-                                                </Button>
+                                                <Avatar src={user.avatar.url}
+                                                    variant="rounded"
+                                                    alt={user.name}
+                                                    className="mt-4 mb-2 img-thumbnail"
+                                                    fluid
+                                                    sx={{
+                                                        width: '150px',
+                                                        height: '150px',
+                                                        zIndex: '1'
+                                                    }} />
+                                                <Link to="/me/update">
+                                                    <Button
+                                                        variant='outlined'
+                                                        style={{
+                                                            border: '1px solid black',
+                                                            color: 'black',
+                                                            overflow: 'visible'
+                                                        }}
+                                                        endIcon={<EditIcon />}>
+                                                        Edit Profile
+                                                    </Button>
+                                                </Link>
                                             </div>
                                             <div className="ms-3" style={{ marginTop: '130px' }}>
                                                 <MDBTypography tag="h5">{user.name}</MDBTypography>
