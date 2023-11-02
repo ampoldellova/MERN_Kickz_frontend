@@ -31,7 +31,7 @@ const UpdatePassword = () => {
             const { data } = await axios.put(`http://localhost:4002/api/v1/password/update`, formData, config)
             setIsUpdated(data.success)
             setLoading(false)
-            toast.success('password updated', {
+            toast.success('Password updated', {
                 position: toast.POSITION.BOTTOM_RIGHT
             });
             navigate('/me')

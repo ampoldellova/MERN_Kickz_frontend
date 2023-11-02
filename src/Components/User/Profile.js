@@ -102,7 +102,7 @@ const Profile = () => {
                 <Fragment>
                     <div className="gradient-custom-2"
                         style={{
-                            background: 'linear-gradient(-180deg, rgba(255,255,255,0.50) 0%, rgba(0,0,0,0.50) 100%)',
+                            background: 'linear-gradient(109.6deg, rgb(245, 239, 249) 30.1%, rgb(207, 211, 236) 100.2%)',
                             height: '100vh'
                         }}>
                         <MDBContainer className="py-5 h-100">
