@@ -7,6 +7,7 @@ import Login from './Components/User/Login';
 import ForgotPassword from './Components/User/ForgotPassword';
 import Profile from './Components/User/Profile';
 import Register from './Components/User/Register';
+import UpdatePassword from './Components/User/UpdatePassword';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/password/forgot" element={<ForgotPassword />} exact="true" />
           <Route path="/me" element={<Profile />} exact="true" />
           <Route path="/register" element={<Register />} exact="true" />
+          <Route path="/password/update" element={<UpdatePassword />} />
         </Routes>
       </Router>
     </div>

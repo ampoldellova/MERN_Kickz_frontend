@@ -1,14 +1,9 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
+import { CssBaseline, Typography, TextField, Container, Avatar, Button } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Metadata from '../Layout/Metadata'
+import { useNavigate } from 'react-router-dom';
+import Metadata from '../Layout/Metadata';
+import Box from '@mui/material/Box';
 import axios from 'axios'
 
 const defaultTheme = createTheme();

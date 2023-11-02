@@ -22,7 +22,7 @@ const Home = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [resPerPage, setResPerPage] = useState(0)
     const [filteredProductsCount, setFilteredProductsCount] = useState(0)
-    const [price, setPrice] = useState([1, 100000]);
+    const [price, setPrice] = useState([1, 50000]);
     const [category, setCategory] = useState('');
     let { keyword } = useParams();
 
@@ -122,11 +122,11 @@ const Home = () => {
                                             <Range
                                                 marks={{
                                                     1: `₱1`,
-                                                    100000: `₱100000`
+                                                    50000: `₱50000`
                                                 }}
                                                 min={1}
-                                                max={100000}
-                                                defaultValue={[1, 100000]}
+                                                max={50000}
+                                                defaultValue={[1, 50000]}
                                                 tipFormatter={value => `₱${value}`}
                                                 tipProps={{
                                                     placement: "top",

@@ -1,12 +1,12 @@
-import React, { Fragment, useState, } from 'react'
+import React, { Fragment, useState, } from 'react';
+import { Avatar, Button, TextField, Box, Typography, Container } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import 'react-toastify/dist/ReactToastify.css';
 import MetaData from '../Layout/Metadata'
 import axios from 'axios'
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { Link, useNavigate } from "react-router-dom";
-import { Card, Avatar, Button, TextField, Box, Typography, Container } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('')
@@ -49,46 +49,46 @@ const ForgotPassword = () => {
         <Fragment>
             <MetaData title={'Forgot Password'} />
             <ThemeProvider theme={defaultTheme}>
-                    <Container component="main" maxWidth="xs">
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                marginTop: '50%'
-                            }}
-                        >
-                            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                                <LockOutlinedIcon />
-                            </Avatar>
-                            <Typography component="h1" variant="h5">
-                                Forgot Password
-                            </Typography>
-                            <Box component="form" onSubmit={submitHandler} noValidate sx={{ mt: 1 }}>
-                                <TextField
-                                    margin="normal"
-                                    required
-                                    fullWidth
-                                    id="email"
-                                    label="Enter Email Address"
-                                    name="email"
-                                    autoComplete="email"
-                                    autoFocus
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                                <Button
-                                    type="submit"
-                                    fullWidth
-                                    variant="contained"
-                                    disabled={loading ? true : false}
-                                    sx={{ mt: 3, mb: 2 }}
-                                >
-                                    Send Email
-                                </Button>
-                            </Box>
+                <Container component="main" maxWidth="xs">
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            marginTop: '50%'
+                        }}
+                    >
+                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                            <LockOutlinedIcon />
+                        </Avatar>
+                        <Typography component="h1" variant="h5">
+                            Forgot Password
+                        </Typography>
+                        <Box component="form" onSubmit={submitHandler} noValidate sx={{ mt: 1 }}>
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Enter Email Address"
+                                name="email"
+                                autoComplete="email"
+                                autoFocus
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                disabled={loading ? true : false}
+                                sx={{ mt: 3, mb: 2 }}
+                            >
+                                Send Email
+                            </Button>
                         </Box>
-                    </Container>
+                    </Box>
+                </Container>
             </ThemeProvider>
         </Fragment>
     )

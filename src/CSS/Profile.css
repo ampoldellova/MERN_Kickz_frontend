@@ -1,19 +1,10 @@
-.avatar-profile {
-    height: 16rem;
-    width: 16rem;
-}
+.gradient-custom {
+    /* fallback for old browsers */
+    background: #f6d365;
 
-.user-info h4 {
-    font-weight: 800;
-    color: grey;
-    margin-top: 2rem;
-}
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%);
 
-.user-info p {
-    font-size: 1.1rem;
-}
-
-#edit_profile {
-    background-color: #fa9c23;
-    border-color: #fa9c23;
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%);
 }
