@@ -1,18 +1,36 @@
 import React, { Fragment, useEffect, useState } from 'react'
+import { Container, Typography, ButtonGroup, Button } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import { Carousel } from 'react-bootstrap'
-import Loader from '../Layout/Loader'
-import MetaData from '../Layout/Metadata'
-import axios from 'axios'
-import { Container, Typography } from '@mui/material'
+import { styled } from "@mui/material/styles";
+import { blueGrey } from "@mui/material/colors";
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
+import Metadata from '../Layout/Metadata';
+import Loader from '../Layout/Loader';
+import axios from 'axios';
+
+const StyledButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText(blueGrey[50]),
+    backgroundColor: blueGrey[50],
+    borderColor: blueGrey[200],
+    "&:hover": {
+        backgroundColor: blueGrey[100],
+        borderColor: blueGrey[300]
+    }
+}));
 
 const ProductDetails = ({ addItemToCart, cartItems }) => {
 
     const [loading, setLoading] = useState(true)
     const [product, setProduct] = useState({})
     const [error, setError] = useState('')
-    const [quantity, setQuantity] = useState(0)
-
+    const [quantity, setQuantity] = useState(1)
+    const [count, setCount] = useState(1);
+    const handleChange = (event) => {
+        setCount(Math.max(Number(event.target.value), 1));
+    };
 
     let { id } = useParams()
 
@@ -52,6 +70,7 @@ const ProductDetails = ({ addItemToCart, cartItems }) => {
 
     return (
         <Fragment>
+            <Metadata title={product.name} />
             {loading ? <Loader /> : (
                 <Container className="py-5" style={{ height: '100vh', justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
                     <div className="container px-4 px-lg-5 my-5">
@@ -76,18 +95,44 @@ const ProductDetails = ({ addItemToCart, cartItems }) => {
                                     <Typography variant='h6'>Status: <span style={{ color: product.stock > 0 ? 'green' : 'red' }}>{product.stock > 0 ? 'In Stock' : 'Out of Stock'}</span></Typography>
                                 </div>
                                 <div className="d-flex">
-                                    <input className="form-control text-center me-3" id="inputQuantity" type="num" value="1" style={{ maxWidth: '3rem' }} readOnly />
-                                    <button className="btn btn-outline-dark flex-shrink-0" type="button">
-                                        <i className="bi-cart-fill me-1"></i>
+                                    <ButtonGroup style={{ marginRight: 10 }}>
+                                        <StyledButton onClick={decreaseQty}>
+                                            <RemoveIcon fontSize="small" />
+                                        </StyledButton>
+                                        <input
+                                            type='number'
+                                            size="small"
+                                            className="count"
+                                            style={{
+                                                width: 100,
+                                                textAlign: 'center'
+                                            }}
+                                            value={quantity}
+                                            readOnly />
+                                        <StyledButton onClick={increaseQty}>
+                                            <AddIcon fontSize="small" />
+                                        </StyledButton>
+                                    </ButtonGroup>
+
+                                    <Button
+                                        type="button"
+                                        id="cart_btn"
+                                        disabled={product.stock === 0}
+                                        onClick={addToCart}
+                                        variant="contained"
+                                        sx={{ backgroundColor: 'black' }}
+                                        startIcon={<AddShoppingCartIcon />}
+                                    >
                                         Add to cart
-                                    </button>
+                                    </Button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </Container>
-            )}
-        </Fragment>
+            )
+            }
+        </Fragment >
     )
 
 }
