@@ -5,7 +5,8 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 // import '../../CSS/Image.css';
 
 const Product = ({ product }) => {
@@ -39,8 +40,7 @@ const Product = ({ product }) => {
                         </Typography>
                     </CardContent>
                     <CardActions>
-                        <Button size="small">Add to cart</Button>
-                        <Link to={`/product/${product._id}`} size="small"><Button size="small">Details</Button></Link>
+                        <Link to={`/product/${product._id}`} size="small"><Button size="small" startIcon={<MoreVertIcon/>}>Check Details</Button></Link>
                     </CardActions>
                 </Card>
             </div>
