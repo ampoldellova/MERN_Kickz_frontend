@@ -103,8 +103,8 @@ const Header = ({ cartItems }) => {
     >
       <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={cartItems.length} color="error">
-            <Link to="/cart"><ShoppingCartIcon /></Link>
+          <Badge badgeContent={cartItems.length} style={{ marginBottom: -5 }} color="error">
+            <Link to="/cart"><ShoppingCartIcon style={{ color: 'black', marginTop: -5 }} /></Link>
           </Badge>
         </IconButton>
         Cart
@@ -150,7 +150,14 @@ const Header = ({ cartItems }) => {
               aria-label="open drawer"
               sx={{ mr: 2 }}
             >
-              <Link to="/"> <img src="./images/kickz.png" style={{ width: 40, height: 40, cursor: 'pointer' }} alt='kickz' /></Link>
+              <Link to="/">
+                <img src="https://res.cloudinary.com/dwkmutbz3/image/upload/v1699103432/Kickz/logo/kickz_piufvo.png"
+                  style={{
+                    width: 40,
+                    height: 40,
+                    cursor: 'pointer'
+                  }} alt="Kickz" />
+              </Link>
             </IconButton>
             <Typography
               variant="h6"
@@ -167,7 +174,7 @@ const Header = ({ cartItems }) => {
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <IconButton size="large" aria-label="show 4 new mails" color="inherit">
                 <Badge badgeContent={cartItems.length} color="error">
-                  <Link to="/cart"><ShoppingCartIcon /></Link>
+                  <Link to="/cart"><ShoppingCartIcon style={{ color: 'white', marginTop: -5 }} /></Link>
                 </Badge>
               </IconButton>
             </Box>
@@ -184,7 +191,7 @@ const Header = ({ cartItems }) => {
                     onClick={handleProfileMenuOpen}
                     color="inherit"
                   >
-                    <Avatar alt={user && user.name} src={user.avatar && user.avatar.url} />
+                    <Avatar alt={user && user.name} src={user.avatar && user.avatar.url} style={{ border: '2px solid white' }} />
                   </IconButton>
                 </Box>
                 <Box sx={{ display: { xs: 'flex', md: 'none' } }}>

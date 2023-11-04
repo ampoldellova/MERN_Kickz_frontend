@@ -92,7 +92,7 @@ const ProductDetails = ({ addItemToCart, cartItems }) => {
                                 </div>
                                 <div className="d-flex">
                                     <ButtonGroup style={{ marginRight: 10 }}>
-                                        <StyledButton onClick={decreaseQty}>
+                                        <StyledButton onClick={decreaseQty} style={{ marginRight: -5 }}>
                                             <RemoveIcon fontSize="small" />
                                         </StyledButton>
                                         <input
@@ -105,7 +105,7 @@ const ProductDetails = ({ addItemToCart, cartItems }) => {
                                             }}
                                             value={quantity}
                                             readOnly />
-                                        <StyledButton onClick={increaseQty}>
+                                        <StyledButton onClick={increaseQty} style={{ marginLeft: -17 }}>
                                             <AddIcon fontSize="small" />
                                         </StyledButton>
                                     </ButtonGroup>
