@@ -103,8 +103,8 @@ const Header = ({ cartItems }) => {
     >
       <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <ShoppingCartIcon />
+          <Badge badgeContent={cartItems.length} color="error">
+            <Link to="/cart"><ShoppingCartIcon /></Link>
           </Badge>
         </IconButton>
         Cart
@@ -150,7 +150,7 @@ const Header = ({ cartItems }) => {
               aria-label="open drawer"
               sx={{ mr: 2 }}
             >
-              <Link to="/"> <img src="./images/kickz.png" style={{ width: 40, height: 40, cursor: 'pointer' }} /></Link>
+              <Link to="/"> <img src="./images/kickz.png" style={{ width: 40, height: 40, cursor: 'pointer' }} alt='kickz' /></Link>
             </IconButton>
             <Typography
               variant="h6"
@@ -166,8 +166,8 @@ const Header = ({ cartItems }) => {
 
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                <Badge badgeContent={4} color="error">
-                  <ShoppingCartIcon />
+                <Badge badgeContent={cartItems.length} color="error">
+                  <Link to="/cart"><ShoppingCartIcon /></Link>
                 </Badge>
               </IconButton>
             </Box>

@@ -27,10 +27,6 @@ const ProductDetails = ({ addItemToCart, cartItems }) => {
     const [product, setProduct] = useState({})
     const [error, setError] = useState('')
     const [quantity, setQuantity] = useState(1)
-    const [count, setCount] = useState(1);
-    const handleChange = (event) => {
-        setCount(Math.max(Number(event.target.value), 1));
-    };
 
     let { id } = useParams()
 
@@ -130,8 +126,7 @@ const ProductDetails = ({ addItemToCart, cartItems }) => {
                         </div>
                     </div>
                 </Container>
-            )
-            }
+            )}
         </Fragment >
     )
 
