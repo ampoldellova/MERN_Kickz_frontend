@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import MetaData from '../Layout/Metadata'
 import { useParams, useNavigate } from 'react-router-dom'
+import '../../CSS/Cart.css';
 
 const Cart = ({ addItemToCart, cartItems, removeItemFromCart }) => {
     const navigate = useNavigate()
