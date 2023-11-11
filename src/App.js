@@ -10,6 +10,7 @@ import Register from './Components/User/Register';
 import UpdatePassword from './Components/User/UpdatePassword';
 import UpdateProfile from './Components/User/UpdateProfile';
 import Cart from './Components/Cart/Cart';
+import Shipping from './Components/Cart/Cart';
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
@@ -29,6 +30,9 @@ function App() {
         product: data.product._id,
         name: data.product.name,
         price: data.product.price,
+        colorway: data.product.colorway,
+        size: data.product.size,
+        brand: data.product.brand,
         image: data.product.images[0].url,
         stock: data.product.stock,
         quantity: quantity
@@ -66,6 +70,11 @@ function App() {
       ...state,
       cartItems: state.cartItems.filter(i => i.product !== id)
     })
+
+    toast.success('Item Removed to Cart', {
+      position: toast.POSITION.BOTTOM_RIGHT
+    })
+
     localStorage.setItem('cartItems', JSON.stringify(state.cartItems))
   }
 
@@ -92,6 +101,11 @@ function App() {
           <Route path="/password/update" element={<UpdatePassword />} />
           <Route path="/me/update" element={<UpdateProfile />} exact="true" />
           <Route path="/cart" element={<Cart cartItems={state.cartItems} addItemToCart={addItemToCart} removeItemFromCart={removeItemFromCart} />} exact="true" />
+          <Route path="/shipping" element={<Shipping
+            shipping={state.shippingInfo}
+            saveShippingInfo={saveShippingInfo}
+          />}
+          />
         </Routes>
       </Router>
     </div>

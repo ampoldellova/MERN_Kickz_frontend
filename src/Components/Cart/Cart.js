@@ -1,8 +1,14 @@
-import React, { Fragment } from 'react'
-import { Link } from 'react-router-dom'
-import MetaData from '../Layout/Metadata'
-import { useParams, useNavigate } from 'react-router-dom'
-import '../../CSS/Cart.css';
+import React, { Fragment } from "react";
+import { MDBBtn, MDBCard, MDBCardBody, MDBCardImage, MDBCol, MDBContainer, MDBRow, MDBListGroup, MDBListGroupItem, MDBCardHeader, MDBTypography } from "mdb-react-ui-kit";
+import { useParams, useNavigate } from 'react-router-dom';
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+import DeleteIcon from '@mui/icons-material/Delete';
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
+import { Typography, ButtonGroup, IconButton, Card, CardContent, Button } from "@mui/material";
+import { Container } from "@mui/system";
+import { Link } from 'react-router-dom';
+import MetaData from '../Layout/Metadata';
 
 const Cart = ({ addItemToCart, cartItems, removeItemFromCart }) => {
     const navigate = useNavigate()
@@ -28,75 +34,112 @@ const Cart = ({ addItemToCart, cartItems, removeItemFromCart }) => {
     localStorage.setItem('cartItems', JSON.stringify(cartItems))
 
     return (
-        <Fragment>
+        <Container className="100vh" style={{ marginTop: '50px' }}>
             <MetaData title={'Your Cart'} />
             {cartItems.length === 0 ? <h2 className="mt-5">Your Cart is Empty</h2> : (
-                <Fragment>
-                    <h2 className="mt-5">Your Cart: <b>{cartItems.length} items</b></h2>
-
-                    <div className="row d-flex justify-content-between">
-                        <div className="col-12 col-lg-8">
+                <MDBContainer className="py-5 h-100">
+                    <MDBRow className="justify-content-center align-items-center h-100">
+                        <MDBCol md="10">
+                            <div className="d-flex justify-content-between align-items-center mb-4">
+                                <Typography variant="h5">
+                                    Shopping Cart
+                                </Typography>
+                                <div>
+                                    <Typography variant="subtitle1" className="mb-0">
+                                        <span className="text-muted">Your Cart: <b>{cartItems.length} items</b>:</span>
+                                    </Typography>
+                                </div>
+                            </div>
 
                             {cartItems.map(item => (
-                                <Fragment>
-                                    <hr />
-
-                                    <div className="cart-item" key={item.product}>
-                                        <div className="row">
-                                            <div className="col-4 col-lg-3">
-                                                <img src={item.image} alt="Laptop" height="90" width="115" />
-                                            </div>
-
-                                            <div className="col-5 col-lg-3">
-                                                <Link to={`/products/${item.product}`}>{item.name}</Link>
-                                            </div>
-
-
-                                            <div className="col-4 col-lg-2 mt-4 mt-lg-0">
-                                                <p id="card_item_price">${item.price}</p>
-                                            </div>
-
-                                            <div className="col-4 col-lg-3 mt-4 mt-lg-0">
-                                                <div className="stockCounter d-inline">
-                                                    <span className="btn btn-danger minus" onClick={() => decreaseQty(item.product, item.quantity)}>-</span>
-
-                                                    <input type="number" className="form-control count d-inline" value={item.quantity} readOnly />
-
-                                                    <span className="btn btn-primary plus" onClick={() => increaseQty(item.product, item.quantity, item.stock)}>+</span>
-                                                </div>
-                                            </div>
-
-                                            <div className="col-4 col-lg-1 mt-4 mt-lg-0">
-                                                <i id="delete_cart_item" className="fa fa-trash btn btn-danger" onClick={() => removeCartItemHandler(item.product)} ></i>
-                                                {/* <i id="delete_cart_item" className="fa fa-trash btn btn-danger" ></i> */}
-                                            </div>
-
-                                        </div>
+                                <Card variant="outlined" className="rounded-3 mb-4" style={{ border: '2px solid' }}>
+                                    <div key={item.product}>
+                                        <MDBCardBody className="p-4">
+                                            <MDBRow className="justify-content-between align-items-center">
+                                                <MDBCol md="2" lg="2" xl="2">
+                                                    <MDBCardImage className="rounded-3" fluid
+                                                        src={item.image}
+                                                        alt={item.name} />
+                                                </MDBCol>
+                                                <MDBCol md="3" lg="3" xl="3">
+                                                    <Typography variant="h6" className="mb-2">{item.name}</Typography>
+                                                    <Typography variant="subtitle2">Color: {item.colorway}</Typography>
+                                                    <Typography variant="subtitle2">Brand: {item.brand}</Typography>
+                                                    <Typography variant="subtitle2">Size: {item.size}</Typography>
+                                                </MDBCol>
+                                                <MDBCol md="3" lg="3" xl="2"
+                                                    className="d-flex align-items-center justify-content-around">
+                                                    <ButtonGroup>
+                                                        <IconButton onClick={() => decreaseQty(item.product, item.quantity)} >
+                                                            <RemoveIcon fontSize="small" />
+                                                        </IconButton>
+                                                        <input
+                                                            type='number'
+                                                            size="small"
+                                                            className="count"
+                                                            style={{
+                                                                width: 50,
+                                                                textAlign: 'center'
+                                                            }}
+                                                            value={item.quantity}
+                                                            readOnly />
+                                                        <IconButton onClick={() => increaseQty(item.product, item.quantity, item.stock)} >
+                                                            <AddIcon fontSize="small" />
+                                                        </IconButton>
+                                                    </ButtonGroup>
+                                                </MDBCol>
+                                                <MDBCol className="offset-lg-1">
+                                                    <Typography variant="h6">₱ {item.price}</Typography>
+                                                </MDBCol>
+                                                <MDBCol className="text-end">
+                                                    <IconButton style={{ color: '#c62828' }} onClick={() => removeCartItemHandler(item.product)}><DeleteIcon /></IconButton>
+                                                </MDBCol>
+                                            </MDBRow>
+                                        </MDBCardBody>
                                     </div>
-                                    <hr />
-                                </Fragment>
+                                </Card>
                             ))}
 
-                        </div>
 
-                        <div className="col-12 col-lg-3 my-4">
-                            <div id="order_summary">
-                                <h4>Order Summary</h4>
-                                <hr />
-                                <p>Subtotal:  <span className="order-summary-values">{cartItems.reduce((acc, item) => (acc + Number(item.quantity)), 0)} (Units)</span></p>
-                                <p>Est. total: <span className="order-summary-values">${cartItems.reduce((acc, item) => acc + item.quantity * item.price, 0).toFixed(2)}</span></p>
+                        </MDBCol>
 
+                        <MDBCol md="10">
+                            <Card variant="outlined" className="rounded-3 mb-4" style={{ border: '2px solid' }}>
+                                <CardContent>
+                                    <Typography variant="h5" className="mb-4">
+                                        Order Summary
+                                    </Typography><hr />
+                                    <MDBCardBody>
+                                        <Typography variant="subtitle1"
+                                            className="d-flex justify-content-between align-items-center px-0 pb-0">
+                                            Subtotal:<span className="order-summary-values">{cartItems.reduce((acc, item) => (acc + Number(item.quantity)), 0)} (Units)</span>
+                                        </Typography>
+                                        <Typography variant="subtitle1"
+                                            className="d-flex justify-content-between align-items-center px-0 mb-4">
+                                            Estimated Total:<span className="order-summary-values">₱ {cartItems.reduce((acc, item) => acc + item.quantity * item.price, 0).toFixed(2)}</span>
+                                        </Typography>
 
-                                <hr />
-                                <button id="checkout_btn" className="btn btn-primary btn-block" onClick={checkoutHandler}>Check out</button>
-                                {/*<button id="checkout_btn" className="btn btn-primary btn-block" >Check out</button>*/}
-                            </div>
-                        </div>
-                    </div>
-                </Fragment>
-            )}
-        </Fragment>
-    )
-}
+                                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                            <Button
+                                                variant="contained"
+                                                startIcon={<ShoppingCartCheckoutIcon />}
+                                                style={{ alignItems: 'end', backgroundColor: 'black' }}
+                                                onClick={checkoutHandler} >
+                                                Check Out
+                                            </Button>
+                                        </div>
+                                    </MDBCardBody>
+                                </CardContent>
 
-export default Cart
+                            </Card>
+                        </MDBCol>
+
+                    </MDBRow>
+                </MDBContainer>
+            )
+            }
+        </Container >
+    );
+};
+
+export default Cart;
