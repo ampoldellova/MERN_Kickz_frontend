@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Grid, Typography, TextField, MenuItem, Button, Container, Paper, Card } from '@mui/material';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { useNavigate } from 'react-router-dom';
 import { countries } from 'countries-list';
 import MetaData from '../Layout/Metadata';
@@ -111,6 +112,7 @@ const Shipping = ({ shipping, saveShippingInfo }) => {
                                 variant="contained"
                                 id="shipping_btn"
                                 type="submit"
+                                endIcon={<NavigateNextIcon/>}
                                 style={{ marginTop: 25, backgroundColor: 'black' }}
                             >
                                 Next

@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import { Typography, List, ListItem, ListItemText, Grid, Container, Card, Button } from '@mui/material';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import CheckoutSteps from './CheckoutSteps';
 import MetaData from '../Layout/Metadata';
 import { Link, useNavigate } from 'react-router-dom'
@@ -88,6 +89,7 @@ const ConfirmOrder = ({ cartItems, shippingInfo }) => {
                         <Button
                             variant="contained"
                             onClick={processToPayment}
+                            endIcon={<NavigateNextIcon/>}
                             style={{ marginTop: 25, backgroundColor: 'black' }}
                         >
                             Next

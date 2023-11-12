@@ -13,6 +13,7 @@ import Cart from './Components/Cart/Cart';
 import { toast } from 'react-toastify';
 import Shipping from './Components/Cart/Shipping';
 import ConfirmOrder from './Components/Cart/ConfirmOrder';
+import Payment from './Components/Cart/Payment';
 import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
 
@@ -105,12 +106,9 @@ function App() {
           <Route path="/password/update" element={<UpdatePassword />} />
           <Route path="/me/update" element={<UpdateProfile />} exact="true" />
           <Route path="/cart" element={<Cart cartItems={state.cartItems} addItemToCart={addItemToCart} removeItemFromCart={removeItemFromCart} />} exact="true" />
-          <Route path="/shipping" element={<Shipping
-            shipping={state.shippingInfo}
-            saveShippingInfo={saveShippingInfo}
-          />}
-          />
+          <Route path="/shipping" element={<Shipping shipping={state.shippingInfo} saveShippingInfo={saveShippingInfo} />} />
           <Route path="/confirm" element={<ConfirmOrder cartItems={state.cartItems} shippingInfo={state.shippingInfo} />} />
+          <Route path="/payment" element={<Payment cartItems={state.cartItems} shippingInfo={state.shippingInfo} />} />
         </Routes>
       </Router>
     </div>
