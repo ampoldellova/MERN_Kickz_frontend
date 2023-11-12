@@ -10,16 +10,19 @@ import Register from './Components/User/Register';
 import UpdatePassword from './Components/User/UpdatePassword';
 import UpdateProfile from './Components/User/UpdateProfile';
 import Cart from './Components/Cart/Cart';
-import Shipping from './Components/Cart/Cart';
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
+import Checkout from './Components/Cart/CheckoutSteps';
 
 function App() {
   const [state, setState] = useState({
     cartItems: localStorage.getItem('cartItems')
       ? JSON.parse(localStorage.getItem('cartItems'))
-      : []
+      : [],
+    shippingInfo: localStorage.getItem('shippingInfo')
+      ? JSON.parse(localStorage.getItem('shippingInfo'))
+      : {},
   })
 
   const addItemToCart = async (id, quantity) => {
@@ -101,7 +104,7 @@ function App() {
           <Route path="/password/update" element={<UpdatePassword />} />
           <Route path="/me/update" element={<UpdateProfile />} exact="true" />
           <Route path="/cart" element={<Cart cartItems={state.cartItems} addItemToCart={addItemToCart} removeItemFromCart={removeItemFromCart} />} exact="true" />
-          <Route path="/shipping" element={<Shipping
+          <Route path="/shipping" element={<Checkout
             shipping={state.shippingInfo}
             saveShippingInfo={saveShippingInfo}
           />}

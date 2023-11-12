@@ -1,13 +1,12 @@
-import React, { Fragment } from "react";
-import { MDBBtn, MDBCard, MDBCardBody, MDBCardImage, MDBCol, MDBContainer, MDBRow, MDBListGroup, MDBListGroupItem, MDBCardHeader, MDBTypography } from "mdb-react-ui-kit";
-import { useParams, useNavigate } from 'react-router-dom';
+import React from "react";
+import { MDBCardBody, MDBCardImage, MDBCol, MDBContainer, MDBRow } from "mdb-react-ui-kit";
+import { useNavigate } from 'react-router-dom';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import { Typography, ButtonGroup, IconButton, Card, CardContent, Button } from "@mui/material";
 import { Container } from "@mui/system";
-import { Link } from 'react-router-dom';
 import MetaData from '../Layout/Metadata';
 
 const Cart = ({ addItemToCart, cartItems, removeItemFromCart }) => {
@@ -31,12 +30,18 @@ const Cart = ({ addItemToCart, cartItems, removeItemFromCart }) => {
     const checkoutHandler = () => {
         navigate('/login?redirect=shipping')
     }
+
     localStorage.setItem('cartItems', JSON.stringify(cartItems))
 
     return (
         <Container className="100vh" style={{ marginTop: '50px' }}>
             <MetaData title={'Your Cart'} />
-            {cartItems.length === 0 ? <h2 className="mt-5">Your Cart is Empty</h2> : (
+            {cartItems.length === 0 ? <div className="row justify-content-center">
+                <div className="col-6 mt-5 text-center">
+                    <img className="my-5 img-fluid d-block mx-auto" src="https://res.cloudinary.com/dwkmutbz3/image/upload/v1699749939/Kickz/logo/empty_k6huuj.png" alt="Order Success" width="1000" height="1000" />
+                    <Typography variant="h3">Your Cart is Empty</Typography>
+                </div>
+            </div> : (
                 <MDBContainer className="py-5 h-100">
                     <MDBRow className="justify-content-center align-items-center h-100">
                         <MDBCol md="10">
@@ -52,7 +57,7 @@ const Cart = ({ addItemToCart, cartItems, removeItemFromCart }) => {
                             </div>
 
                             {cartItems.map(item => (
-                                <Card variant="outlined" className="rounded-3 mb-4" style={{ border: '2px solid' }}>
+                                <Card variant="outlined" className="rounded-3 mb-4" style={{ border: '1px solid' }}>
                                     <div key={item.product}>
                                         <MDBCardBody className="p-4">
                                             <MDBRow className="justify-content-between align-items-center">
@@ -104,7 +109,7 @@ const Cart = ({ addItemToCart, cartItems, removeItemFromCart }) => {
                         </MDBCol>
 
                         <MDBCol md="10">
-                            <Card variant="outlined" className="rounded-3 mb-4" style={{ border: '2px solid' }}>
+                            <Card variant="outlined" className="rounded-3 mb-4" style={{ border: '1px solid' }}>
                                 <CardContent>
                                     <Typography variant="h5" className="mb-4">
                                         Order Summary
