@@ -11,9 +11,10 @@ import UpdatePassword from './Components/User/UpdatePassword';
 import UpdateProfile from './Components/User/UpdateProfile';
 import Cart from './Components/Cart/Cart';
 import { toast } from 'react-toastify';
+import Shipping from './Components/Cart/Shipping';
+import ConfirmOrder from './Components/Cart/ConfirmOrder';
 import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
-import Shipping from './Components/Cart/Shipping';
 
 function App() {
   const [state, setState] = useState({
@@ -109,6 +110,7 @@ function App() {
             saveShippingInfo={saveShippingInfo}
           />}
           />
+          <Route path="/confirm" element={<ConfirmOrder cartItems={state.cartItems} shippingInfo={state.shippingInfo} />} />
         </Routes>
       </Router>
     </div>

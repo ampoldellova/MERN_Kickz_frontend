@@ -31,7 +31,7 @@ const Shipping = ({ shipping, saveShippingInfo }) => {
                 <Card variant="outlined" className="rounded-3" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }} style={{border: '1px solid'}}>
                     <Typography component="h1" variant="h4" align="center" >
                         Checkout
-                    </Typography><hr/>
+                    </Typography><hr/>  
                     <Typography variant="h6" gutterBottom>
                         Shipping address
                     </Typography>
