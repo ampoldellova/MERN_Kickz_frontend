@@ -70,16 +70,16 @@ const ConfirmOrder = ({ cartItems, shippingInfo }) => {
                             </Typography>
                             <Grid container>
                                 <Grid item xs={8}>
-                                    <Typography gutterBottom>Subtotal: ₱ {itemsPrice}</Typography>
+                                    <Typography variant='subtitle1'>Subtotal: ₱ {itemsPrice}</Typography>
                                 </Grid>
                                 <Grid item xs={8}>
-                                    <Typography gutterBottom>Shipping: ₱ {shippingPrice}</Typography>
+                                    <Typography variant='subtitle1'>Shipping: ₱ {shippingPrice}</Typography>
                                 </Grid>
                                 <Grid item xs={8}>
-                                    <Typography gutterBottom>Tax: ₱ {taxPrice}</Typography>
+                                    <Typography variant='subtitle1'>Tax: ₱ {taxPrice}</Typography>
                                 </Grid>
                                 <Grid item xs={8}>
-                                    <Typography gutterBottom sx={{fontWeight: 1000}}>Total: ₱ {totalPrice}</Typography>
+                                    <Typography variant='subtitle1' sx={{ fontWeight: 1000 }}>Total: ₱ {totalPrice}</Typography>
                                 </Grid>
                             </Grid>
                         </Grid>
