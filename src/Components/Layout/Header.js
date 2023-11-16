@@ -171,7 +171,7 @@ const Header = ({ cartItems }) => {
 
             <Searcher />
 
-            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <Box sx={{ display: { xs: 'flex', md: 'flex' } }}>
               <IconButton size="large" aria-label="show 4 new mails" color="inherit">
                 <Badge badgeContent={cartItems.length} color="error">
                   <Link to="/cart"><ShoppingCartIcon style={{ color: 'white', marginTop: -5 }} /></Link>

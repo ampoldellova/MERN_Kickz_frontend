@@ -1,19 +1,26 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
-import { Typography, Pagination } from '@mui/material';
+import { Typography, Pagination, Container } from '@mui/material';
 import MetaData from './Layout/Metadata';
 import Product from './Product/Product';
 import Loader from './Layout/Loader';
+import Grid from '@mui/material/Grid';
+import List from '@mui/material/List';
+// import { hidden } from '@material-ui/core/styles';
 // import Pagination from 'react-js-pagination';
 import Carousel from 'react-bootstrap/Carousel';
 import Slider from 'rc-slider';
 import axios from 'axios';
 import 'rc-slider/assets/index.css';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Box from '@mui/material/Box';
 
 const categories = [
-    'Nike',
-    'Adidas',
-    'Vans'
+    'High-tops',
+    'Mid-Cut',
+    'Low-tops',
+    'Slip-ons'
 ]
 
 const Home = () => {
@@ -34,7 +41,7 @@ const Home = () => {
         let link = `http://localhost:4002/api/v1/products?page=${currentPage}&keyword=${keyword}&price[lte]=${price[1]}&price[gte]=${price[0]}`
 
         if (category) {
-            link = `http://localhost:4002/api/v1/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&category=${category}`
+            link = `http://localhost:4002/api/v1/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&type=${category}`
         }
 
         let res = await axios.get(link)
@@ -67,53 +74,70 @@ const Home = () => {
                 <Fragment>
                     {keyword ? (
                         <Fragment>
-                            <div className="container-fluid" style={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}>
-                                <div className="col-6 col-md-3 mt-5 mb-5">
-                                    <div className="px-5">
-                                        <Range
-                                            marks={{
-                                                1: `₱1`,
-                                                50000: `₱50000`
-                                            }}
-                                            min={1}
-                                            max={50000}
-                                            defaultValue={[1, 50000]}
-                                            tipFormatter={value => `₱${value}`}
-                                            tipProps={{
-                                                placement: "top",
-                                                visible: true
-                                            }}
-                                            value={price}
-                                            onChange={price => setPrice(price)}
-                                        />
-                                        <hr className="my-5" />
-                                        <div className="mt-5">
-                                            <h4 className="mb-3">
-                                                Categories
-                                            </h4>
-                                            <ul className="pl-0">
-                                                {categories.map(category => (
-                                                    <li
-                                                        style={{
-                                                            cursor: 'pointer',
-                                                            listStyleType: 'none'
-                                                        }}
-                                                        key={category}
-                                                        onClick={() => setCategory(category)}
-                                                    >
-                                                        {category}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+                            <Container style={{ display: 'flex' }}>
+                                <Grid container spacing={2} style={{ marginTop: 100, width: '100%', maxWidth: 1200 }}>
+                                    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                                        <Grid item>
+                                            <Card variant="outlined" sx={{ width: 300, borderRadius: 3 }}>
+                                                <CardContent>
+                                                    <Typography variant='h6'>Price Range</Typography>
+                                                    <Container item>
+                                                        <Range
+                                                            marks={{
+                                                                1: `₱1`,
+                                                                50000: `₱50000`
+                                                            }}
+                                                            min={1}
+                                                            max={50000}
+                                                            defaultValue={[1, 50000]}
+                                                            tipFormatter={value => `₱${value}`}
+                                                            tipProps={{
+                                                                placement: "top",
+                                                                visible: true
+                                                            }}
+                                                            value={price}
+                                                            onChange={price => setPrice(price)}
+                                                            style={{
+                                                                width: 'auto',
+                                                                margin: 'auto',
+                                                                marginBottom: 50,
+                                                                marginTop: 20
+                                                            }}
+                                                        />
+                                                    </Container><hr />
 
-                                {products.map(product => (
-                                    <Product key={product._id} product={product} col={4} />
-                                ))}
-                            </div>
+                                                    <Typography variant='h6'>Categories</Typography>
 
+                                                    <List>
+                                                        {categories.map(category => (
+                                                            <Container item>
+                                                                <List item
+                                                                    style={{
+                                                                        cursor: 'pointer',
+                                                                        listStyleType: 'none'
+                                                                    }}
+                                                                    key={category}
+                                                                    onClick={() => {
+                                                                        setCategory(category)
+                                                                        console.log(category)
+                                                                    }}
+                                                                >
+                                                                    {category}
+                                                                </List>
+                                                            </Container>
+                                                        ))}
+                                                    </List>
+                                                </CardContent>
+                                            </Card>
+                                        </Grid>
+                                    </Box>
+                                    <Grid item xs={8} md={8} lg={8} xl={8}>
+                                        {products.map(product => (
+                                            <Product key={product._id} product={product} col={4} />
+                                        ))}
+                                    </Grid>
+                                </Grid>
+                            </Container>
                         </Fragment>
                     ) : (
                         <Fragment>
@@ -191,8 +215,9 @@ const Home = () => {
                             />
                         </div>)}
                 </Fragment>
-            )}
-        </Fragment>
+            )
+            }
+        </Fragment >
     )
 }
 

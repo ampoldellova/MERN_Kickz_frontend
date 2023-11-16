@@ -146,7 +146,7 @@ const Profile = () => {
                                             <div className="d-flex justify-content-end text-center py-1">
                                                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                                                     <div>
-                                                        <Link to="#">
+                                                        <Link to="/orders/me">
                                                             <Button variant='outlined' style={{ border: '1px solid black', color: 'black' }}>
                                                                 My Orders
                                                             </Button>

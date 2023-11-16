@@ -83,6 +83,7 @@ const ProductDetails = ({ addItemToCart, cartItems }) => {
                             <div className="col-md-6">
                                 <Typography variant='h3' style={{ fontWeight: 1000, fontStyle: 'italic' }}>{product.name}</Typography>
                                 <Typography variant='subtitle1'>Colorway: {product.colorway}</Typography>
+                                <Typography variant='subtitle1'>Type: {product.type}</Typography>
                                 <Typography variant='subtitle1'>Made by: {product.brand}</Typography>
                                 <Typography variant='subtitle1'>Size: {product.size}</Typography><hr />
                                 <Typography variant='subtitle2' style={{ textAlign: 'justify' }}>{product.description}</Typography>

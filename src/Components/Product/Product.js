@@ -33,14 +33,17 @@ const Product = ({ product }) => {
                             Colorway: {product.colorway}
                         </Typography>
                         <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'left' }}>
+                            Type: {product.type}
+                        </Typography>
+                        {/* <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'left' }}>
                             Brand: {product.brand}
                         </Typography>
                         <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'left' }}>
                             Size: {product.size}
-                        </Typography>
+                        </Typography> */}
                     </CardContent>
                     <CardActions>
-                        <Link to={`/product/${product._id}`} size="small"><Button size="small" startIcon={<MoreVertIcon/>}>Check Details</Button></Link>
+                        <Link to={`/product/${product._id}`} size="small"><Button size="small" startIcon={<MoreVertIcon />}>Check Details</Button></Link>
                     </CardActions>
                 </Card>
             </div>
