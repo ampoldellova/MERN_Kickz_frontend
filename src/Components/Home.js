@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Typography, Pagination, Container, Grid, List, Card, CardContent, Box, Button } from '@mui/material';
+import { Typography, Pagination, Container, Grid, List, Card, CardContent} from '@mui/material';
 import MetaData from './Layout/Metadata';
 import Product from './Product/Product';
 import Loader from './Layout/Loader';
@@ -132,7 +132,7 @@ const Home = () => {
                         </Fragment>
                     ) : (
                         <Fragment>
-                            <Carousel data-bs-theme="dark" style={{ marginTop: -1 }} fade>
+                            <Carousel data-bs-theme="light" style={{ marginTop: -1 }}>
                                 <Carousel.Item>
                                     <img
                                         className="d-block w-100"
