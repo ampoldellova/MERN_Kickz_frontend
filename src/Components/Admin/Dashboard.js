@@ -17,6 +17,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems } from './ListItems';
+import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -106,11 +107,14 @@ const Dashboard = () => {
                         >
                             Dashboard
                         </Typography>
-                        <IconButton color="inherit">
-                            <Badge badgeContent={4} color="secondary">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
+                        <Link to="/">
+                            <img src="https://res.cloudinary.com/dwkmutbz3/image/upload/v1699103432/Kickz/logo/kickz_piufvo.png"
+                                style={{
+                                    width: 40,
+                                    height: 40,
+                                    cursor: 'pointer'
+                                }} alt="Kickz" />
+                        </Link>
                     </Toolbar>
                 </AppBar>
                 <Drawer variant="permanent" open={open}>

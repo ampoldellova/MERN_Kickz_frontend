@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MDBDataTable } from 'mdbreact';
 import { DataGrid } from '@mui/x-data-grid';
 import { Container } from '@mui/system';
 import MetaData from '../Layout/Metadata';
@@ -10,7 +9,8 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { getToken } from '../../utils/helpers';
-
+import { Button } from '@mui/material';
+import { Typography } from '@mui/material';
 
 const ListOrders = () => {
     const [loading, setLoading] = useState(true)
@@ -47,50 +47,56 @@ const ListOrders = () => {
         const data = {
             columns: [
                 { field: 'id', headerName: 'Order ID', width: 300, sort: 'asc' },
-                { field: 'numOfItems', headerName: 'Number of Items', width: 130, sort: 'asc' },
-                { field: 'amount', headerName: 'Amount', width: 130, sort: 'asc' },
+                { field: 'numOfItems', headerName: 'Number of Items', width: 130, sort: 'asc', align: 'center' },
+                { field: 'amount', headerName: 'Amount', width: 200, sort: 'asc', align: 'center', headerAlign: 'center' },
                 {
                     field: 'status',
                     headerName: 'Status',
-                    width: 130,
+                    width: 200,
                     sort: 'asc',
-                    options: {
-                        customBodyRender: (value) => {
-                            return (
-                                value.orderStatus && String(value.orderStatus).includes('Delivered')
-                                    ? <p style={{ color: 'green' }}>{value.orderStatus}</p>
-                                    : <p style={{ color: 'red' }}>{value.orderStatus}</p>
-                            )
-                        }
-                    }
+                    renderCell: ({ value }) => {
+                        return value && String(value).includes('Delivered') ? (
+                            <Typography style={{ color: 'green' }}>{value}</Typography>
+                        ) : (
+                            <Typography style={{ color: 'red' }}>{value}</Typography>
+                        );
+                    },
                 },
-                { field: 'actions', headerName: 'Actions', width: 130, sort: 'asc' }
+                {
+                    field: 'actions',
+                    headerName: 'Actions',
+                    width: 200,
+                    sort: 'asc',
+                    renderCell: ({ value }) => (
+                        <Link to={`/order/${value}`} className="btn btn-primary">
+                            <Button endIcon={<VisibilityIcon />} sx={{ color: 'white', height: 20 }}>View</Button>
+                        </Link>
+                    ),
+                },
             ],
-            rows: []
-        }
+            rows: [],
+        };
 
         myOrdersList.forEach(order => {
-
             data.rows.push({
                 id: order._id,
                 numOfItems: order.orderItems.length,
                 amount: `₱ ${order.totalPrice}`,
                 status: order.orderStatus,
-                actions:
-                    <Link to={`/order/${order._id}`} className="btn btn-primary">
-                        <VisibilityIcon />
-                    </Link>
-            })
-        })
+                actions: order._id,
+            });
+        });
 
         return data;
-    }
+    };
+
 
     return (
         <Fragment>
             <MetaData title={'My Orders'} />
             {loading ? <Loader /> : (
                 <Container style={{ marginTop: 100 }}>
+                    <Typography variant="h5" style={{marginBottom: 10}}>My Orders</Typography>
                     <DataGrid
                         rows={setOrders().rows}
                         columns={setOrders().columns}
