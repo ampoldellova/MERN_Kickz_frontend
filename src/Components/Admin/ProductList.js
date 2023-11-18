@@ -170,20 +170,25 @@ const ProductList = () => {
                     width: 300,
                     renderCell: ({ value }) => (
                         <Fragment>
-                            <Link to={`/admin/product/${value}`} className="btn btn-primary">
-                                <Button endIcon={<EditIcon />} sx={{ color: 'white', height: 20 }}>Edit</Button>
+                            <Link to={`/admin/product/${value}`}>
+                                <Button
+                                    variant='contained'
+                                    sx={{
+                                        color: 'white'
+                                    }}>
+                                    <EditIcon />
+                                </Button>
                             </Link>
                             <Button
                                 variant='contained'
-                                endIcon={<DeleteIcon />}
                                 sx={{
                                     color: 'white',
                                     backgroundColor: 'red',
-                                    marginLeft: 2
+                                    marginLeft: 1
                                 }}
                                 onClick={() => deleteProductHandler(value)}
                             >
-                                Delete
+                                <DeleteIcon />
                             </Button>
                         </Fragment>
                     ),
