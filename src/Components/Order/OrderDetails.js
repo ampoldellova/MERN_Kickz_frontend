@@ -6,6 +6,9 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getToken } from '../../utils/helpers';
+import { Avatar, Card, CardContent, CardHeader, Typography, Box } from '@mui/material';
+import { MDBCol, MDBRow } from 'mdb-react-ui-kit';
+import { Grid, Container } from '@mui/material';
 
 
 const OrderDetails = () => {
@@ -55,57 +58,45 @@ const OrderDetails = () => {
             <MetaData title={'Order Details'} />
 
             {loading ? <Loader /> : (
-                <Fragment>
-                    <div className="row d-flex justify-content-between">
-                        <div className="col-12 col-lg-8 mt-5 order-details">
-
-                            <h1 className="my-5">Order # {order._id}</h1>
-
-                            <h4 className="mb-4">Shipping Info</h4>
-                            <p><b>Name:</b> {user && user.name}</p>
-                            <p><b>Phone:</b> {shippingInfo && shippingInfo.phoneNo}</p>
-                            <p className="mb-4"><b>Address:</b>{shippingDetails}</p>
-                            <p><b>Amount:</b> ${totalPrice}</p>
-
-                            <hr />
-
-                            <h4 className="my-4">Payment</h4>
-                            <p className={isPaid ? "greenColor" : "redColor"}><b>{isPaid ? "PAID" : "NOT PAID"}</b></p>
-
-
-                            <h4 className="my-4">Order Status:</h4>
-                            <p className={order.orderStatus && String(order.orderStatus).includes('Delivered') ? "greenColor" : "redColor"} ><b>{orderStatus}</b></p>
-
-
-                            <h4 className="my-4">Order Items:</h4>
-
-                            <hr />
-                            <div className="cart-item my-1">
-                                {orderItems && orderItems.map(item => (
-                                    <div key={item.product} className="row my-5">
-                                        <div className="col-4 col-lg-2">
-                                            <img src={item.image} alt={item.name} height="45" width="65" />
-                                        </div>
-
-                                        <div className="col-5 col-lg-5">
-                                            <Link to={`/products/${item.product}`}>{item.name}</Link>
-                                        </div>
-
-
-                                        <div className="col-4 col-lg-2 mt-4 mt-lg-0">
-                                            <p>${item.price}</p>
-                                        </div>
-
-                                        <div className="col-4 col-lg-3 mt-4 mt-lg-0">
-                                            <p>{item.quantity} Piece(s)</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <hr />
-                        </div>
-                    </div>
-                </Fragment>
+                <Container style={{ display: 'flex', marginTop: 100, justifyContent: 'center' }}>
+                    <Card variant='outlined' style={{borderRadius: '10px', border: '1px solid black'}}>
+                        <CardContent>
+                            <Typography variant='h3' >Order #: {order._id}</Typography><hr />
+                            {orderItems && orderItems.map(item => (
+                                <Fragment>
+                                    <MDBRow>
+                                        <MDBCol md="8" lg="4" xl="4">
+                                            <Typography variant='subtitle1'><Link to={`/product/${item.product}`}>{item.name}</Link></Typography>
+                                            <Typography variant='subtitle1' sx={{ fontStyle: 'italic' }}>Price: ₱ {item.price}</Typography>
+                                            <Typography variant='subtitle1' sx={{ fontStyle: 'italic' }}>quantity: {item.quantity}</Typography>
+                                        </MDBCol>
+                                        <MDBCol md="4" lg="8" xl="8" className="text-end">
+                                            <img src={item.image} alt={item.name} style={{ width: '100px', height: '100px' }} />
+                                        </MDBCol>
+                                    </MDBRow><hr />
+                                </Fragment>
+                            ))}
+                            <MDBRow>
+                                <MDBCol xs={12} md={6}>
+                                    <Typography variant='h6'>Shipping Info:</Typography>
+                                    <Typography variant='subtitle1'>Name: {user && user.name}</Typography>
+                                    <Typography variant='subtitle1'>Phone: {shippingInfo && shippingInfo.phoneNo}</Typography>
+                                    <Typography variant='subtitle1'>Address: {shippingDetails}</Typography>
+                                    <Typography variant='subtitle1'>Amount: ₱ {totalPrice}</Typography>
+                                </MDBCol>
+                                <MDBCol xs={12} md={6}>
+                                    <Typography variant='h6'>Payment Details:</Typography>
+                                    <Typography variant='subtitle1' >Payment Status: <span style={{
+                                        color: isPaid ? 'green' : 'red',
+                                    }}>{isPaid ? "Paid" : "Not Paid"}</span></Typography>
+                                    <Typography variant='subtitle1'>Order Status:  <span style={{
+                                        color: order.orderStatus && String(order.orderStatus).includes('Delivered') ? 'green' : 'red'
+                                    }}>{order.orderStatus}</span></Typography>
+                                </MDBCol>
+                            </MDBRow>
+                        </CardContent>
+                    </Card>
+                </Container>
             )}
 
         </Fragment>
