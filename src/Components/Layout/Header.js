@@ -5,6 +5,7 @@ import { getUser, logout } from '../../utils/helpers';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import LogoutIcon from '@mui/icons-material/Logout';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
@@ -77,6 +78,11 @@ const Header = ({ cartItems }) => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
+      {user && user.role === 'admin' && (
+        <MenuItem onClick={handleMenuClose}><DashboardIcon style={{ marginRight: 10 }} />
+          <Link className="dropdown-item" to="/dashboard">Dashboard</Link>
+        </MenuItem>
+      )}
       <MenuItem onClick={handleMenuClose}><AccountCircle style={{ marginRight: 10 }} />
         <Link className="dropdown-item" to="/me">Profile</Link>
       </MenuItem>
@@ -101,40 +107,17 @@ const Header = ({ cartItems }) => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={cartItems.length} style={{ marginBottom: -5 }} color="error">
-            <Link to="/cart"><ShoppingCartIcon style={{ color: 'black', marginTop: -5 }} /></Link>
-          </Badge>
-        </IconButton>
-        Cart
-      </MenuItem>
 
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <Link className="dropdown-item" to="/me"><AccountCircle /></Link>
-        </IconButton>
+      {user && user.role === 'admin' && (
+        <MenuItem onClick={handleMenuClose}><DashboardIcon style={{ marginRight: 10 }} />
+          <Link className="dropdown-item" to="/dashboard">Dashboard</Link>
+        </MenuItem>
+      )}
+
+      <MenuItem onClick={handleMenuClose}><AccountCircle style={{ marginRight: 10 }} />
         <Link className="dropdown-item" to="/me">Profile</Link>
       </MenuItem>
-
-      <MenuItem onClick={logoutHandler}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <LogoutIcon />
-        </IconButton>
-        Logout
-      </MenuItem>
+      <MenuItem onClick={logoutHandler}><LogoutIcon style={{ marginRight: 10 }} /> Logout</MenuItem>
     </Menu>
   );
 
