@@ -19,8 +19,10 @@ import ListOrders from './Components/Order/ListOrders';
 import OrderDetails from './Components/Order/OrderDetails';
 import ProtectedRoute from './Components/Route/ProtectedRoute';
 import Dashboard from './Components/Admin/Dashboard';
+
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
+import ProductList from './Components/Admin/ProductList';
 
 function App() {
   const [state, setState] = useState({
@@ -109,6 +111,14 @@ function App() {
             element={
               <ProtectedRoute isAdmin={true}>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/products"
+            element={
+              <ProtectedRoute isAdmin={true}>
+                <ProductList />
               </ProtectedRoute>
             }
           />
