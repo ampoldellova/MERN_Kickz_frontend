@@ -72,7 +72,7 @@ const ProductDetails = ({ addItemToCart, cartItems }) => {
                     <div className="container px-4 px-lg-5 my-5">
                         <div className="row gx-4 gx-lg-5 align-items-center">
                             <div className="col-md-6">
-                                <Carousel pause='hover'>
+                                <Carousel data-bs-theme="dark" pause='hover'>
                                     {product.images && product.images.map(image => (
                                         <Carousel.Item key={image.public_id}>
                                             <img className="d-block w-100" src={image.url} alt={product.title} />

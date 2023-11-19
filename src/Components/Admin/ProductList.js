@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import MetaData from '../Layout/Metadata';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import SideBar from './SideBar';
 import { getToken } from '../../utils/helpers';
 
@@ -290,6 +291,9 @@ const ProductList = () => {
                     }}
                 >
                     <div style={{ height: 'auto', width: '100%', marginTop: 68 }}>
+                        <Link to="/admin/product" style={{ textDecoration: 'none', color: 'inherit' }}>
+                            <Button variant='contained' startIcon={<AddCircleIcon />}>Add Shoe Product</Button>
+                        </Link>
                         <DataGrid
                             rows={productsList().rows}
                             columns={productsList().columns}

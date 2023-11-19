@@ -58,7 +58,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const defaultTheme = createTheme();
 
-const UpdateProduct = () => {
+const NewProduct = () => {
     const [open, setOpen] = useState(true);
 
     const toggleDrawer = () => {
@@ -68,113 +68,49 @@ const UpdateProduct = () => {
     const [name, setName] = useState('');
     const [price, setPrice] = useState(0);
     const [description, setDescription] = useState('');
-    const [category, setCategory] = useState('');
+    const [type, setType] = useState('');
     const [stock, setStock] = useState(0);
     const [colorway, setColor] = useState('');
-    const [seller, setSeller] = useState('');
+    const [brand, setBrand] = useState('');
     const [images, setImages] = useState([]);
-    const [oldImages, setOldImages] = useState([]);
-    const [imagesPreview, setImagesPreview] = useState([]);
-    const [error, setError] = useState('');
-    const [product, setProduct] = useState({});
-    const [loading, setLoading] = useState(true);
-    const [updateError, setUpdateError] = useState('');
-    const [isUpdated, setIsUpdated] = useState(false);
+    const [imagesPreview, setImagesPreview] = useState([])
+    const [error, setError] = useState('')
+    const [loading, setLoading] = useState(true)
+    const [success, setSuccess] = useState('')
+    const [product, setProduct] = useState({})
 
-    const categories = [
+    const types = [
         'High-tops',
         'Mid-Cut',
         'Low-tops',
         'Slip-ons'
     ]
 
-    let { id } = useParams();
-    let navigate = useNavigate();
-
-    const errMsg = (message = '') => toast.error(message, {
-        position: toast.POSITION.BOTTOM_CENTER
-    });
-    const successMsg = (message = '') => toast.success(message, {
-        position: toast.POSITION.BOTTOM_CENTER
-    });
-
-    const getProductDetails = async (id) => {
-        try {
-            const { data } = await axios.get(`http://localhost:4002/api/v1/product/${id}`)
-            setProduct(data.product)
-            setLoading(false)
-
-        } catch (error) {
-            setError(error.response.data.message)
-
-        }
-    }
-
-    const updateProduct = async (id, productData) => {
-        try {
-
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${getToken()}`
-                }
-            }
-            const { data } = await axios.put(`http://localhost:4002/api/v1/admin/product/${id}`, productData, config)
-            setIsUpdated(data.success)
-
-        } catch (error) {
-            setUpdateError(error.response.data.message)
-
-        }
-    }
-    useEffect(() => {
-        if (product && product._id !== id) {
-            getProductDetails(id)
-        } else {
-            setName(product.name);
-            setPrice(product.price);
-            setDescription(product.description);
-            setCategory(product.type);
-            setSeller(product.brand);
-            setStock(product.stock);
-            setColor(product.colorway);
-            setOldImages(product.images);
-        }
-        if (error) {
-            errMsg(error)
-
-        }
-        if (updateError) {
-            errMsg(updateError);
-
-        }
-        if (isUpdated) {
-            navigate('/admin/products');
-            successMsg('Product updated successfully');
-
-        }
-    }, [error, isUpdated, updateError, product, id])
+    let navigate = useNavigate()
 
     const submitHandler = (e) => {
         e.preventDefault();
+
         const formData = new FormData();
         formData.set('name', name);
         formData.set('price', price);
         formData.set('description', description);
-        formData.set('category', category);
+        formData.set('type', type);
         formData.set('stock', stock);
         formData.set('colorway', colorway);
-        formData.set('seller', seller);
+        formData.set('brand', brand);
+
         images.forEach(image => {
             formData.append('images', image)
         })
-        updateProduct(product._id, formData)
+
+        newProduct(formData)
     }
+
     const onChange = e => {
         const files = Array.from(e.target.files)
         setImagesPreview([]);
         setImages([])
-        setOldImages([])
         files.forEach(file => {
             const reader = new FileReader();
             reader.onload = () => {
@@ -183,13 +119,52 @@ const UpdateProduct = () => {
                     setImages(oldArray => [...oldArray, reader.result])
                 }
             }
+
             reader.readAsDataURL(file)
+            // console.log(reader)
         })
+
     }
+    const newProduct = async (formData) => {
+
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${getToken()}`
+                }
+            }
+
+            const { data } = await axios.post(`http://localhost:4002/api/v1/admin/product/new`, formData, config)
+            setLoading(false)
+            setSuccess(data.success)
+            setProduct(data.product)
+        } catch (error) {
+            setError(error.response.data.message)
+
+        }
+    }
+    useEffect(() => {
+
+        if (error) {
+            toast.error(error, {
+                position: toast.POSITION.BOTTOM_RIGHT
+            });
+        }
+
+        if (success) {
+            navigate('/admin/products');
+            toast.success('Product created successfully', {
+                position: toast.POSITION.BOTTOM_RIGHT
+            })
+
+        }
+
+    }, [error, success,])
 
     return (
         <ThemeProvider theme={defaultTheme}>
-            <MetaData title={'Update Product'} />
+            <MetaData title={'Add Shoe Product'} />
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
                 <AppBar position="absolute" open={open}>
@@ -218,7 +193,7 @@ const UpdateProduct = () => {
                             noWrap
                             sx={{ flexGrow: 1 }}
                         >
-                            Update Product
+                            Add Shoe Product
                         </Typography>
                         <Link to="/">
                             <img src="https://res.cloudinary.com/dwkmutbz3/image/upload/v1699103432/Kickz/logo/kickz_piufvo.png"
@@ -275,83 +250,72 @@ const UpdateProduct = () => {
                                 <Box component="form" onSubmit={submitHandler} noValidate sx={{ mt: 3 }}>
                                     <Grid container spacing={2}>
                                         <Grid item xs={12}>
-                                            <InputLabel>Shoe Name</InputLabel>
                                             <TextField
-                                                name="Product Name"
                                                 required
                                                 fullWidth
-                                                id="productName"
+                                                label="Shoe Name"
                                                 autoFocus
                                                 value={name}
                                                 onChange={(e) => setName(e.target.value)}
                                             />
                                         </Grid>
                                         <Grid item xs={12} sm={6}>
-                                            <InputLabel>Shoe Price</InputLabel>
                                             <TextField
                                                 required
                                                 fullWidth
-                                                id="Price"
-                                                name="Price"
+                                                label="Shoe Price"
                                                 value={price}
                                                 onChange={(e) => setPrice(e.target.value)}
                                             />
                                         </Grid>
                                         <Grid item xs={12} sm={6}>
-                                            <InputLabel>Shoe Type</InputLabel>
                                             <TextField
                                                 required
                                                 fullWidth
-                                                name="type"
-                                                id="type"
+                                                label="Shoe Type"
                                                 select
-                                                value={category}
-                                                onChange={(e) => setCategory(e.target.value)}
+                                                value={type}
+                                                onChange={(e) => setType(e.target.value)}
                                             >
-                                                {categories.map(category => (
-                                                    <MenuItem key={category} value={category} >{category}</MenuItem >
+                                                {types.map(type => (
+                                                    <MenuItem key={type} value={type} >{type}</MenuItem >
                                                 ))}
                                             </TextField>
                                         </Grid>
                                         <Grid item xs={12}>
-                                            <InputLabel>Brand</InputLabel>
                                             <TextField
                                                 required
                                                 fullWidth
-                                                id="type"
-                                                value={seller}
-                                                onChange={(e) => setSeller(e.target.value)}
+                                                label="Shoe Brand"
+                                                value={brand}
+                                                onChange={(e) => setBrand(e.target.value)}
                                             />
                                         </Grid>
                                         <Grid item xs={12}>
-                                            <InputLabel>Shoe Description</InputLabel>
                                             <TextField
                                                 required
                                                 fullWidth
-                                                id="description"
-                                                name="description"
+                                                label="Shoe Description"
                                                 multiline
                                                 rows={8}
                                                 value={description} onChange={(e) => setDescription(e.target.value)}
                                             />
                                         </Grid>
                                         <Grid item xs={4}>
-                                            <InputLabel>Stock</InputLabel>
                                             <TextField
                                                 required
                                                 fullWidth
+                                                label="Stock"
                                                 type='number'
-                                                id="stock"
                                                 value={stock}
                                                 onChange={(e) => setStock(e.target.value)}
                                             />
                                         </Grid>
                                         <Grid item xs={8}>
-                                            <InputLabel>Colorway</InputLabel>
                                             <TextField
                                                 required
                                                 fullWidth
-                                                id="colorway"
+                                                label="Color"
                                                 value={colorway}
                                                 onChange={(e) => setColor(e.target.value)}
                                             />
@@ -368,9 +332,6 @@ const UpdateProduct = () => {
                                             />
                                         </Grid>
                                         <Grid item xs={12}>
-                                            {oldImages && oldImages.map(img => (
-                                                <img key={img} src={img.url} alt={img.url} className="mt-3 mr-2" width="75" height="75" />
-                                            ))}
                                             {imagesPreview.map(img => (
                                                 <img src={img} key={img} alt="Images Preview" className="mt-3 mr-2" width="75" height="75" />
                                             ))}
@@ -382,7 +343,7 @@ const UpdateProduct = () => {
                                         variant="contained"
                                         sx={{ mt: 3, mb: 2 }}
                                     >
-                                        Update Product
+                                        Create Shoe Product
                                     </Button>
                                 </Box>
                             </Box>
@@ -394,4 +355,4 @@ const UpdateProduct = () => {
     );
 };
 
-export default UpdateProduct;
+export default NewProduct;
