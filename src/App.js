@@ -94,19 +94,23 @@ function App() {
           <Route path="/" element={<Home />} exact />
           <Route path="/search/:keyword" element={<Home />} exact />
           <Route path="/product/:id" element={<ProductDetails cartItems={state.cartItems} addItemToCart={addItemToCart} />} exact />
+          
           <Route path="/login" element={<Login />} exact />
           <Route path="/password/forgot" element={<ForgotPassword />} exact />
           <Route path="/me" element={<Profile />} exact />
           <Route path="/register" element={<Register />} exact />
           <Route path="/password/update" element={<UpdatePassword />} />
           <Route path="/me/update" element={<UpdateProfile />} exact />
+  
           <Route path="/cart" element={<Cart cartItems={state.cartItems} addItemToCart={addItemToCart} removeItemFromCart={removeItemFromCart} />} exact />
           <Route path="/shipping" element={<Shipping shipping={state.shippingInfo} saveShippingInfo={saveShippingInfo} />} />
           <Route path="/confirm" element={<ConfirmOrder cartItems={state.cartItems} shippingInfo={state.shippingInfo} />} />
           <Route path="/payment" element={<Payment cartItems={state.cartItems} shippingInfo={state.shippingInfo} />} />
           <Route path="/success" element={<OrderSuccess />} />
+
           <Route path="/orders/me" element={<ListOrders />} />
           <Route path="/order/:id" element={<OrderDetails />} />
+
           <Route path="/dashboard" element={<ProtectedRoute isAdmin={true}><Dashboard /></ProtectedRoute>} />
           <Route path="/admin/products" element={<ProtectedRoute isAdmin={true}><ProductList /></ProtectedRoute>} />
           <Route path="/admin/product" element={<NewProduct />} />
