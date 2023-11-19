@@ -21,9 +21,9 @@ const Sidebar = () => {
             </ListItemButton>
             <ListItemButton>
                 <ListItemIcon>
-                    <ShoppingCartIcon />
+                    <Link to="/admin/orders" style={{ textDecoration: 'none', color: 'inherit' }}><ShoppingCartIcon /></Link>
                 </ListItemIcon>
-                <ListItemText primary="Orders" />
+                <Link to="/admin/orders" style={{ textDecoration: 'none', color: 'inherit' }}><ListItemText primary="Orders" /></Link>
             </ListItemButton>
             <ListItemButton>
                 <ListItemIcon>

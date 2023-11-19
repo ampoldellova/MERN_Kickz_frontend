@@ -21,6 +21,7 @@ import ProtectedRoute from './Components/Route/ProtectedRoute';
 import Dashboard from './Components/Admin/Dashboard';
 import NewProduct from './Components/Admin/NewProduct';
 import UpdateProduct from './Components/Admin/UpdateProduct';
+import OrdersList from './Components/Admin/OrdersList';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import ProductList from './Components/Admin/ProductList';
@@ -115,6 +116,7 @@ function App() {
           <Route path="/admin/products" element={<ProtectedRoute isAdmin={true}><ProductList /></ProtectedRoute>} />
           <Route path="/admin/product" element={<NewProduct />} />
           <Route path="/admin/product/:id" element={<UpdateProduct />} />
+          <Route path="/admin/orders" element={<OrdersList />} />
         </Routes>
       </Router>
     </div>
