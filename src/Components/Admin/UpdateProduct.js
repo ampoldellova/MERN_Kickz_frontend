@@ -83,7 +83,7 @@ const UpdateProduct = () => {
 
     const categories = [
         'High-tops',
-        'Mid-Cut',
+        'Mid-cut',
         'Low-tops',
         'Slip-ons'
     ]

@@ -10,6 +10,20 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import SideBar from './SideBar';
 
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
+const validationSchema = Yup.object({
+    name: Yup.string().required('Shoe Name is required'),
+    price: Yup.number().typeError('Invalid price').required('Shoe price is required'),
+    description: Yup.string().required('Shoe description is required'),
+    type: Yup.string().required('Shoe type is required'),
+    stock: Yup.number().required('Shoe stock is required'),
+    colorway: Yup.string().required('Shoe color is required'),
+    brand: Yup.string().required('Shoe brand is required'),
+    images: Yup.mixed().required('Shoe image(s) is required'),
+});
+
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -86,26 +100,58 @@ const NewProduct = () => {
         'Slip-ons'
     ]
 
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            email: '',
+            password: '',
+            avatar: '',
+            price: '',
+            description: '',
+            type: '',
+            stock: '',
+            colorway: '',
+            brand: '',
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values) => {
+            const formData = new FormData();
+            formData.set('name', values.name);
+            formData.set('price', values.price);
+            formData.set('description', values.description);
+            formData.set('type', values.type);
+            formData.set('stock', values.stock);
+            formData.set('colorway', values.colorway);
+            formData.set('brand', values.brand);
+
+            images.forEach(image => {
+                formData.append('images', image)
+            })
+
+            newProduct(formData)
+        },
+    });
+
     let navigate = useNavigate()
 
-    const submitHandler = (e) => {
-        e.preventDefault();
+    // const submitHandler = (e) => {
+    //     e.preventDefault();
 
-        const formData = new FormData();
-        formData.set('name', name);
-        formData.set('price', price);
-        formData.set('description', description);
-        formData.set('type', type);
-        formData.set('stock', stock);
-        formData.set('colorway', colorway);
-        formData.set('brand', brand);
+    //     const formData = new FormData();
+    //     formData.set('name', name);
+    //     formData.set('price', price);
+    //     formData.set('description', description);
+    //     formData.set('type', type);
+    //     formData.set('stock', stock);
+    //     formData.set('colorway', colorway);
+    //     formData.set('brand', brand);
 
-        images.forEach(image => {
-            formData.append('images', image)
-        })
+    //     images.forEach(image => {
+    //         formData.append('images', image)
+    //     })
 
-        newProduct(formData)
-    }
+    //     newProduct(formData)
+    // }
 
     const onChange = e => {
         const files = Array.from(e.target.files)
@@ -247,16 +293,20 @@ const NewProduct = () => {
                                     alignItems: 'center',
                                 }}
                             >
-                                <Box component="form" onSubmit={submitHandler} noValidate sx={{ mt: 3 }}>
+                                <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ mt: 3 }}>
                                     <Grid container spacing={2}>
                                         <Grid item xs={12}>
                                             <TextField
                                                 required
                                                 fullWidth
                                                 label="Shoe Name"
+                                                id="name"
+                                                name="name"
                                                 autoFocus
-                                                value={name}
-                                                onChange={(e) => setName(e.target.value)}
+                                                value={formik.values.name}
+                                                onChange={formik.handleChange}
+                                                error={formik.touched.name && Boolean(formik.errors.name)}
+                                                helperText={formik.touched.name && formik.errors.name}
                                             />
                                         </Grid>
                                         <Grid item xs={12} sm={6}>
@@ -264,8 +314,12 @@ const NewProduct = () => {
                                                 required
                                                 fullWidth
                                                 label="Shoe Price"
-                                                value={price}
-                                                onChange={(e) => setPrice(e.target.value)}
+                                                id="price"
+                                                name="price"
+                                                value={formik.values.price}
+                                                onChange={formik.handleChange}
+                                                error={formik.touched.price && Boolean(formik.errors.price)}
+                                                helperText={formik.touched.price && formik.errors.price}
                                             />
                                         </Grid>
                                         <Grid item xs={12} sm={6}>
@@ -273,9 +327,13 @@ const NewProduct = () => {
                                                 required
                                                 fullWidth
                                                 label="Shoe Type"
+                                                id="type"
+                                                name="type"
                                                 select
-                                                value={type}
-                                                onChange={(e) => setType(e.target.value)}
+                                                value={formik.values.type}
+                                                onChange={formik.handleChange}
+                                                error={formik.touched.type && Boolean(formik.errors.type)}
+                                                helperText={formik.touched.type && formik.errors.type}
                                             >
                                                 {types.map(type => (
                                                     <MenuItem key={type} value={type} >{type}</MenuItem >
@@ -287,8 +345,13 @@ const NewProduct = () => {
                                                 required
                                                 fullWidth
                                                 label="Shoe Brand"
-                                                value={brand}
-                                                onChange={(e) => setBrand(e.target.value)}
+                                                id="brand"
+                                                name="brand"
+                                                value={formik.values.brand}
+                                                onChange={formik.handleChange}
+                                                error={formik.touched.brand && Boolean(formik.errors.brand)}
+                                                helperText={formik.touched.brand && formik.errors.brand}
+
                                             />
                                         </Grid>
                                         <Grid item xs={12}>
@@ -296,9 +359,14 @@ const NewProduct = () => {
                                                 required
                                                 fullWidth
                                                 label="Shoe Description"
+                                                id="description"
+                                                name="description"
                                                 multiline
                                                 rows={8}
-                                                value={description} onChange={(e) => setDescription(e.target.value)}
+                                                value={formik.values.description}
+                                                onChange={formik.handleChange}
+                                                error={formik.touched.description && Boolean(formik.errors.description)}
+                                                helperText={formik.touched.description && formik.errors.description}
                                             />
                                         </Grid>
                                         <Grid item xs={4}>
@@ -307,8 +375,12 @@ const NewProduct = () => {
                                                 fullWidth
                                                 label="Stock"
                                                 type='number'
-                                                value={stock}
-                                                onChange={(e) => setStock(e.target.value)}
+                                                id="stock"
+                                                name="stock"
+                                                value={formik.values.stock}
+                                                onChange={formik.handleChange}
+                                                error={formik.touched.stock && Boolean(formik.errors.stock)}
+                                                helperText={formik.touched.stock && formik.errors.stock}
                                             />
                                         </Grid>
                                         <Grid item xs={8}>
@@ -316,8 +388,12 @@ const NewProduct = () => {
                                                 required
                                                 fullWidth
                                                 label="Color"
-                                                value={colorway}
-                                                onChange={(e) => setColor(e.target.value)}
+                                                id="colorway"
+                                                name="colorway"
+                                                value={formik.values.colorway}
+                                                onChange={formik.handleChange}
+                                                error={formik.touched.colorway && Boolean(formik.errors.colorway)}
+                                                helperText={formik.touched.colorway && formik.errors.colorway}
                                             />
                                         </Grid>
                                         <Grid item xs={12}>
@@ -327,7 +403,13 @@ const NewProduct = () => {
                                                 name='images'
                                                 className='custom-file-input'
                                                 id='customFile'
-                                                onChange={onChange}
+                                                accept="images/*"
+                                                onChange={(e) => {
+                                                    formik.handleChange(e)
+                                                    onChange(e)
+                                                }}
+                                                error={formik.touched.images && Boolean(formik.errors.images)}
+                                                helperText={formik.touched.images && formik.errors.images}
                                                 multiple
                                             />
                                         </Grid>
