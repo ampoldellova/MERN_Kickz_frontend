@@ -1,11 +1,18 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
 import MetaData from '../Layout/Metadata'
 
-const OrderSuccess = () => {
+const OrderSuccess = ({ state, setState }) => {
 
-    sessionStorage.removeItem('orderInfo')
+    useEffect(() => {
+        setState({
+            ...state,
+            cartItems: [],
+        });
+    })
+
+    sessionStorage.removeItem('orderInfo');
     localStorage.clear();
     localStorage.removeItem('cartItems');
 
