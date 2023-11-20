@@ -6,6 +6,16 @@ import Metadata from '../Layout/Metadata';
 import Box from '@mui/material/Box';
 import axios from 'axios'
 
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
+const validationSchema = Yup.object({
+    name: Yup.string().required('Name is required'),
+    email: Yup.string().email('Invalid email address').required('Email is required'),
+    password: Yup.string().required('Password is required'),
+    avatar: Yup.mixed().required('Avatar is required'),
+});
+
 const defaultTheme = createTheme();
 
 const Register = () => {
@@ -23,6 +33,26 @@ const Register = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(true)
+
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            email: '',
+            password: '',
+            avatar: '',
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values) => {
+            console.log(values)
+            const formData = new FormData();
+            formData.set('name', values.name);
+            formData.set('email', values.email);
+            formData.set('password', values.password);
+            formData.set('avatar', avatar);
+
+            register(formData);
+        },
+    });
 
 
     let navigate = useNavigate()
@@ -110,7 +140,8 @@ const Register = () => {
                         <Typography component="h1" variant="h5">
                             Register
                         </Typography>
-                        <Box component="form" onSubmit={submitHandler} noValidate sx={{ mt: 1 }}>
+                        <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ mt: 1 }}>
+
                             <TextField
                                 margin="normal"
                                 required
@@ -119,8 +150,10 @@ const Register = () => {
                                 label="Name"
                                 name="name"
                                 autoFocus
-                                value={name}
-                                onChange={onChange}
+                                value={formik.values.name}
+                                onChange={formik.handleChange}
+                                error={formik.touched.name && Boolean(formik.errors.name)}
+                                helperText={formik.touched.name && formik.errors.name}
                             />
                             <TextField
                                 margin="normal"
@@ -130,8 +163,10 @@ const Register = () => {
                                 label="Email"
                                 type="email"
                                 id="email"
-                                value={email}
-                                onChange={onChange}
+                                value={formik.values.email}
+                                onChange={formik.handleChange}
+                                error={formik.touched.email && Boolean(formik.errors.email)}
+                                helperText={formik.touched.email && formik.errors.email}
                             />
                             <TextField
                                 margin="normal"
@@ -141,8 +176,10 @@ const Register = () => {
                                 label="Password"
                                 type="password"
                                 id="password"
-                                value={password}
-                                onChange={onChange}
+                                value={formik.values.password}
+                                onChange={formik.handleChange}
+                                error={formik.touched.password && Boolean(formik.errors.password)}
+                                helperText={formik.touched.password && formik.errors.password}
                             />
                             <TextField
                                 margin="normal"
@@ -152,7 +189,12 @@ const Register = () => {
                                 type="file"
                                 id="avatar"
                                 accept="images/*"
-                                onChange={onChange}
+                                onChange={(e) => {
+                                    formik.handleChange(e)
+                                    onChange(e)
+                                }}
+                                error={formik.touched.avatar && Boolean(formik.errors.avatar)}
+                                helperText={formik.touched.avatar && formik.errors.avatar}
                             />
                             <InputLabel htmlFor="customFile">Upload an image</InputLabel>
                             <Button
