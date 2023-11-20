@@ -81,7 +81,7 @@ const NewProduct = () => {
 
     const types = [
         'High-tops',
-        'Mid-Cut',
+        'Mid-cut',
         'Low-tops',
         'Slip-ons'
     ]
