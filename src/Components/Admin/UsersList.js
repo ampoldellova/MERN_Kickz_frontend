@@ -155,6 +155,30 @@ const UsersList = () => {
                     headerName: 'Actions',
                     field: 'actions',
                     width: 300,
+                    renderCell: ({ value }) => (
+                        <Fragment>
+                            <Link to={`/admin/user/${value}`}>
+                                <Button
+                                    variant='contained'
+                                    sx={{
+                                        color: 'white'
+                                    }}>
+                                    <EditIcon />
+                                </Button>
+                            </Link>
+                            <Button
+                                variant='contained'
+                                sx={{
+                                    color: 'white',
+                                    backgroundColor: 'red',
+                                    marginLeft: 1
+                                }}
+                                onClick={() => deleteUserHandler(value)}
+                            >
+                                <DeleteIcon />
+                            </Button>
+                        </Fragment>
+                    )
                 },
             ],
             rows: []
@@ -165,22 +189,14 @@ const UsersList = () => {
                 name: user.name,
                 email: user.email,
                 role: user.role,
-                actions: 
-                <Fragment>
-                    <Link to={`/admin/user/${user._id}`} className="btn btn-primary py-1 px-2">
-                        <i className="fa fa-pencil"></i>
-                    </Link>
-                    <button className="btn btn-danger py-1 px-2 ml-2" onClick={() => deleteUserHandler(user._id)}>
-                        <i className="fa fa-trash"></i>
-                    </button>
-                </Fragment>
+                actions: user._id
             })
         })
         return data;
     }
     return (
         <ThemeProvider theme={defaultTheme}>
-            <MetaData title={'UsersList'} />
+            <MetaData title={'List of Users'} />
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
                 <AppBar position="absolute" open={open}>
@@ -253,6 +269,9 @@ const UsersList = () => {
                     }}
                 >
                     <div style={{ height: 'auto', width: '100%', marginTop: 68 }}>
+                        <Link to="/register" style={{ textDecoration: 'none', color: 'inherit' }}>
+                            <Button variant='contained' startIcon={<AddCircleIcon />}>Add User</Button>
+                        </Link>
                         <DataGrid
                             rows={setUsers().rows}
                             columns={setUsers().columns}
