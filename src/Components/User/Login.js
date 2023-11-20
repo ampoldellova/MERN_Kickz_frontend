@@ -17,10 +17,30 @@ import Metadata from '../Layout/Metadata';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
-const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
+const validationSchema = Yup.object({
+    email: Yup.string().email('Invalid email address').required('Input your email'),
+    password: Yup.string().required('Input your password')
+});
+
+const Login = (email, password) => {
+    // const [email, setEmail] = useState('');
+    // const [password, setPassword] = useState('');
     const defaultTheme = createTheme();
+
+    const formik = useFormik({
+        initialValues: {
+            email: '',
+            password: ''
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values) => {
+            // values.preventDefault();
+            login(values.email, values.password)
+        },
+    });
 
     const navigate = useNavigate()
     let location = useLocation();
@@ -96,30 +116,30 @@ const Login = () => {
                             <Typography component="h1" variant="h5">
                                 Sign in
                             </Typography>
-                            <Box component="form" noValidate onSubmit={submitHandler} sx={{ mt: 1 }}>
+                            <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 1 }}>
                                 <TextField
                                     margin="normal"
-                                    required
                                     fullWidth
                                     id="email"
-                                    label="Email Address"
+                                    label="Email"
                                     name="email"
-                                    autoComplete="email"
-                                    autoFocus
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={formik.values.email}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.email && Boolean(formik.errors.email)}
+                                    helperText={formik.touched.email && formik.errors.email}
                                 />
                                 <TextField
                                     margin="normal"
-                                    required
                                     fullWidth
-                                    name="password"
-                                    label="Password"
-                                    type="password"
                                     id="password"
+                                    label="Password"
+                                    name="password"
+                                    type="password"
                                     autoComplete="current-password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    value={formik.values.password}
+                                    onChange={formik.handleChange}
+                                    error={formik.touched.password && Boolean(formik.errors.password)}
+                                    helperText={formik.touched.password && formik.errors.password}
                                 />
                                 <Button
                                     type="submit"

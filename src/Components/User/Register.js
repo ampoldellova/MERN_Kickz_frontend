@@ -67,17 +67,17 @@ const Register = () => {
 
     }, [error.isAuthenticated, navigate])
 
-    const submitHandler = (e) => {
-        e.preventDefault();
+    // const submitHandler = (e) => {
+    //     e.preventDefault();
 
-        const formData = new FormData();
-        formData.set('name', name);
-        formData.set('email', email);
-        formData.set('password', password);
-        formData.set('avatar', avatar);
+    //     const formData = new FormData();
+    //     formData.set('name', name);
+    //     formData.set('email', email);
+    //     formData.set('password', password);
+    //     formData.set('avatar', avatar);
 
-        register(formData)
-    }
+    //     register(formData)
+    // }
 
     const onChange = e => {
         if (e.target.name === 'avatar') {
@@ -140,7 +140,7 @@ const Register = () => {
                         <Typography component="h1" variant="h5">
                             Register
                         </Typography>
-                        <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ mt: 1 }}>
+                        <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: 1 }}>
 
                             <TextField
                                 margin="normal"
@@ -196,7 +196,7 @@ const Register = () => {
                                 error={formik.touched.avatar && Boolean(formik.errors.avatar)}
                                 helperText={formik.touched.avatar && formik.errors.avatar}
                             />
-                            <InputLabel htmlFor="customFile">Upload an image</InputLabel>
+                            <InputLabel>Upload an image</InputLabel>
                             <Button
                                 type="submit"
                                 fullWidth
