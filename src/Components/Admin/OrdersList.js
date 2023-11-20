@@ -287,10 +287,10 @@ const OrdersList = () => {
                             columns={setOrders().columns}
                             initialState={{
                                 pagination: {
-                                    paginationModel: { page: 0, pageSize: 5 },
+                                    paginationModel: { page: 0, pageSize: 10 },
                                 },
                             }}
-                            pageSizeOptions={[5, 10]}
+                            pageSizeOptions={[10, 20]}
                         />
                     </div>
                 </Box>
