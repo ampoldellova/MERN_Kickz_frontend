@@ -22,6 +22,7 @@ import Dashboard from './Components/Admin/Dashboard';
 import NewProduct from './Components/Admin/NewProduct';
 import UpdateProduct from './Components/Admin/UpdateProduct';
 import OrdersList from './Components/Admin/OrdersList';
+import UpdateOrderStatus from './Components/Admin/UpdateOrderStatus';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import ProductList from './Components/Admin/ProductList';
@@ -95,14 +96,14 @@ function App() {
           <Route path="/" element={<Home />} exact />
           <Route path="/search/:keyword" element={<Home />} exact />
           <Route path="/product/:id" element={<ProductDetails cartItems={state.cartItems} addItemToCart={addItemToCart} />} exact />
-          
+
           <Route path="/login" element={<Login />} exact />
           <Route path="/password/forgot" element={<ForgotPassword />} exact />
           <Route path="/me" element={<Profile />} exact />
           <Route path="/register" element={<Register />} exact />
           <Route path="/password/update" element={<UpdatePassword />} />
           <Route path="/me/update" element={<UpdateProfile />} exact />
-  
+
           <Route path="/cart" element={<Cart cartItems={state.cartItems} addItemToCart={addItemToCart} removeItemFromCart={removeItemFromCart} />} exact />
           <Route path="/shipping" element={<Shipping shipping={state.shippingInfo} saveShippingInfo={saveShippingInfo} />} />
           <Route path="/confirm" element={<ConfirmOrder cartItems={state.cartItems} shippingInfo={state.shippingInfo} />} />
@@ -117,6 +118,7 @@ function App() {
           <Route path="/admin/product" element={<NewProduct />} />
           <Route path="/admin/product/:id" element={<UpdateProduct />} />
           <Route path="/admin/orders" element={<OrdersList />} />
+          <Route path="/admin/order/:id" element={<UpdateOrderStatus />} />
         </Routes>
       </Router>
     </div>

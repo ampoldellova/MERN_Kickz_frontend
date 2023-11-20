@@ -7,10 +7,10 @@ const OrderSuccess = () => {
 
     sessionStorage.removeItem('orderInfo')
     localStorage.clear();
+    localStorage.removeItem('cartItems');
 
     return (
         <Fragment>
-
             <MetaData title={'Order Success'} />
 
             <div className="row justify-content-center">
