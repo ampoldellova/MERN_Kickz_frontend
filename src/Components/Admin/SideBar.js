@@ -27,9 +27,9 @@ const Sidebar = () => {
             </ListItemButton>
             <ListItemButton>
                 <ListItemIcon>
-                    <PeopleIcon />
+                    <Link to="/admin/users" style={{ textDecoration: 'none', color: 'inherit' }}><PeopleIcon /></Link>
                 </ListItemIcon>
-                <ListItemText primary="Users" />
+                <Link to="/admin/users" style={{ textDecoration: 'none', color: 'inherit' }}><ListItemText primary="Users" /></Link>
             </ListItemButton>
             <ListItemButton>
                 <ListItemIcon>

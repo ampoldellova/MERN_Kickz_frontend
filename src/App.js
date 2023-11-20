@@ -24,6 +24,7 @@ import UpdateProduct from './Components/Admin/UpdateProduct';
 import OrdersList from './Components/Admin/OrdersList';
 import UpdateOrderStatus from './Components/Admin/UpdateOrderStatus';
 import SupplierList from './Components/Admin/SupplierList';
+import UsersList from './Components/Admin/UsersList';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import ProductList from './Components/Admin/ProductList';
@@ -121,6 +122,7 @@ function App() {
           <Route path="/admin/orders" element={<OrdersList />} />
           <Route path="/admin/order/:id" element={<UpdateOrderStatus />} />
           <Route path="/admin/suppliers/" element={<SupplierList />} />
+          <Route path="/admin/users/" element={<UsersList />} />
         </Routes>
       </Router>
     </div>
