@@ -39,9 +39,9 @@ const Sidebar = () => {
             </ListItemButton>
             <ListItemButton>
                 <ListItemIcon>
-                    <InventoryIcon />
+                    <Link to="/admin/suppliers" style={{ textDecoration: 'none', color: 'inherit' }}><InventoryIcon /></Link>
                 </ListItemIcon>
-                <ListItemText primary="Supplier" />
+                <Link to="/admin/suppliers" style={{ textDecoration: 'none', color: 'inherit' }}><ListItemText primary="Supplier" /></Link>
             </ListItemButton>
         </React.Fragment>
     );
