@@ -1,75 +1,69 @@
 import React, { useState, useEffect } from 'react';
-import { MenuItem, createTheme, ThemeProvider, CssBaseline, Container, Grid, Box, Button, TextField, InputLabel } from '@mui/material';
+import { createTheme, ThemeProvider, CssBaseline, Container, Grid, Box, Button, TextField, InputLabel } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { getToken } from '../../utils/helpers';
 import MetaData from '../Layout/Metadata';
+import Navigation from './Navigation';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import Navigation from './Navigation';
 
 const validationSchema = Yup.object({
-    name: Yup.string().required('Shoe Name is required'),
-    price: Yup.number().typeError('Invalid price').required('Shoe price is required'),
-    description: Yup.string().required('Shoe description is required'),
-    type: Yup.string().required('Shoe type is required'),
-    stock: Yup.number().required('Shoe stock is required'),
-    colorway: Yup.string().required('Shoe color is required'),
-    brand: Yup.string().required('Shoe brand is required'),
-    images: Yup.mixed().required('Shoe image(s) is required'),
+    name: Yup.string().required('Supplier Name is required'),
+    description: Yup.string().required('Supplier description is required'),
+    images: Yup.mixed().required('Supplier image(s) is required'),
 });
 
 const defaultTheme = createTheme();
 
-const NewProduct = () => {
+const NewSupplier = () => {
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
     const [images, setImages] = useState([]);
-    const [imagesPreview, setImagesPreview] = useState([])
     const [error, setError] = useState('')
+    const [imagesPreview, setImagesPreview] = useState([]);
     const [loading, setLoading] = useState(true)
     const [success, setSuccess] = useState('')
-    const [product, setProduct] = useState({})
-
-    const types = [
-        'High-tops',
-        'Mid-cut',
-        'Low-tops',
-        'Slip-ons'
-    ]
+    const [supplier, setSupplier] = useState({})
 
     const formik = useFormik({
         initialValues: {
             name: '',
-            price: '',
             description: '',
-            type: '',
-            stock: '',
-            colorway: '',
-            brand: '',
             images: ''
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
             const formData = new FormData();
             formData.set('name', values.name);
-            formData.set('price', values.price);
             formData.set('description', values.description);
-            formData.set('type', values.type);
-            formData.set('stock', values.stock);
-            formData.set('colorway', values.colorway);
-            formData.set('brand', values.brand);
 
             images.forEach(image => {
                 formData.append('images', image)
             })
 
-            newProduct(formData)
+            newSupplier(formData)
         },
     });
 
     let navigate = useNavigate()
+
+    const submitHandler = (e) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.set('name', name);
+        formData.set('description', description);
+
+        images.forEach(image => {
+            formData.append('images', image)
+        })
+
+        newSupplier(formData)
+    }
 
     const onChange = e => {
         const files = Array.from(e.target.files)
@@ -89,7 +83,8 @@ const NewProduct = () => {
         })
 
     }
-    const newProduct = async (formData) => {
+
+    const newSupplier = async (formData) => {
 
         try {
             const config = {
@@ -99,15 +94,16 @@ const NewProduct = () => {
                 }
             }
 
-            const { data } = await axios.post(`${process.env.REACT_APP_API}/api/v1/admin/product/new`, formData, config)
+            const { data } = await axios.post(`${process.env.REACT_APP_API}/api/v1/admin/supplier/new`, formData, config)
             setLoading(false)
             setSuccess(data.success)
-            setProduct(data.product)
+            setSupplier(data.product)
         } catch (error) {
             setError(error.response.data.message)
 
         }
     }
+
     useEffect(() => {
 
         if (error) {
@@ -117,8 +113,8 @@ const NewProduct = () => {
         }
 
         if (success) {
-            navigate('/admin/products');
-            toast.success('Product created successfully', {
+            navigate('/admin/suppliers');
+            toast.success('Supplier created successfully', {
                 position: toast.POSITION.BOTTOM_RIGHT
             })
 
@@ -126,9 +122,10 @@ const NewProduct = () => {
 
     }, [error, success])
 
+
     return (
         <ThemeProvider theme={defaultTheme}>
-            <MetaData title={'Add Shoe Product'} />
+            <MetaData title={'Add Supplier'} />
             <Box sx={{ display: 'flex' }}>
                 <Navigation />
                 <Box
@@ -154,13 +151,13 @@ const NewProduct = () => {
                                 alignItems: 'center',
                             }}
                         >
-                            <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ mt: 3 }}>
+                            <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
                                 <Grid container spacing={2}>
                                     <Grid item xs={12}>
                                         <TextField
                                             required
                                             fullWidth
-                                            label="Shoe Name"
+                                            label="Supplier Name"
                                             id="name"
                                             name="name"
                                             autoFocus
@@ -170,56 +167,11 @@ const NewProduct = () => {
                                             helperText={formik.touched.name && formik.errors.name}
                                         />
                                     </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField
-                                            required
-                                            fullWidth
-                                            label="Shoe Price"
-                                            id="price"
-                                            name="price"
-                                            value={formik.values.price}
-                                            onChange={formik.handleChange}
-                                            error={formik.touched.price && Boolean(formik.errors.price)}
-                                            helperText={formik.touched.price && formik.errors.price}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField
-                                            required
-                                            fullWidth
-                                            label="Shoe Type"
-                                            id="type"
-                                            name="type"
-                                            select
-                                            value={formik.values.type}
-                                            onChange={formik.handleChange}
-                                            error={formik.touched.type && Boolean(formik.errors.type)}
-                                            helperText={formik.touched.type && formik.errors.type}
-                                        >
-                                            {types.map(type => (
-                                                <MenuItem key={type} value={type} >{type}</MenuItem >
-                                            ))}
-                                        </TextField>
-                                    </Grid>
                                     <Grid item xs={12}>
                                         <TextField
                                             required
                                             fullWidth
-                                            label="Shoe Brand"
-                                            id="brand"
-                                            name="brand"
-                                            value={formik.values.brand}
-                                            onChange={formik.handleChange}
-                                            error={formik.touched.brand && Boolean(formik.errors.brand)}
-                                            helperText={formik.touched.brand && formik.errors.brand}
-
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <TextField
-                                            required
-                                            fullWidth
-                                            label="Shoe Description"
+                                            label="Description"
                                             id="description"
                                             name="description"
                                             multiline
@@ -230,35 +182,9 @@ const NewProduct = () => {
                                             helperText={formik.touched.description && formik.errors.description}
                                         />
                                     </Grid>
-                                    <Grid item xs={4}>
-                                        <TextField
-                                            required
-                                            fullWidth
-                                            label="Stock"
-                                            type='number'
-                                            id="stock"
-                                            name="stock"
-                                            value={formik.values.stock}
-                                            onChange={formik.handleChange}
-                                            error={formik.touched.stock && Boolean(formik.errors.stock)}
-                                            helperText={formik.touched.stock && formik.errors.stock}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={8}>
-                                        <TextField
-                                            required
-                                            fullWidth
-                                            label="Color"
-                                            id="colorway"
-                                            name="colorway"
-                                            value={formik.values.colorway}
-                                            onChange={formik.handleChange}
-                                            error={formik.touched.colorway && Boolean(formik.errors.colorway)}
-                                            helperText={formik.touched.colorway && formik.errors.colorway}
-                                        />
-                                    </Grid>
+
                                     <Grid item xs={12}>
-                                        <InputLabel>Upload Shoe Image(s)</InputLabel>
+                                        <InputLabel>Upload Supplier Image(s)</InputLabel>
                                         <TextField
                                             type='file'
                                             name='images'
@@ -274,8 +200,8 @@ const NewProduct = () => {
                                             }}
                                             error={formik.touched.images && Boolean(formik.errors.images)}
                                             helperText={formik.touched.images && formik.errors.images}
-                                            multiple
                                         />
+
                                     </Grid>
                                     <Grid item xs={12}>
                                         {imagesPreview.map(img => (
@@ -289,7 +215,7 @@ const NewProduct = () => {
                                     variant="contained"
                                     sx={{ mt: 3, mb: 2 }}
                                 >
-                                    Create Shoe Product
+                                    Create Supplier
                                 </Button>
                             </Box>
                         </Box>
@@ -301,4 +227,4 @@ const NewProduct = () => {
     );
 };
 
-export default NewProduct;
+export default NewSupplier;

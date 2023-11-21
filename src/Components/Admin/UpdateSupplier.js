@@ -11,29 +11,17 @@ import Loader from '../Layout/Loader';
 
 const defaultTheme = createTheme();
 
-const UpdateProduct = () => {
+const UpdateSupplier = () => {
     const [name, setName] = useState('');
-    const [price, setPrice] = useState(0);
     const [description, setDescription] = useState('');
-    const [category, setCategory] = useState('');
-    const [stock, setStock] = useState(0);
-    const [colorway, setColor] = useState('');
-    const [seller, setSeller] = useState('');
     const [images, setImages] = useState([]);
     const [oldImages, setOldImages] = useState([]);
     const [imagesPreview, setImagesPreview] = useState([]);
     const [error, setError] = useState('');
-    const [product, setProduct] = useState({});
+    const [supplier, setSupplier] = useState({});
     const [loading, setLoading] = useState(true);
     const [updateError, setUpdateError] = useState('');
     const [isUpdated, setIsUpdated] = useState(false);
-
-    const categories = [
-        'High-tops',
-        'Mid-cut',
-        'Low-tops',
-        'Slip-ons'
-    ]
 
     let { id } = useParams();
     let navigate = useNavigate();
@@ -45,10 +33,10 @@ const UpdateProduct = () => {
         position: toast.POSITION.BOTTOM_CENTER
     });
 
-    const getProductDetails = async (id) => {
+    const getSupplierDetails = async (id) => {
         try {
-            const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/product/${id}`)
-            setProduct(data.product)
+            const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/supplier/${id}`)
+            setSupplier(data.supplier)
             setLoading(false)
 
         } catch (error) {
@@ -57,7 +45,7 @@ const UpdateProduct = () => {
         }
     }
 
-    const updateProduct = async (id, productData) => {
+    const updateSupplier = async (id, supplierData) => {
         try {
 
             const config = {
@@ -66,7 +54,7 @@ const UpdateProduct = () => {
                     'Authorization': `Bearer ${getToken()}`
                 }
             }
-            const { data } = await axios.put(`${process.env.REACT_APP_API}/api/v1/admin/product/${id}`, productData, config)
+            const { data } = await axios.put(`${process.env.REACT_APP_API}/api/v1/admin/supplier/${id}`, supplierData, config)
             setIsUpdated(data.success)
 
         } catch (error) {
@@ -74,18 +62,14 @@ const UpdateProduct = () => {
 
         }
     }
+
     useEffect(() => {
-        if (product && product._id !== id) {
-            getProductDetails(id)
+        if (supplier && supplier._id !== id) {
+            getSupplierDetails(id)
         } else {
-            setName(product.name);
-            setPrice(product.price);
-            setDescription(product.description);
-            setCategory(product.type);
-            setSeller(product.brand);
-            setStock(product.stock);
-            setColor(product.colorway);
-            setOldImages(product.images);
+            setName(supplier.name);
+            setDescription(supplier.description);
+            setOldImages(supplier.images);
         }
         if (error) {
             errMsg(error)
@@ -96,27 +80,24 @@ const UpdateProduct = () => {
 
         }
         if (isUpdated) {
-            navigate('/admin/products');
-            successMsg('Product updated successfully');
+            navigate('/admin/suppliers');
+            successMsg('Supplier updated successfully');
 
         }
-    }, [error, isUpdated, updateError, product, id])
+    }, [error, isUpdated, updateError, supplier, id])
 
     const submitHandler = (e) => {
         e.preventDefault();
         const formData = new FormData();
         formData.set('name', name);
-        formData.set('price', price);
         formData.set('description', description);
-        formData.set('category', category);
-        formData.set('stock', stock);
-        formData.set('colorway', colorway);
-        formData.set('seller', seller);
+
         images.forEach(image => {
             formData.append('images', image)
         })
-        updateProduct(product._id, formData)
+        updateSupplier(supplier._id, formData)
     }
+
     const onChange = e => {
         const files = Array.from(e.target.files)
         setImagesPreview([]);
@@ -136,7 +117,7 @@ const UpdateProduct = () => {
 
     return (
         <ThemeProvider theme={defaultTheme}>
-            <MetaData title={'Update Product'} />
+            <MetaData title={'Update Supplier'} />
             <Box sx={{ display: 'flex' }}>
                 <Navigation />
                 <Box
@@ -163,100 +144,43 @@ const UpdateProduct = () => {
                                         alignItems: 'center',
                                     }}
                                 >
-                                    <Box component="form" onSubmit={submitHandler} noValidate sx={{ mt: 3 }}>
+                                    <Box component="form" noValidate onSubmit={submitHandler} sx={{ mt: 3 }}>
                                         <Grid container spacing={2}>
                                             <Grid item xs={12}>
-                                                <InputLabel>Shoe Name</InputLabel>
                                                 <TextField
-                                                    name="Product Name"
                                                     required
                                                     fullWidth
-                                                    id="productName"
+                                                    label="Supplier Name"
+                                                    id="name"
+                                                    name="name"
                                                     autoFocus
                                                     value={name}
                                                     onChange={(e) => setName(e.target.value)}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12} sm={6}>
-                                                <InputLabel>Shoe Price</InputLabel>
-                                                <TextField
-                                                    required
-                                                    fullWidth
-                                                    id="Price"
-                                                    name="Price"
-                                                    value={price}
-                                                    onChange={(e) => setPrice(e.target.value)}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12} sm={6}>
-                                                <InputLabel>Shoe Type</InputLabel>
-                                                <TextField
-                                                    required
-                                                    fullWidth
-                                                    name="type"
-                                                    id="type"
-                                                    select
-                                                    value={category}
-                                                    onChange={(e) => setCategory(e.target.value)}
-                                                >
-                                                    {categories.map(category => (
-                                                        <MenuItem key={category} value={category} >{category}</MenuItem >
-                                                    ))}
-                                                </TextField>
-                                            </Grid>
-                                            <Grid item xs={12}>
-                                                <InputLabel>Brand</InputLabel>
-                                                <TextField
-                                                    required
-                                                    fullWidth
-                                                    id="type"
-                                                    value={seller}
-                                                    onChange={(e) => setSeller(e.target.value)}
+
                                                 />
                                             </Grid>
                                             <Grid item xs={12}>
-                                                <InputLabel>Shoe Description</InputLabel>
                                                 <TextField
                                                     required
                                                     fullWidth
+                                                    label="Description"
                                                     id="description"
                                                     name="description"
                                                     multiline
                                                     rows={8}
-                                                    value={description} onChange={(e) => setDescription(e.target.value)}
+                                                    value={description}
+                                                    onChange={(e) => setDescription(e.target.value)}
                                                 />
                                             </Grid>
-                                            <Grid item xs={4}>
-                                                <InputLabel>Stock</InputLabel>
-                                                <TextField
-                                                    required
-                                                    fullWidth
-                                                    type='number'
-                                                    id="stock"
-                                                    value={stock}
-                                                    onChange={(e) => setStock(e.target.value)}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={8}>
-                                                <InputLabel>Colorway</InputLabel>
-                                                <TextField
-                                                    required
-                                                    fullWidth
-                                                    id="colorway"
-                                                    value={colorway}
-                                                    onChange={(e) => setColor(e.target.value)}
-                                                />
-                                            </Grid>
+
                                             <Grid item xs={12}>
                                                 <InputLabel>Upload Shoe Image(s)</InputLabel>
-                                                <TextField
+                                                <input
                                                     type='file'
                                                     name='images'
-                                                    fullWidth
-                                                    inputProps={{
-                                                        multiple: true
-                                                    }}
+                                                    className='custom-file-input'
                                                     id='customFile'
+                                                    accept="images/*"
                                                     onChange={onChange}
                                                     multiple
                                                 />
@@ -276,7 +200,7 @@ const UpdateProduct = () => {
                                             variant="contained"
                                             sx={{ mt: 3, mb: 2 }}
                                         >
-                                            Update Product
+                                            Update Supplier
                                         </Button>
                                     </Box>
                                 </Box>
@@ -289,4 +213,4 @@ const UpdateProduct = () => {
     );
 };
 
-export default UpdateProduct;
+export default UpdateSupplier;

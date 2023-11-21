@@ -7,41 +7,40 @@ import CategoryIcon from '@mui/icons-material/Category';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import PeopleIcon from '@mui/icons-material/People';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
     return (
         <React.Fragment>
-            <ListItemButton>
+            <ListItemButton component={Link} to="/dashboard">
                 <ListItemIcon>
-                    <Link to="/dashboard" style={{ textDecoration: 'none', color: 'inherit' }}><DashboardIcon /></Link>
+                    <DashboardIcon />
                 </ListItemIcon>
-                <Link to="/dashboard" style={{ textDecoration: 'none', color: 'inherit' }}><ListItemText primary="Dashboard" /></Link>
+                <ListItemText primary="Dashboard" />
             </ListItemButton>
-            <ListItemButton>
+            <ListItemButton component={Link} to="/admin/orders">
                 <ListItemIcon>
-                    <Link to="/admin/orders" style={{ textDecoration: 'none', color: 'inherit' }}><ShoppingCartIcon /></Link>
+                    <ShoppingCartIcon />
                 </ListItemIcon>
-                <Link to="/admin/orders" style={{ textDecoration: 'none', color: 'inherit' }}><ListItemText primary="Orders" /></Link>
+                <ListItemText primary="Orders" />
             </ListItemButton>
-            <ListItemButton>
+            <ListItemButton component={Link} to="/admin/users">
                 <ListItemIcon>
-                    <Link to="/admin/users" style={{ textDecoration: 'none', color: 'inherit' }}><PeopleIcon /></Link>
+                    <PeopleIcon />
                 </ListItemIcon>
-                <Link to="/admin/users" style={{ textDecoration: 'none', color: 'inherit' }}><ListItemText primary="Users" /></Link>
+                <ListItemText primary="Users" />
             </ListItemButton>
-            <ListItemButton>
+            <ListItemButton component={Link} to="/admin/products" >
                 <ListItemIcon>
-                    <Link to="/admin/products" style={{ textDecoration: 'none', color: 'inherit' }}><CategoryIcon /></Link>
+                    <CategoryIcon />
                 </ListItemIcon>
-                <Link to="/admin/products" style={{ textDecoration: 'none', color: 'inherit' }}><ListItemText primary="Products" /></Link>
+                <ListItemText primary="Products" />
             </ListItemButton>
-            <ListItemButton>
+            <ListItemButton component={Link} to="/admin/suppliers" >
                 <ListItemIcon>
-                    <Link to="/admin/suppliers" style={{ textDecoration: 'none', color: 'inherit' }}><InventoryIcon /></Link>
+                    <InventoryIcon />
                 </ListItemIcon>
-                <Link to="/admin/suppliers" style={{ textDecoration: 'none', color: 'inherit' }}><ListItemText primary="Supplier" /></Link>
+                <ListItemText primary="Supplier" />
             </ListItemButton>
         </React.Fragment>
     );

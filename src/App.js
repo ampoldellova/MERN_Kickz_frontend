@@ -26,9 +26,11 @@ import UpdateOrderStatus from './Components/Admin/UpdateOrderStatus';
 import SupplierList from './Components/Admin/SupplierList';
 import UsersList from './Components/Admin/UsersList';
 import UpdateUser from './Components/Admin/UpdateUser';
+import NewSupplier from './Components/Admin/NewSupplier';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import ProductList from './Components/Admin/ProductList';
+import UpdateSupplier from './Components/Admin/UpdateSupplier';
 
 function App() {
   const [state, setState] = useState({
@@ -111,7 +113,7 @@ function App() {
           <Route path="/shipping" element={<Shipping shipping={state.shippingInfo} saveShippingInfo={saveShippingInfo} />} />
           <Route path="/confirm" element={<ConfirmOrder cartItems={state.cartItems} shippingInfo={state.shippingInfo} />} />
           <Route path="/payment" element={<Payment cartItems={state.cartItems} shippingInfo={state.shippingInfo} />} />
-          <Route path="/success" element={<OrderSuccess setState={setState} state={state}/>}/>
+          <Route path="/success" element={<OrderSuccess setState={setState} state={state} />} />
 
           <Route path="/orders/me" element={<ListOrders />} />
           <Route path="/order/:id" element={<OrderDetails />} />
@@ -122,8 +124,10 @@ function App() {
           <Route path="/admin/product/:id" element={<UpdateProduct />} />
           <Route path="/admin/orders" element={<OrdersList />} />
           <Route path="/admin/order/:id" element={<UpdateOrderStatus />} />
-          <Route path="/admin/suppliers/" element={<SupplierList />} />
-          <Route path="/admin/users/" element={<UsersList />} />
+          <Route path="/admin/suppliers" element={<SupplierList />} />
+          <Route path="/admin/supply" element={<NewSupplier />} />
+          <Route path="/admin/supplier/:id" element={<UpdateSupplier />} />
+          <Route path="/admin/users" element={<UsersList />} />
           <Route path="/admin/user/:id" element={<UpdateUser />} />
         </Routes>
       </Router>
