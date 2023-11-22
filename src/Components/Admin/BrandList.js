@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { createTheme, ThemeProvider, Box, Button } from '@mui/material';
+import { createTheme, ThemeProvider, Box, Button, Typography } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -168,9 +168,12 @@ const BrandList = () => {
                 >
                     {loading ? <Loader /> : (
                         <div style={{ height: 'auto', width: '100%', marginTop: 68 }}>
-                            <Link to="/admin/brand" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                <Button variant='contained' startIcon={<AddCircleIcon />}>Add brand</Button>
-                            </Link>
+                            <Box textAlign="center" style={{ margin: 20 }}>
+                                <Typography variant='h3' style={{ fontWeight: 1000 }}>List of Shoe Brands</Typography>
+                                <Link to="/admin/brand" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <Button variant='contained' startIcon={<AddCircleIcon />}>Add brand</Button>
+                                </Link>
+                            </Box>
                             <DataGrid
                                 rows={brandList().rows}
                                 columns={brandList().columns}

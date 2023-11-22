@@ -176,6 +176,7 @@ const OrdersList = () => {
                 >
                     {loading ? <Loader /> : (
                         <div style={{ height: 'auto', width: '100%' }}>
+                            <Typography variant='h3' style={{textAlign:'center', fontWeight: 1000}}>List of Customer Orders</Typography>
                             <DataGrid
                                 rows={setOrders().rows}
                                 columns={setOrders().columns}

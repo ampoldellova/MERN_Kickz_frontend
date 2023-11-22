@@ -33,6 +33,7 @@ import axios from 'axios';
 import ProductList from './Components/Admin/ProductList';
 import UpdateSupplier from './Components/Admin/UpdateSupplier';
 import BrandList from './Components/Admin/BrandList';
+import UpdateBrand from './Components/Admin/UpdateBrand';
 
 function App() {
   const [state, setState] = useState({
@@ -122,7 +123,7 @@ function App() {
 
           <Route path="/dashboard" element={<ProtectedRoute isAdmin={true}><Dashboard /></ProtectedRoute>} />
           <Route path="/admin/products" element={<ProtectedRoute isAdmin={true}><ProductList /></ProtectedRoute>} />
-          
+
           <Route path="/admin/product" element={<NewProduct />} />
           <Route path="/admin/product/:id" element={<UpdateProduct />} />
 
@@ -133,8 +134,9 @@ function App() {
           <Route path="/admin/supply" element={<NewSupplier />} />
           <Route path="/admin/supplier/:id" element={<UpdateSupplier />} />
 
-          <Route path="/admin/brands" element={<BrandList/>} />
+          <Route path="/admin/brands" element={<BrandList />} />
           <Route path="/admin/brand" element={<NewBrand />} />
+          <Route path="/admin/brand/:id" element={<UpdateBrand />} />
 
           <Route path="/admin/users" element={<UsersList />} />
           <Route path="/admin/user/:id" element={<UpdateUser />} />

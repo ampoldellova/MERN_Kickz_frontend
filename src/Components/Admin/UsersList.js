@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { createTheme, ThemeProvider, Box, } from '@mui/material';
+import { createTheme, ThemeProvider, Box, Typography } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
@@ -12,6 +12,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Navigation from './Navigation';
 import { getToken, successMsg, errMsg } from '../../utils/helpers';
 import Loader from '../Layout/Loader';
+import { BsPrefixComponent } from 'react-bootstrap/esm/helpers';
 
 const defaultTheme = createTheme();
 
@@ -159,9 +160,12 @@ const UsersList = () => {
                 >
                     {loading ? <Loader /> : (
                         <div style={{ height: 'auto', width: '100%', marginTop: 68 }}>
-                            <Link to="/register" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                <Button variant='contained' startIcon={<AddCircleIcon />}>Add User</Button>
-                            </Link>
+                            <Box textAlign="center" style={{margin: 20}}>
+                                <Typography variant='h3' style={{ fontWeight: 1000 }}>List of Customers</Typography>
+                                <Link to="/register" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <Button variant='contained' startIcon={<AddCircleIcon />}>Add User</Button>
+                                </Link>
+                            </Box>
                             <DataGrid
                                 rows={setUsers().rows}
                                 columns={setUsers().columns}

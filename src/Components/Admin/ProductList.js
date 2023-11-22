@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { createTheme, ThemeProvider, Box, } from '@mui/material';
+import { createTheme, ThemeProvider, Box, Typography } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
@@ -182,9 +182,12 @@ const ProductList = () => {
                 >
                     {loading ? <Loader /> : (
                         <div style={{ height: 'auto', width: '100%', marginTop: 68 }}>
-                            <Link to="/admin/product" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                <Button variant='contained' startIcon={<AddCircleIcon />}>Add Shoe Product</Button>
-                            </Link>
+                            <Box textAlign="center" style={{ margin: 20 }}>
+                                <Typography variant='h3' style={{ fontWeight: 1000 }}>List of Products</Typography>
+                                <Link to="/admin/product" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <Button variant='contained' startIcon={<AddCircleIcon />}>Add Shoe Product</Button>
+                                </Link>
+                            </Box>
                             <DataGrid
                                 rows={productsList().rows}
                                 columns={productsList().columns}
