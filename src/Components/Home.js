@@ -132,7 +132,7 @@ const Home = () => {
                         </Fragment>
                     ) : (
                         <Fragment>
-                            <Carousel data-bs-theme="light" style={{ marginTop: -1 }}>
+                            <Carousel data-bs-theme="light" style={{ marginTop: -1 }}  fade>
                                 <Carousel.Item>
                                     <img
                                         className="d-block w-100"
