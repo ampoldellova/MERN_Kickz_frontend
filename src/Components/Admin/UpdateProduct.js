@@ -9,6 +9,19 @@ import MetaData from '../Layout/Metadata';
 import Navigation from './Navigation';
 import Loader from '../Layout/Loader';
 
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
+const validationSchema = Yup.object({
+    name: Yup.string().required('Shoe Name is required'),
+    price: Yup.number().typeError('Invalid price').required('Shoe price is required'),
+    description: Yup.string().required('Shoe description is required'),
+    type: Yup.string().required('Shoe type is required'),
+    stock: Yup.number().required('Shoe stock is required'),
+    colorway: Yup.string().required('Shoe color is required'),
+    brand: Yup.string().required('Shoe brand is required'),
+});
+
 const defaultTheme = createTheme();
 
 const UpdateProduct = () => {
@@ -18,7 +31,7 @@ const UpdateProduct = () => {
     const [category, setCategory] = useState('');
     const [stock, setStock] = useState(0);
     const [colorway, setColor] = useState('');
-    const [seller, setSeller] = useState('');
+    const [brand, setBrand] = useState('');
     const [images, setImages] = useState([]);
     const [oldImages, setOldImages] = useState([]);
     const [imagesPreview, setImagesPreview] = useState([]);
@@ -28,12 +41,42 @@ const UpdateProduct = () => {
     const [updateError, setUpdateError] = useState('');
     const [isUpdated, setIsUpdated] = useState(false);
 
+
     const categories = [
         'High-tops',
         'Mid-cut',
         'Low-tops',
         'Slip-ons'
     ]
+
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            price: '',
+            description: '',
+            type: '',
+            stock: '',
+            colorway: '',
+            brand: '',
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values) => {
+            const formData = new FormData();
+            formData.set('name', values.name);
+            formData.set('price', values.price);
+            formData.set('description', values.description);
+            formData.set('type', values.type);
+            formData.set('stock', values.stock);
+            formData.set('colorway', values.colorway);
+            formData.set('brand', values.brand);
+
+            images.forEach(image => {
+                formData.append('images', image)
+            })
+
+            updateProduct(id, formData)
+        },
+    });
 
     let { id } = useParams();
     let navigate = useNavigate();
@@ -45,17 +88,17 @@ const UpdateProduct = () => {
         position: toast.POSITION.BOTTOM_CENTER
     });
 
-    const getProductDetails = async (id) => {
-        try {
-            const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/product/${id}`)
-            setProduct(data.product)
-            setLoading(false)
+    // const getProductDetails = async (id) => {
+    //     try {
+    //         const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/product/${id}`)
+    //         setProduct(data.product)
+    //         setLoading(false)
 
-        } catch (error) {
-            setError(error.response.data.message)
+    //     } catch (error) {
+    //         setError(error.response.data.message)
 
-        }
-    }
+    //     }
+    // }
 
     const updateProduct = async (id, productData) => {
         try {
@@ -68,55 +111,54 @@ const UpdateProduct = () => {
             }
             const { data } = await axios.put(`${process.env.REACT_APP_API}/api/v1/admin/product/${id}`, productData, config)
             setIsUpdated(data.success)
+            navigate('/admin/products');
+            successMsg('Product updated successfully');
 
         } catch (error) {
             setUpdateError(error.response.data.message)
 
         }
     }
-    useEffect(() => {
-        if (product && product._id !== id) {
-            getProductDetails(id)
-        } else {
-            setName(product.name);
-            setPrice(product.price);
-            setDescription(product.description);
-            setCategory(product.type);
-            setSeller(product.brand);
-            setStock(product.stock);
-            setColor(product.colorway);
-            setOldImages(product.images);
-        }
-        if (error) {
-            errMsg(error)
 
-        }
-        if (updateError) {
-            errMsg(updateError);
+    // const submitHandler = (e) => {
+    //     e.preventDefault();
+    //     const formData = new FormData();
+    //     formData.set('name', name);
+    //     formData.set('price', price);
+    //     formData.set('description', description);
+    //     formData.set('category', category);
+    //     formData.set('stock', stock);
+    //     formData.set('colorway', colorway);
+    //     formData.set('brand', brand);
+    //     images.forEach(image => {
+    //         formData.append('images', image)
+    //     })
+    //     updateProduct(product._id, formData)
+    // }
 
-        }
-        if (isUpdated) {
-            navigate('/admin/products');
-            successMsg('Product updated successfully');
+    const getSingleProduct = async () => {
 
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${getToken()}`
+            }
         }
-    }, [error, isUpdated, updateError, product, id])
 
-    const submitHandler = (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.set('name', name);
-        formData.set('price', price);
-        formData.set('description', description);
-        formData.set('category', category);
-        formData.set('stock', stock);
-        formData.set('colorway', colorway);
-        formData.set('seller', seller);
-        images.forEach(image => {
-            formData.append('images', image)
-        })
-        updateProduct(product._id, formData)
+        const { data: { product } } = await axios.get(`${process.env.REACT_APP_API}/api/v1/product/${id}`, config);
+
+        formik.setFieldValue('name', product.name);
+        formik.setFieldValue('price', product.price);
+        formik.setFieldValue('description', product.description);
+        formik.setFieldValue('type', product.type);
+        formik.setFieldValue('stock', product.stock);
+        formik.setFieldValue('colorway', product.colorway);
+        formik.setFieldValue('brand', product.brand);
+        setImagesPreview(product.images.flatMap(image => image.url));
+        setProduct(product)
+        setLoading(false)
     }
+
     const onChange = e => {
         const files = Array.from(e.target.files)
         setImagesPreview([]);
@@ -133,6 +175,37 @@ const UpdateProduct = () => {
             reader.readAsDataURL(file)
         })
     }
+
+    useEffect(() => {
+        getSingleProduct()
+    }, [])
+
+    // useEffect(() => {
+    //     if (product && product._id !== id) {
+    //         getSingleProduct(id)
+    //     } else {
+    //         setName(product.name);
+    //         setPrice(product.price);
+    //         setDescription(product.description);
+    //         setCategory(product.type);
+    //         setBrand(product.brand);
+    //         setStock(product.stock);
+    //         setColor(product.colorway);
+    //     }
+    //     if (error) {
+    //         errMsg(error)
+
+    //     }
+    //     if (updateError) {
+    //         errMsg(updateError);
+
+    //     }
+    //     if (isUpdated) {
+    //         navigate('/admin/products');
+    //         successMsg('Product updated successfully');
+
+    //     }
+    // }, [error, isUpdated, updateError, product, id])
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -163,18 +236,20 @@ const UpdateProduct = () => {
                                         alignItems: 'center',
                                     }}
                                 >
-                                    <Box component="form" onSubmit={submitHandler} noValidate sx={{ mt: 3 }}>
+                                    <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ mt: 3 }}>
                                         <Grid container spacing={2}>
                                             <Grid item xs={12}>
                                                 <InputLabel>Shoe Name</InputLabel>
                                                 <TextField
-                                                    name="Product Name"
+                                                    name="name"
                                                     required
                                                     fullWidth
-                                                    id="productName"
+                                                    id="name"
                                                     autoFocus
-                                                    value={name}
-                                                    onChange={(e) => setName(e.target.value)}
+                                                    value={formik.values.name}
+                                                    onChange={formik.handleChange}
+                                                    error={formik.touched.name && Boolean(formik.errors.name)}
+                                                    helperText={formik.touched.name && formik.errors.name}
                                                 />
                                             </Grid>
                                             <Grid item xs={12} sm={6}>
@@ -182,10 +257,12 @@ const UpdateProduct = () => {
                                                 <TextField
                                                     required
                                                     fullWidth
-                                                    id="Price"
-                                                    name="Price"
-                                                    value={price}
-                                                    onChange={(e) => setPrice(e.target.value)}
+                                                    id="price"
+                                                    name="price"
+                                                    value={formik.values.price}
+                                                    onChange={formik.handleChange}
+                                                    error={formik.touched.price && Boolean(formik.errors.price)}
+                                                    helperText={formik.touched.price && formik.errors.price}
                                                 />
                                             </Grid>
                                             <Grid item xs={12} sm={6}>
@@ -196,8 +273,10 @@ const UpdateProduct = () => {
                                                     name="type"
                                                     id="type"
                                                     select
-                                                    value={category}
-                                                    onChange={(e) => setCategory(e.target.value)}
+                                                    value={formik.values.type}
+                                                    onChange={formik.handleChange}
+                                                    error={formik.touched.type && Boolean(formik.errors.type)}
+                                                    helperText={formik.touched.type && formik.errors.type}
                                                 >
                                                     {categories.map(category => (
                                                         <MenuItem key={category} value={category} >{category}</MenuItem >
@@ -209,9 +288,11 @@ const UpdateProduct = () => {
                                                 <TextField
                                                     required
                                                     fullWidth
-                                                    id="type"
-                                                    value={seller}
-                                                    onChange={(e) => setSeller(e.target.value)}
+                                                    id="brand"
+                                                    value={formik.values.brand}
+                                                    onChange={formik.handleChange}
+                                                    error={formik.touched.brand && Boolean(formik.errors.brand)}
+                                                    helperText={formik.touched.brand && formik.errors.brand}
                                                 />
                                             </Grid>
                                             <Grid item xs={12}>
@@ -223,7 +304,10 @@ const UpdateProduct = () => {
                                                     name="description"
                                                     multiline
                                                     rows={8}
-                                                    value={description} onChange={(e) => setDescription(e.target.value)}
+                                                    value={formik.values.description}
+                                                    onChange={formik.handleChange}
+                                                    error={formik.touched.description && Boolean(formik.errors.description)}
+                                                    helperText={formik.touched.description && formik.errors.description}
                                                 />
                                             </Grid>
                                             <Grid item xs={4}>
@@ -233,8 +317,10 @@ const UpdateProduct = () => {
                                                     fullWidth
                                                     type='number'
                                                     id="stock"
-                                                    value={stock}
-                                                    onChange={(e) => setStock(e.target.value)}
+                                                    value={formik.values.stock}
+                                                    onChange={formik.handleChange}
+                                                    error={formik.touched.stock && Boolean(formik.errors.stock)}
+                                                    helperText={formik.touched.stock && formik.errors.stock}
                                                 />
                                             </Grid>
                                             <Grid item xs={8}>
@@ -243,8 +329,10 @@ const UpdateProduct = () => {
                                                     required
                                                     fullWidth
                                                     id="colorway"
-                                                    value={colorway}
-                                                    onChange={(e) => setColor(e.target.value)}
+                                                    value={formik.values.colorway}
+                                                    onChange={formik.handleChange}
+                                                    error={formik.touched.colorway && Boolean(formik.errors.colorway)}
+                                                    helperText={formik.touched.colorway && formik.errors.colorway}
                                                 />
                                             </Grid>
                                             <Grid item xs={12}>
@@ -257,8 +345,13 @@ const UpdateProduct = () => {
                                                         multiple: true
                                                     }}
                                                     id='customFile'
-                                                    onChange={onChange}
-                                                    multiple
+                                                    accept="images/*"
+                                                    onChange={(e) => {
+                                                        formik.handleChange(e)
+                                                        onChange(e)
+                                                    }}
+                                                    error={formik.touched.images && Boolean(formik.errors.images)}
+                                                    helperText={formik.touched.images && formik.errors.images}
                                                 />
                                             </Grid>
                                             <Grid item xs={12}>
