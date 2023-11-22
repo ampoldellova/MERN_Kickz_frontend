@@ -7,6 +7,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import PeopleIcon from '@mui/icons-material/People';
+import BrandingWatermarkIcon from '@mui/icons-material/BrandingWatermark';
 import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
@@ -41,6 +42,12 @@ const Sidebar = () => {
                     <InventoryIcon />
                 </ListItemIcon>
                 <ListItemText primary="Supplier" />
+            </ListItemButton>
+            <ListItemButton component={Link} to="/admin/brands">
+                <ListItemIcon>
+                    <BrandingWatermarkIcon />
+                </ListItemIcon>
+                <ListItemText primary="Brands" />
             </ListItemButton>
         </React.Fragment>
     );

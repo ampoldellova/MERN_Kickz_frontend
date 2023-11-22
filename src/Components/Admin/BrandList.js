@@ -15,15 +15,15 @@ import axios from 'axios';
 
 const defaultTheme = createTheme();
 
-const SupplierList = () => {
+const BrandList = () => {
     const [loading, setLoading] = useState(true)
-    const [suppliers, setSupplier] = useState([])
+    const [brands, setbrand] = useState([])
     const [error, setError] = useState('')
     const [deleteError, setDeleteError] = useState('')
     const [isDeleted, setIsDeleted] = useState(false)
 
     let navigate = useNavigate()
-    const getAdminSupplier = async () => {
+    const getAdminbrand = async () => {
         try {
 
             const config = {
@@ -33,10 +33,10 @@ const SupplierList = () => {
                 }
             }
 
-            const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/suppliers`, config)
+            const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/brands`, config)
             console.log(data)
             setLoading(false)
-            setSupplier(data.supplier)
+            setbrand(data.brand)
         } catch (error) {
 
             setError(error.response.data.message)
@@ -45,7 +45,7 @@ const SupplierList = () => {
     }
 
     useEffect(() => {
-        getAdminSupplier()
+        getAdminbrand()
 
         if (error) {
             toast.error(error, {
@@ -60,16 +60,16 @@ const SupplierList = () => {
         }
 
         if (isDeleted) {
-            toast.success('Supplier deleted successfully', {
+            toast.success('brand deleted successfully', {
                 position: toast.POSITION.BOTTOM_RIGHT
             })
-            navigate('/admin/suppliers');
+            navigate('/admin/brands');
 
         }
 
     }, [error, deleteError, isDeleted,])
 
-    const deleteSupplier = async (id) => {
+    const deletebrand = async (id) => {
         try {
             const config = {
                 headers: {
@@ -77,7 +77,7 @@ const SupplierList = () => {
                     'Authorization': `Bearer ${getToken()}`
                 }
             }
-            const { data } = await axios.delete(`${process.env.REACT_APP_API}/api/v1/admin/supplier/${id}`, config)
+            const { data } = await axios.delete(`${process.env.REACT_APP_API}/api/v1/admin/brand/${id}`, config)
 
             setIsDeleted(data.success)
         } catch (error) {
@@ -86,18 +86,18 @@ const SupplierList = () => {
         }
     }
 
-    const supplierList = () => {
+    const brandList = () => {
         const data = {
             columns: [
                 {
-                    headerName: 'Supplier ID',
+                    headerName: 'Brand ID',
                     field: 'id',
                     width: 300,
                     sort: 'asc'
                 },
 
                 {
-                    headerName: 'Supplier Name',
+                    headerName: 'Brand Name',
                     field: 'name',
                     width: 300,
                     sort: 'asc'
@@ -108,7 +108,7 @@ const SupplierList = () => {
                     width: 300,
                     renderCell: ({ value }) => (
                         <Fragment>
-                            <Link to={`/admin/supplier/${value}`}>
+                            <Link to={`/admin/brand/${value}`}>
                                 <Button
                                     variant='contained'
                                     sx={{
@@ -124,7 +124,7 @@ const SupplierList = () => {
                                     backgroundColor: 'red',
                                     marginLeft: 1
                                 }}
-                                onClick={() => deleteSupplierHandler(value)}
+                                onClick={() => deletebrandHandler(value)}
                             >
                                 <DeleteIcon />
                             </Button>
@@ -135,23 +135,23 @@ const SupplierList = () => {
             rows: []
         }
 
-        suppliers.forEach(supplier => {
+        brands.forEach(brand => {
             data.rows.push({
-                id: supplier._id,
-                name: supplier.name,
-                actions: supplier._id
+                id: brand._id,
+                name: brand.name,
+                actions: brand._id
             })
         })
         return data;
     }
 
-    const deleteSupplierHandler = (id) => {
-        deleteSupplier(id)
+    const deletebrandHandler = (id) => {
+        deletebrand(id)
     }
 
     return (
         <ThemeProvider theme={defaultTheme}>
-            <MetaData title={'Supplier List'} />
+            <MetaData title={'brand List'} />
             <Box sx={{ display: 'flex' }}>
                 <Navigation />
                 <Box
@@ -168,12 +168,12 @@ const SupplierList = () => {
                 >
                     {loading ? <Loader /> : (
                         <div style={{ height: 'auto', width: '100%', marginTop: 68 }}>
-                            <Link to="/admin/supply" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                <Button variant='contained' startIcon={<AddCircleIcon />}>Add Supplier</Button>
+                            <Link to="/admin/brand" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <Button variant='contained' startIcon={<AddCircleIcon />}>Add brand</Button>
                             </Link>
                             <DataGrid
-                                rows={supplierList().rows}
-                                columns={supplierList().columns}
+                                rows={brandList().rows}
+                                columns={brandList().columns}
                                 initialState={{
                                     pagination: {
                                         paginationModel: { page: 0, pageSize: 10 },
@@ -189,4 +189,4 @@ const SupplierList = () => {
     );
 };
 
-export default SupplierList;
+export default BrandList;

@@ -27,10 +27,12 @@ import SupplierList from './Components/Admin/SupplierList';
 import UsersList from './Components/Admin/UsersList';
 import UpdateUser from './Components/Admin/UpdateUser';
 import NewSupplier from './Components/Admin/NewSupplier';
+import NewBrand from './Components/Admin/NewBrand';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import ProductList from './Components/Admin/ProductList';
 import UpdateSupplier from './Components/Admin/UpdateSupplier';
+import BrandList from './Components/Admin/BrandList';
 
 function App() {
   const [state, setState] = useState({
@@ -120,13 +122,20 @@ function App() {
 
           <Route path="/dashboard" element={<ProtectedRoute isAdmin={true}><Dashboard /></ProtectedRoute>} />
           <Route path="/admin/products" element={<ProtectedRoute isAdmin={true}><ProductList /></ProtectedRoute>} />
+          
           <Route path="/admin/product" element={<NewProduct />} />
           <Route path="/admin/product/:id" element={<UpdateProduct />} />
+
           <Route path="/admin/orders" element={<OrdersList />} />
           <Route path="/admin/order/:id" element={<UpdateOrderStatus />} />
+
           <Route path="/admin/suppliers" element={<SupplierList />} />
           <Route path="/admin/supply" element={<NewSupplier />} />
           <Route path="/admin/supplier/:id" element={<UpdateSupplier />} />
+
+          <Route path="/admin/brands" element={<BrandList/>} />
+          <Route path="/admin/brand" element={<NewBrand />} />
+
           <Route path="/admin/users" element={<UsersList />} />
           <Route path="/admin/user/:id" element={<UpdateUser />} />
         </Routes>
