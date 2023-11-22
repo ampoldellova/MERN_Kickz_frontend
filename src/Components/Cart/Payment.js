@@ -7,6 +7,14 @@ import CheckoutSteps from './CheckoutSteps';
 import MetaData from '../Layout/Metadata';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
+const validationSchema = Yup.object({
+    cardNumber: Yup.number().typeError('Invalid Card Number').required('Card Number is required'),
+    cardExpiry: Yup.number().typeError('Invalid Card Expiry').required('Card Expiry is required'),
+    cardCVC: Yup.number().typeError('Invalid Card CVC').required('Card CVC is required'),
+});
 
 const Payment = ({ cartItems, shippingInfo }) => {
 
@@ -16,6 +24,40 @@ const Payment = ({ cartItems, shippingInfo }) => {
         orderItems: cartItems,
         shippingInfo
     }
+
+    const formik = useFormik({
+        initialValues: {
+            cardNumber: '',
+            cardExpiry: '',
+            cardCVC: '',
+        },
+        validationSchema: validationSchema,
+        onSubmit: async (values, { setSubmitting }) => {
+            try {
+                // Disable the submit button to prevent multiple submissions
+                setSubmitting(true);
+
+                // Your existing logic to set payment informa`tion
+                const paymentInfo = {
+                    id: 'pi_1DpdYh2eZvKYlo2CYIynhU32',
+                    status: 'succeeded',
+                };
+                order.paymentInfo = paymentInfo;
+
+                // Create the order
+                await createOrder(order);
+
+                // Navigate to the success page
+                navigate('/success');
+            } catch (error) {
+                // Handle any errors, if necessary
+                console.error(error);
+            } finally {
+                // Enable the submit button after the operation is complete
+                setSubmitting(false);
+            }
+        },
+    });
 
     const orderInfo = JSON.parse(sessionStorage.getItem('orderInfo'));
     if (orderInfo) {
@@ -67,7 +109,7 @@ const Payment = ({ cartItems, shippingInfo }) => {
             <MetaData title={'Payment'} />
             <CheckoutSteps shipping confirmOrder payment />
             <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-                <Box component="form" onSubmit={submitHandler}>
+                <Box component="form" onSubmit={formik.handleSubmit}>
                     <Card variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 }, border: '1px solid' }}>
                         <Typography component="h1" variant="h4" align="center" >
                             Checkout
@@ -78,29 +120,44 @@ const Payment = ({ cartItems, shippingInfo }) => {
                         <Grid container spacing={3}>
                             <Grid item xs={12} md={6}>
                                 <TextField
-                                    required
                                     id="card_num_field"
+                                    name="cardNumber"
                                     label="Card Number"
                                     fullWidth
                                     variant="standard"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.cardNumber}
+                                    error={formik.touched.cardNumber && Boolean(formik.errors.cardNumber)}
+                                    helperText={formik.touched.cardNumber && formik.errors.cardNumber}
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
                                 <TextField
-                                    required
                                     id="card_exp_field"
+                                    name="cardExpiry"
                                     label="Card Expiry"
                                     fullWidth
                                     variant="standard"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.cardExpiry}
+                                    error={formik.touched.cardExpiry && Boolean(formik.errors.cardExpiry)}
+                                    helperText={formik.touched.cardExpiry && formik.errors.cardExpiry}
                                 />
                             </Grid>
-                            <Grid item xs={12} md={6} xl={12} lg={12}>
+                            <Grid item xs={12} md={12} xl={12} lg={12}>
                                 <TextField
-                                    required
                                     id="card_cvc_field"
+                                    name="cardCVC"
                                     label="Card CVC"
                                     fullWidth
                                     variant="standard"
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={formik.values.cardCVC}
+                                    error={formik.touched.cardCVC && Boolean(formik.errors.cardCVC)}
+                                    helperText={formik.touched.cardCVC && formik.errors.cardCVC}
                                 />
                             </Grid>
                         </Grid>
