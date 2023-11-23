@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Typography, Pagination, Container, Grid, List, Card, CardContent} from '@mui/material';
+import { Typography, Pagination, Container, Grid, List, Card, CardContent } from '@mui/material';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import MetaData from './Layout/Metadata';
 import Product from './Product/Product';
 import Loader from './Layout/Loader';
@@ -36,9 +37,9 @@ const Home = () => {
             link = `http://localhost:4002/api/v1/products?keyword=${keyword}&page=${currentPage}&price[lte]=${price[1]}&price[gte]=${price[0]}&type=${category}`
         }
 
-        let res = await axios.get(link)
+        const res = await axios.get(link)
         console.log(res)
-        setProducts(res.data.products)
+        setProducts((prevProducts) => [...prevProducts, ...res.data.products]);
         setResPerPage(res.data.resPerPage)
         setProductsCount(res.data.productsCount)
         setFilteredProductsCount(res.data.filteredProductsCount)
@@ -50,14 +51,21 @@ const Home = () => {
     if (keyword) {
         count = filteredProductsCount
     }
-
-    function setCurrentPageNo(pageNumber) {
-        setCurrentPage(pageNumber)
-    }
+    const fetchMoreData = () => {
+        setCurrentPage((prevPage) => prevPage + 1);
+    };
 
     useEffect(() => {
-        getProducts(currentPage, keyword, price, category)
-    }, [currentPage, keyword, price, category])
+        getProducts(currentPage, keyword, price, category);
+    }, [currentPage, keyword, price, category]);
+
+    // function setCurrentPageNo(pageNumber) {
+    //     setCurrentPage(pageNumber)
+    // }
+
+    // useEffect(() => {
+    //     getProducts(currentPage, keyword, price, category)
+    // }, [currentPage, keyword, price, category])
 
     return (
         <Fragment>
@@ -132,7 +140,7 @@ const Home = () => {
                         </Fragment>
                     ) : (
                         <Fragment>
-                            <Carousel data-bs-theme="light" style={{ marginTop: -1 }}  fade>
+                            <Carousel data-bs-theme="light" style={{ marginTop: -1 }} fade>
                                 <Carousel.Item>
                                     <img
                                         className="d-block w-100"
@@ -195,15 +203,23 @@ const Home = () => {
                     {/* </div> */}
                     {resPerPage <= count && (
                         <div className="d-flex justify-content-center mt-5">
-                            <Pagination
-                                count={Math.ceil(productsCount / resPerPage)}
-                                page={currentPage}
-                                onChange={(event, page) => setCurrentPageNo(page)}
-                                boundaryCount={2}
-                                variant="outlined"
-                                shape="rounded"
-                                style={{ marginBottom: 50 }}
-                            />
+                            <InfiniteScroll
+                                dataLength={products.length}
+                                next={fetchMoreData}
+                                hasMore={currentPage * resPerPage < productsCount}
+                                loader={<h4>Loading...</h4>}
+                                endMessage={
+                                    <p style={{ textAlign: 'center' }}>
+                                        <b>No more products</b>
+                                    </p>
+                                }
+                            >
+                                <div className="container-fluid" style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+                                    {products.map((product) => (
+                                        <Product key={product._id} product={product} col={4} />
+                                    ))}
+                                </div>
+                            </InfiniteScroll>
                         </div>)}
                 </Fragment>
             )

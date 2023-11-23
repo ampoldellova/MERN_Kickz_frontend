@@ -46,7 +46,7 @@ const Dashboard = () => {
                                 </Paper>
                             </Grid>
                             <Grid item xs={12} md={4} lg={6}>
-                                <Typography variant='h5'>Product Sales Chart</Typography>
+                                <Typography variant='h5'>Top 5 Best Selling Shoes</Typography>
                                 <Paper
                                     sx={{
                                         p: 2,
