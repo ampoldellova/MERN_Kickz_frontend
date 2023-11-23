@@ -34,26 +34,19 @@ const Payment = ({ cartItems, shippingInfo }) => {
         validationSchema: validationSchema,
         onSubmit: async (values, { setSubmitting }) => {
             try {
-                // Disable the submit button to prevent multiple submissions
                 setSubmitting(true);
 
-                // Your existing logic to set payment informa`tion
                 const paymentInfo = {
                     id: 'pi_1DpdYh2eZvKYlo2CYIynhU32',
                     status: 'succeeded',
                 };
                 order.paymentInfo = paymentInfo;
 
-                // Create the order
                 await createOrder(order);
-
-                // Navigate to the success page
                 navigate('/success');
             } catch (error) {
-                // Handle any errors, if necessary
                 console.error(error);
             } finally {
-                // Enable the submit button after the operation is complete
                 setSubmitting(false);
             }
         },
