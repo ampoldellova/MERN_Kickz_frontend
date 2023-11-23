@@ -1,8 +1,11 @@
 import React, { Fragment, useState } from 'react';
-import { createTheme, ThemeProvider, Box } from '@mui/material';
+import { createTheme, ThemeProvider, Box, Container, Grid, Paper, Typography } from '@mui/material';
 import MetaData from '../Layout/Metadata';
 import Navigation from './Navigation';
 import Loader from '../Layout/Loader';
+import ProductSalesChart from './Charts/ProductSalesChart';
+import MonthlySalesChart from './Charts/MonthlySalesChart';
+import UserSalesChart from './Charts/UserSalesChart';
 
 const defaultTheme = createTheme();
 
@@ -24,13 +27,46 @@ const Dashboard = () => {
                         flexGrow: 1,
                         height: '100vh',
                         overflow: 'auto',
+                        marginTop: 10
                     }}
                 >
-                    {/* {loading ? <Loader /> : (
-                        <Fragment>
-                            
-                        </Fragment>
-                    )} */}
+                    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+                        <Grid container spacing={3}>
+                            <Grid item xs={12} md={8} lg={6}>
+                                <Typography variant='h5'>User Sales Chart</Typography>
+                                <Paper
+                                    sx={{
+                                        p: 2,
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        height: 240,
+                                    }}
+                                >
+                                    <UserSalesChart />
+                                </Paper>
+                            </Grid>
+                            <Grid item xs={12} md={4} lg={6}>
+                                <Typography variant='h5'>Product Sales Chart</Typography>
+                                <Paper
+                                    sx={{
+                                        p: 2,
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        height: 240,
+                                    }}
+                                >
+                                    <ProductSalesChart />
+                                </Paper>
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <Typography variant='h5'>Monthly Sales Chart</Typography>
+                                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', height: 340 }}>
+                                    <MonthlySalesChart />
+                                </Paper>
+                            </Grid>
+                        </Grid>
+                    </Container>
                 </Box>
             </Box>
         </ThemeProvider>
