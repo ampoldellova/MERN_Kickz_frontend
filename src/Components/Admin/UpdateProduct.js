@@ -122,7 +122,7 @@ const UpdateProduct = () => {
         formik.setFieldValue('type', product.type);
         formik.setFieldValue('stock', product.stock);
         formik.setFieldValue('colorway', product.colorway);
-        formik.setFieldValue('brand', product.brand);
+        formik.setFieldValue('brand', product.brand._id);
         formik.setFieldValue('size', product.size);
         setImagesPreview(product.images.flatMap(image => image.url));
         setProduct(product)
@@ -159,6 +159,8 @@ const UpdateProduct = () => {
                 console.error('Failed to fetch brands:', error);
             });
     }, [])
+
+    console.log(formik.values)
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -245,7 +247,9 @@ const UpdateProduct = () => {
                                                     name="brand"
                                                     select
                                                     value={formik.values.brand}
-                                                    onChange={formik.handleChange}
+                                                    onChange={(e, value) => {
+                                                        formik.setFieldValue('brand', e.target.value)
+                                                    }}
                                                     error={formik.touched.brand && Boolean(formik.errors.brand)}
                                                     helperText={formik.touched.brand && formik.errors.brand}
 
@@ -296,6 +300,7 @@ const UpdateProduct = () => {
                                                 />
                                             </Grid>
                                             <Grid item xs={8}>
+                                                <InputLabel>Upload Shoe Image(s)</InputLabel>
                                                 <TextField
                                                     type='file'
                                                     name='images'
@@ -312,13 +317,12 @@ const UpdateProduct = () => {
                                                     error={formik.touched.images && Boolean(formik.errors.images)}
                                                     helperText={formik.touched.images && formik.errors.images}
                                                 />
-                                                <InputLabel>Upload Shoe Image(s)</InputLabel>
                                             </Grid>
                                             <Grid item xs={4}>
+                                                <InputLabel>Size</InputLabel>
                                                 <TextField
                                                     required
                                                     fullWidth
-                                                    label="Size"
                                                     id="size"
                                                     name="size"
                                                     value={formik.values.size}
@@ -329,10 +333,10 @@ const UpdateProduct = () => {
                                             </Grid>
                                             <Grid item xs={12}>
                                                 {oldImages && oldImages.map(img => (
-                                                    <img key={img} src={img.url} alt={img.url} className="mt-3 mr-2" width="75" height="75" />
+                                                    <img key={img} src={img.url} alt={img.url} className="mt-3 mr-2" width="100" height="100" />
                                                 ))}
                                                 {imagesPreview.map(img => (
-                                                    <img src={img} key={img} alt="Images Preview" className="mt-3 mr-2" width="75" height="75" />
+                                                    <img src={img} key={img} alt="Images Preview" className="mt-3 mr-2" width="100" height="100" />
                                                 ))}
                                             </Grid>
                                         </Grid>

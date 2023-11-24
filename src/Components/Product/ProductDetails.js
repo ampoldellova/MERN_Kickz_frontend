@@ -78,7 +78,7 @@ const ProductDetails = ({ addItemToCart, cartItems }) => {
         <Fragment>
             <Metadata title={product.name} />
             {loading ? <Loader /> : (
-                <Container className="py-5" style={{ height: '100vh', justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
+                <Container className="py-5" style={{ height: '100vh', justifyContent: 'center', alignItems: 'center', display: 'flex', marginTop: 30 }}>
                     <div className="container px-4 px-lg-5 my-5">
                         <div className="row gx-4 gx-lg-5 align-items-center">
                             <div className="col-md-6">

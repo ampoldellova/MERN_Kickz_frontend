@@ -5,18 +5,13 @@ import CheckoutSteps from './CheckoutSteps';
 import MetaData from '../Layout/Metadata';
 import { Link, useNavigate } from 'react-router-dom'
 import { getUser } from '../../utils/helpers'
-const payments = [
-    { name: 'Card type', detail: 'Visa' },
-    { name: 'Card holder', detail: 'Mr John Smith' },
-    { name: 'Card number', detail: 'xxxx-xxxx-xxxx-1234' },
-    { name: 'Expiry date', detail: '04/2024' },
-];
+
 const ConfirmOrder = ({ cartItems, shippingInfo }) => {
 
     const [user, setUser] = useState(getUser() ? getUser() : {})
     let navigate = useNavigate();
     const itemsPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
-    const shippingPrice = itemsPrice > 200 ? 0 : 25
+    const shippingPrice = itemsPrice > 10000 ? 0 : 125.50
     const taxPrice = Number((0.05 * itemsPrice).toFixed(2))
     const totalPrice = (itemsPrice + shippingPrice + taxPrice).toFixed(2)
 
