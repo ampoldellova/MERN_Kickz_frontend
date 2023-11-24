@@ -27,12 +27,11 @@ const Dashboard = () => {
                         flexGrow: 1,
                         height: '100vh',
                         overflow: 'auto',
-                        marginTop: 10
                     }}
                 >
-                    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+                    <Container maxWidth="lg" sx={{ mt: 4, mb: 4, marginTop: 15 }}>
                         <Grid container spacing={3}>
-                            <Grid item xs={12} md={8} lg={6}>
+                            <Grid item xs={12} md={12} lg={4}>
                                 <Typography variant='h5'>User Sales Chart</Typography>
                                 <Paper
                                     sx={{
@@ -45,7 +44,7 @@ const Dashboard = () => {
                                     <UserSalesChart />
                                 </Paper>
                             </Grid>
-                            <Grid item xs={12} md={4} lg={6}>
+                            <Grid item xs={12} md={12} lg={8}>
                                 <Typography variant='h5'>Top 5 Best Selling Shoes</Typography>
                                 <Paper
                                     sx={{

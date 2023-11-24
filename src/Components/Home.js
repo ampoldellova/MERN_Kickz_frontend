@@ -37,7 +37,7 @@ const Home = () => {
         }
 
         let res = await axios.get(link)
-        console.log(res)
+
         setProducts(res.data.products)
         setResPerPage(res.data.resPerPage)
         setProductsCount(res.data.productsCount)
@@ -110,7 +110,6 @@ const Home = () => {
                                                                 key={category}
                                                                 onClick={() => {
                                                                     setCategory(category)
-                                                                    console.log(category)
                                                                 }}
                                                             >
                                                                 {category}

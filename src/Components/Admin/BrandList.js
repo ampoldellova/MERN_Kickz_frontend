@@ -151,7 +151,7 @@ const BrandList = () => {
 
     return (
         <ThemeProvider theme={defaultTheme}>
-            <MetaData title={'brand List'} />
+            <MetaData title={'Brand List'} />
             <Box sx={{ display: 'flex' }}>
                 <Navigation />
                 <Box

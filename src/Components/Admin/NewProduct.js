@@ -25,6 +25,7 @@ const validationSchema = Yup.object({
 const defaultTheme = createTheme();
 
 const NewProduct = () => {
+    const [brands, setBrands] = useState([]);
     const [images, setImages] = useState([]);
     const [imagesPreview, setImagesPreview] = useState([])
     const [error, setError] = useState('')
@@ -109,6 +110,16 @@ const NewProduct = () => {
         }
     }
     useEffect(() => {
+
+        axios
+            .get(`${process.env.REACT_APP_API}/api/v1/admin/brands`)
+            .then((response) => {
+                console.log('Brands data:', response.data);
+                setBrands(response.data.brands);
+            })
+            .catch((error) => {
+                console.error('Failed to fetch brands:', error);
+            });
 
         if (error) {
             toast.error(error, {
@@ -208,12 +219,17 @@ const NewProduct = () => {
                                             label="Shoe Brand"
                                             id="brand"
                                             name="brand"
+                                            select
                                             value={formik.values.brand}
                                             onChange={formik.handleChange}
                                             error={formik.touched.brand && Boolean(formik.errors.brand)}
                                             helperText={formik.touched.brand && formik.errors.brand}
 
-                                        />
+                                        >
+                                            {brands.map(brand => (
+                                                <MenuItem key={brand} value={brand} >{brand}</MenuItem >
+                                            ))}
+                                        </TextField>
                                     </Grid>
                                     <Grid item xs={12}>
                                         <TextField

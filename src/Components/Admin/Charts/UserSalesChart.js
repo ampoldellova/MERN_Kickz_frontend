@@ -1,22 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import {
-    BarChart,
-    Bar,
-    XAxis,
-    YAxis,
-    CartesianGrid,
+    PieChart,
+    Pie,
     Tooltip,
-    Legend,
     ResponsiveContainer,
     Cell,
-} from "recharts";
+} from 'recharts';
 import { getToken } from '../../../utils/helpers';
-import axios from "axios";
+import axios from 'axios';
 
-const UserSalesChart = ({ data }) => {
-    const [sales, setSales] = useState('')
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState('')
+const UserSalesChart = () => {
+    const [sales, setSales] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
     const userSales = async () => {
         try {
             const config = {
@@ -24,44 +21,42 @@ const UserSalesChart = ({ data }) => {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${getToken()}`
                 }
-            }
+            };
 
-            const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/customer-sales`, config)
-            setSales(data.customerSales)
-            setLoading(false)
+            const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/customer-sales`, config);
+            setSales(data.customerSales);
+            setLoading(false);
         } catch (error) {
-            setError(error.response.data.message)
+            setError(error.response.data.message);
         }
-    }
-    const barColors = ["#1f77b4", "#ff7f0e", "#2ca02c"]
-    useEffect(() => {
-        userSales()
-        // allUsers()
-    }, [])
+    };
 
+    const pieColors = ["#1f77b4", "#ff7f0e", "#2ca02c"];
+
+    useEffect(() => {
+        userSales();
+    }, []);
+    console.log(sales)
     return (
         <ResponsiveContainer>
-            <BarChart
-                data={sales}
-            >
-                <CartesianGrid strokeDasharray="2 2" />
-                <XAxis dataKey="userDetails.name" />
-                <YAxis />
-                <Tooltip />
-                {/* <Legend /> */}
-
-                <Bar dataKey="total" stroke="#000000"
-                    strokeWidth={1} >
+            <PieChart>
+                <Tooltip formatter={(value, _id, props) => [`₱ ${value}`, _id]} />
+                <Pie
+                    data={sales}
+                    dataKey="total"
+                    nameKey="_id"
+                    outerRadius={100}
+                    fill="#8884d8"
+                >
                     {
                         sales && sales.map((item, index) => (
-                            <Cell key={`cell-${index}`} fill={barColors[index % 20]} />
+                            <Cell key={`cell-${index}`} fill={pieColors[index % pieColors.length]} />
                         ))
                     }
-                </Bar>
-            </BarChart>
+                </Pie>
+            </PieChart>
         </ResponsiveContainer>
-
-
     );
-}
-export default UserSalesChart
+};
+
+export default UserSalesChart;

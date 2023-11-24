@@ -1,14 +1,22 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import { getToken } from '../../../utils/helpers';
-import axios from "axios";
-
-import { PieChart, Pie, Legend, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import axios from 'axios';
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    Tooltip,
+    Legend,
+    ResponsiveContainer,
+    Cell,
+} from 'recharts';
 
 export default function ProductSalesChart({ data }) {
-    const [sales, setSales] = useState([])
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState('')
-    const pieColors = [
+    const [sales, setSales] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+    const barColors = [
         "#242424",
         "#FFB511",
         "#007FAE",
@@ -24,21 +32,8 @@ export default function ProductSalesChart({ data }) {
         "#4D80CC",
         "#FF4D4D",
         "#99E6E6"
-    ]
-    // console.log(data)
+    ];
 
-    const RADIAN = Math.PI / 180;
-    const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
-        const radius = innerRadius + (outerRadius - innerRadius) * 0.4;
-        const x = cx + radius * Math.cos(-midAngle * RADIAN);
-        const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-        return (
-            <text x={x} y={y} fill="white" fontSize={15} textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-                {`${percent}%`}
-            </text>
-        );
-    };
     const productSales = async () => {
         try {
             const config = {
@@ -46,46 +41,33 @@ export default function ProductSalesChart({ data }) {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${getToken()}`
                 }
-            }
+            };
 
-            const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/product-sales`, config)
-            setSales(data.totalPercentage)
-
+            const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/product-sales`, config);
+            setSales(data.totalPercentage);
         } catch (error) {
-            setError(error.response.data.message)
-
+            setError(error.response.data.message);
+        } finally {
+            setLoading(false);
         }
-    }
-    useEffect(() => {
-        productSales()
-    }, [])
+    };
 
+    useEffect(() => {
+        productSales();
+    }, []);
 
     return (
         <ResponsiveContainer>
-            <PieChart width={100} height={100}>
-                <Pie
-                    dataKey="percent"
-                    nameKey="name"
-                    isAnimationActive={true}
-                    data={sales}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={100}
-                    fill="#8884d8"
-                    label={renderCustomizedLabel}
-                    labelLine={false}
-                // label
-                >
-                    {
-                        sales.map((entry, index) => <Cell key={`cell-${index}`} fill={pieColors[index % pieColors.length]} />)
-                    }
-                </Pie>
+            <BarChart width={500} height={300} data={sales}>
+                <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+                <YAxis tick={{ fontSize: 12 }}/>
                 <Tooltip />
-                <Legend layout="vertical" verticalAlign="top" align="right" />
-            </PieChart>
+                <Bar dataKey="percent" fill="#8884d8">
+                    {sales.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={barColors[index % barColors.length]} />
+                    ))}
+                </Bar>
+            </BarChart>
         </ResponsiveContainer>
-
-
     );
 }
