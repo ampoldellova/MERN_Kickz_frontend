@@ -20,18 +20,13 @@ const validationSchema = Yup.object({
     stock: Yup.number().required('Shoe stock is required'),
     colorway: Yup.string().required('Shoe color is required'),
     brand: Yup.string().required('Shoe brand is required'),
+    size: Yup.number().typeError('Invalid Shoe size').required('Shoe size is required'),
 });
 
 const defaultTheme = createTheme();
 
 const UpdateProduct = () => {
-    const [name, setName] = useState('');
-    const [price, setPrice] = useState(0);
-    const [description, setDescription] = useState('');
-    const [category, setCategory] = useState('');
-    const [stock, setStock] = useState(0);
-    const [colorway, setColor] = useState('');
-    const [brand, setBrand] = useState('');
+    const [brands, setBrands] = useState('');
     const [images, setImages] = useState([]);
     const [oldImages, setOldImages] = useState([]);
     const [imagesPreview, setImagesPreview] = useState([]);
@@ -58,6 +53,7 @@ const UpdateProduct = () => {
             stock: '',
             colorway: '',
             brand: '',
+            size: ''
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
@@ -69,6 +65,7 @@ const UpdateProduct = () => {
             formData.set('stock', values.stock);
             formData.set('colorway', values.colorway);
             formData.set('brand', values.brand);
+            formData.set('size', values.size);
 
             images.forEach(image => {
                 formData.append('images', image)
@@ -87,18 +84,6 @@ const UpdateProduct = () => {
     const successMsg = (message = '') => toast.success(message, {
         position: toast.POSITION.BOTTOM_CENTER
     });
-
-    // const getProductDetails = async (id) => {
-    //     try {
-    //         const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/product/${id}`)
-    //         setProduct(data.product)
-    //         setLoading(false)
-
-    //     } catch (error) {
-    //         setError(error.response.data.message)
-
-    //     }
-    // }
 
     const updateProduct = async (id, productData) => {
         try {
@@ -120,22 +105,6 @@ const UpdateProduct = () => {
         }
     }
 
-    // const submitHandler = (e) => {
-    //     e.preventDefault();
-    //     const formData = new FormData();
-    //     formData.set('name', name);
-    //     formData.set('price', price);
-    //     formData.set('description', description);
-    //     formData.set('category', category);
-    //     formData.set('stock', stock);
-    //     formData.set('colorway', colorway);
-    //     formData.set('brand', brand);
-    //     images.forEach(image => {
-    //         formData.append('images', image)
-    //     })
-    //     updateProduct(product._id, formData)
-    // }
-
     const getSingleProduct = async () => {
 
         const config = {
@@ -154,6 +123,7 @@ const UpdateProduct = () => {
         formik.setFieldValue('stock', product.stock);
         formik.setFieldValue('colorway', product.colorway);
         formik.setFieldValue('brand', product.brand);
+        formik.setFieldValue('size', product.size);
         setImagesPreview(product.images.flatMap(image => image.url));
         setProduct(product)
         setLoading(false)
@@ -178,34 +148,17 @@ const UpdateProduct = () => {
 
     useEffect(() => {
         getSingleProduct()
+
+        axios
+            .get(`${process.env.REACT_APP_API}/api/v1/admin/brands`)
+            .then((response) => {
+                console.log('Brands data:', response.data);
+                setBrands(response.data.brand);
+            })
+            .catch((error) => {
+                console.error('Failed to fetch brands:', error);
+            });
     }, [])
-
-    // useEffect(() => {
-    //     if (product && product._id !== id) {
-    //         getSingleProduct(id)
-    //     } else {
-    //         setName(product.name);
-    //         setPrice(product.price);
-    //         setDescription(product.description);
-    //         setCategory(product.type);
-    //         setBrand(product.brand);
-    //         setStock(product.stock);
-    //         setColor(product.colorway);
-    //     }
-    //     if (error) {
-    //         errMsg(error)
-
-    //     }
-    //     if (updateError) {
-    //         errMsg(updateError);
-
-    //     }
-    //     if (isUpdated) {
-    //         navigate('/admin/products');
-    //         successMsg('Product updated successfully');
-
-    //     }
-    // }, [error, isUpdated, updateError, product, id])
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -289,11 +242,18 @@ const UpdateProduct = () => {
                                                     required
                                                     fullWidth
                                                     id="brand"
+                                                    name="brand"
+                                                    select
                                                     value={formik.values.brand}
                                                     onChange={formik.handleChange}
                                                     error={formik.touched.brand && Boolean(formik.errors.brand)}
                                                     helperText={formik.touched.brand && formik.errors.brand}
-                                                />
+
+                                                >
+                                                    {brands && brands.map(brand => (
+                                                        <MenuItem key={brand._id} value={brand._id} >{brand.name}</MenuItem >
+                                                    ))}
+                                                </TextField>
                                             </Grid>
                                             <Grid item xs={12}>
                                                 <InputLabel>Shoe Description</InputLabel>
@@ -335,8 +295,7 @@ const UpdateProduct = () => {
                                                     helperText={formik.touched.colorway && formik.errors.colorway}
                                                 />
                                             </Grid>
-                                            <Grid item xs={12}>
-                                                <InputLabel>Upload Shoe Image(s)</InputLabel>
+                                            <Grid item xs={8}>
                                                 <TextField
                                                     type='file'
                                                     name='images'
@@ -352,6 +311,20 @@ const UpdateProduct = () => {
                                                     }}
                                                     error={formik.touched.images && Boolean(formik.errors.images)}
                                                     helperText={formik.touched.images && formik.errors.images}
+                                                />
+                                                <InputLabel>Upload Shoe Image(s)</InputLabel>
+                                            </Grid>
+                                            <Grid item xs={4}>
+                                                <TextField
+                                                    required
+                                                    fullWidth
+                                                    label="Size"
+                                                    id="size"
+                                                    name="size"
+                                                    value={formik.values.size}
+                                                    onChange={formik.handleChange}
+                                                    error={formik.touched.size && Boolean(formik.errors.size)}
+                                                    helperText={formik.touched.size && formik.errors.size}
                                                 />
                                             </Grid>
                                             <Grid item xs={12}>

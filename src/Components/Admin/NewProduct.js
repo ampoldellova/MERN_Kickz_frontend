@@ -20,6 +20,7 @@ const validationSchema = Yup.object({
     colorway: Yup.string().required('Shoe color is required'),
     brand: Yup.string().required('Shoe brand is required'),
     images: Yup.mixed().required('Shoe image(s) is required'),
+    size: Yup.number().typeError('Invalid Shoe size').required('Shoe size is required'),
 });
 
 const defaultTheme = createTheme();
@@ -49,7 +50,8 @@ const NewProduct = () => {
             stock: '',
             colorway: '',
             brand: '',
-            images: ''
+            images: '',
+            size: ''
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
@@ -61,6 +63,7 @@ const NewProduct = () => {
             formData.set('stock', values.stock);
             formData.set('colorway', values.colorway);
             formData.set('brand', values.brand);
+            formData.set('size', values.size);
 
             images.forEach(image => {
                 formData.append('images', image)
@@ -115,7 +118,7 @@ const NewProduct = () => {
             .get(`${process.env.REACT_APP_API}/api/v1/admin/brands`)
             .then((response) => {
                 console.log('Brands data:', response.data);
-                setBrands(response.data.brands);
+                setBrands(response.data.brand);
             })
             .catch((error) => {
                 console.error('Failed to fetch brands:', error);
@@ -226,8 +229,8 @@ const NewProduct = () => {
                                             helperText={formik.touched.brand && formik.errors.brand}
 
                                         >
-                                            {brands.map(brand => (
-                                                <MenuItem key={brand} value={brand} >{brand}</MenuItem >
+                                            {brands && brands.map(brand => (
+                                                <MenuItem key={brand._id} value={brand._id} >{brand.name}</MenuItem >
                                             ))}
                                         </TextField>
                                     </Grid>
@@ -273,8 +276,7 @@ const NewProduct = () => {
                                             helperText={formik.touched.colorway && formik.errors.colorway}
                                         />
                                     </Grid>
-                                    <Grid item xs={12}>
-                                        <InputLabel>Upload Shoe Image(s)</InputLabel>
+                                    <Grid item xs={8}>
                                         <TextField
                                             type='file'
                                             name='images'
@@ -291,6 +293,20 @@ const NewProduct = () => {
                                             error={formik.touched.images && Boolean(formik.errors.images)}
                                             helperText={formik.touched.images && formik.errors.images}
                                             multiple
+                                        />
+                                        <InputLabel>Upload Shoe Image(s)</InputLabel>
+                                    </Grid>
+                                    <Grid item xs={4}>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            label="Size"
+                                            id="size"
+                                            name="size"
+                                            value={formik.values.size}
+                                            onChange={formik.handleChange}
+                                            error={formik.touched.size && Boolean(formik.errors.size)}
+                                            helperText={formik.touched.size && formik.errors.size}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>

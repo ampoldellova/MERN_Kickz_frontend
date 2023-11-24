@@ -22,7 +22,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 const ProductDetails = ({ addItemToCart, cartItems }) => {
-
+    const [brands, setBrands] = useState('');
     const [loading, setLoading] = useState(true)
     const [product, setProduct] = useState({})
     const [error, setError] = useState('')
@@ -59,6 +59,16 @@ const ProductDetails = ({ addItemToCart, cartItems }) => {
     }
 
     useEffect(() => {
+        axios
+            .get(`${process.env.REACT_APP_API}/api/v1/admin/brands`)
+            .then((response) => {
+                console.log('Brands data:', response.data);
+                setBrands(response.data.brand);
+            })
+            .catch((error) => {
+                console.error('Failed to fetch brands:', error);
+            });
+
         productDetails(id)
     }, [id,]);
 
@@ -84,7 +94,7 @@ const ProductDetails = ({ addItemToCart, cartItems }) => {
                                 <Typography variant='h3' style={{ fontWeight: 1000, fontStyle: 'italic' }}>{product.name}</Typography>
                                 <Typography variant='subtitle1'>Colorway: {product.colorway}</Typography>
                                 <Typography variant='subtitle1'>Type: {product.type}</Typography>
-                                <Typography variant='subtitle1'>Made by: {product.brand}</Typography>
+                                <Typography variant='subtitle1'>Made by: {product.brand.name}</Typography>
                                 <Typography variant='subtitle1'>Size: {product.size}</Typography><hr />
                                 <Typography variant='subtitle2' style={{ textAlign: 'justify' }}>{product.description}</Typography>
                                 <div class="mt-2 mb-3">

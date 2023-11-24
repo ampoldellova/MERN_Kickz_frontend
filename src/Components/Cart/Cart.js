@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MDBCardBody, MDBCardImage, MDBCol, MDBContainer, MDBRow } from "mdb-react-ui-kit";
 import { useNavigate } from 'react-router-dom';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
@@ -8,9 +8,11 @@ import AddIcon from "@mui/icons-material/Add";
 import { Typography, ButtonGroup, IconButton, Card, CardContent, Button } from "@mui/material";
 import { Container } from "@mui/system";
 import MetaData from '../Layout/Metadata';
+import axios from "axios";
 
 const Cart = ({ addItemToCart, cartItems, removeItemFromCart }) => {
     const navigate = useNavigate()
+    const [brand, setBrands] = useState('');
 
     const increaseQty = (id, quantity, stock) => {
         const newQty = quantity + 1;
@@ -32,6 +34,18 @@ const Cart = ({ addItemToCart, cartItems, removeItemFromCart }) => {
     }
 
     localStorage.setItem('cartItems', JSON.stringify(cartItems))
+
+    useEffect(() => {
+        axios
+            .get(`${process.env.REACT_APP_API}/api/v1/admin/brands`)
+            .then((response) => {
+                console.log('Brands data:', response.data);
+                setBrands(response.data.brand);
+            })
+            .catch((error) => {
+                console.error('Failed to fetch brands:', error);
+            });
+    }, [])
 
     return (
         <Container className="100vh" style={{ marginTop: '50px' }}>
@@ -69,7 +83,7 @@ const Cart = ({ addItemToCart, cartItems, removeItemFromCart }) => {
                                                 <MDBCol md="3" lg="3" xl="3">
                                                     <Typography variant="h6" className="mb-2">{item.name}</Typography>
                                                     <Typography variant="subtitle2">Color: {item.colorway}</Typography>
-                                                    <Typography variant="subtitle2">Brand: {item.brand}</Typography>
+                                                    <Typography variant="subtitle2">Brand: {item.brand.name}</Typography>
                                                     <Typography variant="subtitle2">Size: {item.size}</Typography>
                                                 </MDBCol>
                                                 <MDBCol md="3" lg="3" xl="2"
