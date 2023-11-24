@@ -9,6 +9,14 @@ import MetaData from '../Layout/Metadata';
 import Navigation from './Navigation';
 import Loader from '../Layout/Loader';
 
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
+const validationSchema = Yup.object({
+    name: Yup.string().required('Shoe Name is required'),
+    description: Yup.string().required('Shoe description is required'),
+});
+
 const defaultTheme = createTheme();
 
 const UpdateSupplier = () => {
@@ -25,6 +33,25 @@ const UpdateSupplier = () => {
 
     let { id } = useParams();
     let navigate = useNavigate();
+
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            description: '',
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values) => {
+            const formData = new FormData();
+            formData.set('name', values.name);
+            formData.set('description', values.description);
+
+            images.forEach(image => {
+                formData.append('images', image)
+            })
+
+            updateSupplier(id, formData)
+        },
+    });
 
     const errMsg = (message = '') => toast.error(message, {
         position: toast.POSITION.BOTTOM_CENTER
@@ -56,47 +83,66 @@ const UpdateSupplier = () => {
             }
             const { data } = await axios.put(`${process.env.REACT_APP_API}/api/v1/admin/supplier/${id}`, supplierData, config)
             setIsUpdated(data.success)
-
-        } catch (error) {
-            setUpdateError(error.response.data.message)
-
-        }
-    }
-
-    useEffect(() => {
-        if (supplier && supplier._id !== id) {
-            getSupplierDetails(id)
-        } else {
-            setName(supplier.name);
-            setDescription(supplier.description);
-            setOldImages(supplier.images);
-        }
-        if (error) {
-            errMsg(error)
-
-        }
-        if (updateError) {
-            errMsg(updateError);
-
-        }
-        if (isUpdated) {
             navigate('/admin/suppliers');
             successMsg('Supplier updated successfully');
 
+        } catch (error) {
+            setUpdateError(error.response.data.message)
         }
-    }, [error, isUpdated, updateError, supplier, id])
-
-    const submitHandler = (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.set('name', name);
-        formData.set('description', description);
-
-        images.forEach(image => {
-            formData.append('images', image)
-        })
-        updateSupplier(supplier._id, formData)
     }
+
+    const getSingleSupplier = async () => {
+
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${getToken()}`
+            }
+        }
+
+        const { data: { supplier } } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/supplier/${id}`, config);
+
+        formik.setFieldValue('name', supplier.name);
+        formik.setFieldValue('description', supplier.description);
+        setImagesPreview(supplier.images.flatMap(image => image.url));
+        setSupplier(supplier)
+        setLoading(false)
+    }
+
+    // useEffect(() => {
+    //     if (supplier && supplier._id !== id) {
+    //         getSupplierDetails(id)
+    //     } else {
+    //         setName(supplier.name);
+    //         setDescription(supplier.description);
+    //         setOldImages(supplier.images);
+    //     }
+    //     if (error) {
+    //         errMsg(error)
+
+    //     }
+    //     if (updateError) {
+    //         errMsg(updateError);
+
+    //     }
+    //     if (isUpdated) {
+    //         navigate('/admin/suppliers');
+    //         successMsg('Supplier updated successfully');
+
+    //     }
+    // }, [error, isUpdated, updateError, supplier, id])
+
+    // const submitHandler = (e) => {
+    //     e.preventDefault();
+    //     const formData = new FormData();
+    //     formData.set('name', name);
+    //     formData.set('description', description);
+
+    //     images.forEach(image => {
+    //         formData.append('images', image)
+    //     })
+    //     updateSupplier(supplier._id, formData)
+    // }
 
     const onChange = e => {
         const files = Array.from(e.target.files)
@@ -114,6 +160,10 @@ const UpdateSupplier = () => {
             reader.readAsDataURL(file)
         })
     }
+
+    useEffect(() => {
+        getSingleSupplier()
+    }, [])
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -144,7 +194,7 @@ const UpdateSupplier = () => {
                                         alignItems: 'center',
                                     }}
                                 >
-                                    <Box component="form" noValidate onSubmit={submitHandler} sx={{ mt: 3 }}>
+                                    <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
                                         <Grid container spacing={2}>
                                             <Grid item xs={12}>
                                                 <TextField
@@ -154,9 +204,10 @@ const UpdateSupplier = () => {
                                                     id="name"
                                                     name="name"
                                                     autoFocus
-                                                    value={name}
-                                                    onChange={(e) => setName(e.target.value)}
-
+                                                    value={formik.values.name}
+                                                    onChange={formik.handleChange}
+                                                    error={formik.touched.name && Boolean(formik.errors.name)}
+                                                    helperText={formik.touched.name && formik.errors.name}
                                                 />
                                             </Grid>
                                             <Grid item xs={12}>
@@ -168,21 +219,31 @@ const UpdateSupplier = () => {
                                                     name="description"
                                                     multiline
                                                     rows={8}
-                                                    value={description}
-                                                    onChange={(e) => setDescription(e.target.value)}
+                                                    value={formik.values.description}
+                                                    onChange={formik.handleChange}
+                                                    error={formik.touched.description && Boolean(formik.errors.description)}
+                                                    helperText={formik.touched.description && formik.errors.description}
                                                 />
                                             </Grid>
 
                                             <Grid item xs={12}>
                                                 <InputLabel>Upload Shoe Image(s)</InputLabel>
-                                                <input
+                                                <TextField
+                                                    fullWidth
                                                     type='file'
                                                     name='images'
                                                     className='custom-file-input'
                                                     id='customFile'
                                                     accept="images/*"
-                                                    onChange={onChange}
-                                                    multiple
+                                                    inputProps={{
+                                                        multiple: true
+                                                    }}
+                                                    onChange={(e) => {
+                                                        formik.handleChange(e)
+                                                        onChange(e)
+                                                    }}
+                                                    error={formik.touched.images && Boolean(formik.errors.images)}
+                                                    helperText={formik.touched.images && formik.errors.images}
                                                 />
                                             </Grid>
                                             <Grid item xs={12}>
