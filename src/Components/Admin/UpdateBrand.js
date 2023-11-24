@@ -9,6 +9,14 @@ import MetaData from '../Layout/Metadata';
 import Navigation from './Navigation';
 import Loader from '../Layout/Loader';
 
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
+const validationSchema = Yup.object({
+    name: Yup.string().required('Brand Name is required'),
+    description: Yup.string().required('Brand description is required'),
+});
+
 const defaultTheme = createTheme();
 
 const UpdateBrand = () => {
@@ -18,13 +26,32 @@ const UpdateBrand = () => {
     const [oldImages, setOldImages] = useState([]);
     const [imagesPreview, setImagesPreview] = useState([]);
     const [error, setError] = useState('');
-    const [brand, setbrand] = useState({});
+    const [brand, setBrand] = useState({});
     const [loading, setLoading] = useState(true);
     const [updateError, setUpdateError] = useState('');
     const [isUpdated, setIsUpdated] = useState(false);
 
     let { id } = useParams();
     let navigate = useNavigate();
+
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            description: '',
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values) => {
+            const formData = new FormData();
+            formData.set('name', values.name);
+            formData.set('description', values.description);
+
+            images.forEach(image => {
+                formData.append('images', image)
+            })
+
+            updateBrand(id, formData)
+        },
+    });
 
     const errMsg = (message = '') => toast.error(message, {
         position: toast.POSITION.BOTTOM_CENTER
@@ -33,19 +60,7 @@ const UpdateBrand = () => {
         position: toast.POSITION.BOTTOM_CENTER
     });
 
-    const getBrandDetails = async (id) => {
-        try {
-            const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/brand/${id}`)
-            setbrand(data.brand)
-            setLoading(false)
-
-        } catch (error) {
-            setError(error.response.data.message)
-
-        }
-    }
-
-    const UpdateBrand = async (id, brandData) => {
+    const updateBrand = async (id, brandData) => {
         try {
 
             const config = {
@@ -56,6 +71,8 @@ const UpdateBrand = () => {
             }
             const { data } = await axios.put(`${process.env.REACT_APP_API}/api/v1/admin/brand/${id}`, brandData, config)
             setIsUpdated(data.success)
+            navigate('/admin/brands');
+            successMsg('Brand updated successfully');
 
         } catch (error) {
             setUpdateError(error.response.data.message)
@@ -63,39 +80,22 @@ const UpdateBrand = () => {
         }
     }
 
-    useEffect(() => {
-        if (brand && brand._id !== id) {
-            getBrandDetails(id)
-        } else {
-            setName(brand.name);
-            setDescription(brand.description);
-            setOldImages(brand.images);
+    const getSingleBrand = async () => {
+
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${getToken()}`
+            }
         }
-        if (error) {
-            errMsg(error)
 
-        }
-        if (updateError) {
-            errMsg(updateError);
+        const { data: { brand } } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/brand/${id}`, config);
 
-        }
-        if (isUpdated) {
-            navigate('/admin/brands');
-            successMsg('brand updated successfully');
-
-        }
-    }, [error, isUpdated, updateError, brand, id])
-
-    const submitHandler = (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.set('name', name);
-        formData.set('description', description);
-
-        images.forEach(image => {
-            formData.append('images', image)
-        })
-        UpdateBrand(brand._id, formData)
+        formik.setFieldValue('name', brand.name);
+        formik.setFieldValue('description', brand.description);
+        setImagesPreview(brand.images.flatMap(image => image.url));
+        setBrand(brand)
+        setLoading(false)
     }
 
     const onChange = e => {
@@ -114,6 +114,10 @@ const UpdateBrand = () => {
             reader.readAsDataURL(file)
         })
     }
+
+    useEffect(() => {
+        getSingleBrand()
+    }, [])
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -144,7 +148,7 @@ const UpdateBrand = () => {
                                         alignItems: 'center',
                                     }}
                                 >
-                                    <Box component="form" noValidate onSubmit={submitHandler} sx={{ mt: 3 }}>
+                                    <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
                                         <Grid container spacing={2}>
                                             <Grid item xs={12}>
                                                 <TextField
@@ -154,8 +158,10 @@ const UpdateBrand = () => {
                                                     id="name"
                                                     name="name"
                                                     autoFocus
-                                                    value={name}
-                                                    onChange={(e) => setName(e.target.value)}
+                                                    value={formik.values.name}
+                                                    onChange={formik.handleChange}
+                                                    error={formik.touched.name && Boolean(formik.errors.name)}
+                                                    helperText={formik.touched.name && formik.errors.name}
 
                                                 />
                                             </Grid>
@@ -168,21 +174,31 @@ const UpdateBrand = () => {
                                                     name="description"
                                                     multiline
                                                     rows={8}
-                                                    value={description}
-                                                    onChange={(e) => setDescription(e.target.value)}
+                                                    value={formik.values.description}
+                                                    onChange={formik.handleChange}
+                                                    error={formik.touched.description && Boolean(formik.errors.description)}
+                                                    helperText={formik.touched.description && formik.errors.description}
                                                 />
                                             </Grid>
 
                                             <Grid item xs={12}>
                                                 <InputLabel>Upload Brand Image(s)</InputLabel>
-                                                <input
+                                                <TextField
+                                                    fullWidth
                                                     type='file'
                                                     name='images'
                                                     className='custom-file-input'
                                                     id='customFile'
                                                     accept="images/*"
-                                                    onChange={onChange}
-                                                    multiple
+                                                    inputProps={{
+                                                        multiple: true
+                                                    }}
+                                                    onChange={(e) => {
+                                                        formik.handleChange(e)
+                                                        onChange(e)
+                                                    }}
+                                                    error={formik.touched.images && Boolean(formik.errors.images)}
+                                                    helperText={formik.touched.images && formik.errors.images}
                                                 />
                                             </Grid>
                                             <Grid item xs={12}>

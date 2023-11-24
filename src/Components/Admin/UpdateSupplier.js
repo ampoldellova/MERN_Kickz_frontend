@@ -20,8 +20,6 @@ const validationSchema = Yup.object({
 const defaultTheme = createTheme();
 
 const UpdateSupplier = () => {
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
     const [images, setImages] = useState([]);
     const [oldImages, setOldImages] = useState([]);
     const [imagesPreview, setImagesPreview] = useState([]);
@@ -53,24 +51,9 @@ const UpdateSupplier = () => {
         },
     });
 
-    const errMsg = (message = '') => toast.error(message, {
-        position: toast.POSITION.BOTTOM_CENTER
-    });
     const successMsg = (message = '') => toast.success(message, {
         position: toast.POSITION.BOTTOM_CENTER
     });
-
-    const getSupplierDetails = async (id) => {
-        try {
-            const { data } = await axios.get(`${process.env.REACT_APP_API}/api/v1/admin/supplier/${id}`)
-            setSupplier(data.supplier)
-            setLoading(false)
-
-        } catch (error) {
-            setError(error.response.data.message)
-
-        }
-    }
 
     const updateSupplier = async (id, supplierData) => {
         try {
@@ -108,41 +91,6 @@ const UpdateSupplier = () => {
         setSupplier(supplier)
         setLoading(false)
     }
-
-    // useEffect(() => {
-    //     if (supplier && supplier._id !== id) {
-    //         getSupplierDetails(id)
-    //     } else {
-    //         setName(supplier.name);
-    //         setDescription(supplier.description);
-    //         setOldImages(supplier.images);
-    //     }
-    //     if (error) {
-    //         errMsg(error)
-
-    //     }
-    //     if (updateError) {
-    //         errMsg(updateError);
-
-    //     }
-    //     if (isUpdated) {
-    //         navigate('/admin/suppliers');
-    //         successMsg('Supplier updated successfully');
-
-    //     }
-    // }, [error, isUpdated, updateError, supplier, id])
-
-    // const submitHandler = (e) => {
-    //     e.preventDefault();
-    //     const formData = new FormData();
-    //     formData.set('name', name);
-    //     formData.set('description', description);
-
-    //     images.forEach(image => {
-    //         formData.append('images', image)
-    //     })
-    //     updateSupplier(supplier._id, formData)
-    // }
 
     const onChange = e => {
         const files = Array.from(e.target.files)
