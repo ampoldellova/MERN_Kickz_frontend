@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { createTheme, ThemeProvider, Box, Typography } from '@mui/material';
+import { createTheme, ThemeProvider, Box, Typography, Container } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
@@ -77,33 +77,46 @@ const UsersList = () => {
                 {
                     headerName: 'User ID',
                     field: 'id',
-                    width: 300,
-                    sort: 'asc'
+                    width: 325,
+                    sort: 'asc',
+                    align: 'center',
+                    headerAlign: 'center'
                 },
                 {
                     headerName: 'Name',
                     field: 'name',
-                    width: 300,
-                    sort: 'asc'
+                    width: 200,
+                    sort: 'asc',
+                    align: 'center',
+                    headerAlign: 'center'
                 },
                 {
                     headerName: 'Email',
                     field: 'email',
-                    width: 300,
-                    sort: 'asc'
+                    width: 200,
+                    sort: 'asc',
+                    align: 'center',
+                    headerAlign: 'center'
                 },
                 {
                     headerName: 'Role',
                     field: 'role',
-                    width: 300,
-                    sort: 'asc'
+                    width: 200,
+                    sort: 'asc',
+                    align: 'center',
+                    headerAlign: 'center'
                 },
                 {
                     headerName: 'Actions',
                     field: 'actions',
-                    width: 300,
+                    width: 200,
+                    headerAlign: 'center',
                     renderCell: ({ value }) => (
-                        <Fragment>
+                        <Container style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
                             <Link to={`/admin/user/${value}`}>
                                 <Button
                                     variant='contained'
@@ -124,7 +137,7 @@ const UsersList = () => {
                             >
                                 <DeleteIcon />
                             </Button>
-                        </Fragment>
+                        </Container>
                     )
                 },
             ],
@@ -159,24 +172,26 @@ const UsersList = () => {
                     }}
                 >
                     {loading ? <Loader /> : (
-                        <div style={{ height: 'auto', width: '100%', marginTop: 68 }}>
-                            <Box textAlign="center" style={{margin: 20}}>
-                                <Typography variant='h3' style={{ fontWeight: 1000 }}>List of Customers</Typography>
-                                <Link to="/register" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                    <Button variant='contained' startIcon={<AddCircleIcon />}>Add User</Button>
-                                </Link>
-                            </Box>
-                            <DataGrid
-                                rows={setUsers().rows}
-                                columns={setUsers().columns}
-                                initialState={{
-                                    pagination: {
-                                        paginationModel: { page: 0, pageSize: 10 },
-                                    },
-                                }}
-                                pageSizeOptions={[10, 20]}
-                            />
-                        </div>
+                        <Container>
+                            <div style={{ height: 'auto', width: '100%', marginTop: 100 }}>
+                                <Box textAlign="center" style={{ margin: 20 }}>
+                                    <Typography variant='h3' style={{ fontWeight: 1000 }}>List of Customers</Typography>
+                                    <Link to="/register" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                        <Button variant='contained' startIcon={<AddCircleIcon />}>Add User</Button>
+                                    </Link>
+                                </Box>
+                                <DataGrid
+                                    rows={setUsers().rows}
+                                    columns={setUsers().columns}
+                                    initialState={{
+                                        pagination: {
+                                            paginationModel: { page: 0, pageSize: 10 },
+                                        },
+                                    }}
+                                    pageSizeOptions={[10, 20]}
+                                />
+                            </div>
+                        </Container>
                     )}
                 </Box>
             </Box>

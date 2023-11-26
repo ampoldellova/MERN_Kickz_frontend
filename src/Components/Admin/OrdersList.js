@@ -1,5 +1,5 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import { createTheme, ThemeProvider, Typography, Box, } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { createTheme, ThemeProvider, Typography, Box, Container } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
@@ -81,40 +81,64 @@ const OrdersList = () => {
                     headerName: 'Order ID',
                     field: 'id',
                     width: 300,
-                    sort: 'asc'
+                    sort: 'asc',
+                    align: 'center',
+                    headerAlign: 'center'
                 },
 
                 {
                     headerName: 'No of Items',
                     field: 'numofItems',
-                    width: 300,
-                    sort: 'asc'
+                    width: 100,
+                    sort: 'asc',
+                    align: 'center',
+                    headerAlign: 'center'
                 },
                 {
                     headerName: 'Amount',
                     field: 'amount',
                     width: 300,
-                    sort: 'asc'
+                    sort: 'asc',
+                    align: 'center',
+                    headerAlign: 'center'
                 },
                 {
                     headerName: 'Status',
                     field: 'status',
-                    width: 300,
+                    width: 200,
                     sort: 'asc',
+                    headerAlign: 'center',
                     renderCell: ({ value }) => {
                         return value && String(value).includes('Delivered') ? (
-                            <Typography style={{ color: 'green' }}>{value}</Typography>
+                            <Container style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}>
+                                <Typography style={{ color: 'green', textAlign: 'center' }}>{value}</Typography>
+                            </Container>
                         ) : (
-                            <Typography style={{ color: 'red' }}>{value}</Typography>
+                            <Container style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}>
+                                <Typography style={{ color: 'red', textAlign: 'center' }}>{value}</Typography>
+                            </Container>
                         );
                     },
                 },
                 {
                     headerName: 'Actions',
                     field: 'actions',
-                    width: 300,
+                    width: 200,
+                    headerAlign: 'center',
                     renderCell: ({ value }) => (
-                        <Fragment>
+                        <Container style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
                             <Link to={`/admin/order/${value}`}>
                                 <Button
                                     variant='contained'
@@ -135,7 +159,7 @@ const OrdersList = () => {
                             >
                                 <DeleteIcon />
                             </Button>
-                        </Fragment>
+                        </Container>
                     ),
                 },
             ],
@@ -175,24 +199,34 @@ const OrdersList = () => {
                     }}
                 >
                     {loading ? <Loader /> : (
-                        <div style={{ height: 'auto', width: '100%' }}>
-                            <Typography variant='h3' style={{textAlign:'center', fontWeight: 1000}}>List of Customer Orders</Typography>
-                            <DataGrid
-                                rows={setOrders().rows}
-                                columns={setOrders().columns}
-                                initialState={{
-                                    pagination: {
-                                        paginationModel: { page: 0, pageSize: 10 },
-                                    },
-                                }}
-                                pageSizeOptions={[10, 20]}
-                            />
-                        </div>
+                        <Container>
+                            <div style={{ height: 'auto', width: '100%', marginTop: 30 }}>
+                                <Typography
+                                    variant='h3'
+                                    style={{
+                                        textAlign: 'center',
+                                        fontWeight: 1000,
+                                        marginBottom: 20
+                                    }}>
+                                    List of Customer Orders
+                                </Typography>
+                                <DataGrid
+                                    rows={setOrders().rows}
+                                    columns={setOrders().columns}
+                                    initialState={{
+                                        pagination: {
+                                            paginationModel: { page: 0, pageSize: 10 },
+                                        },
+                                    }}
+                                    pageSizeOptions={[10, 20]}
+                                />
+                            </div>
+                        </Container>
                     )}
                 </Box>
             </Box>
 
-        </ThemeProvider>
+        </ThemeProvider >
     );
 };
 

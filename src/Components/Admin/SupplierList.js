@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { createTheme, ThemeProvider, Box, Button, Typography } from '@mui/material';
+import { createTheme, ThemeProvider, Box, Button, Typography, Container } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -92,22 +92,31 @@ const SupplierList = () => {
                 {
                     headerName: 'Supplier ID',
                     field: 'id',
-                    width: 300,
-                    sort: 'asc'
+                    width: 400,
+                    sort: 'asc',
+                    align: 'center',
+                    headerAlign: 'center'
                 },
 
                 {
                     headerName: 'Supplier Name',
                     field: 'name',
-                    width: 300,
-                    sort: 'asc'
+                    width: 350,
+                    sort: 'asc',
+                    align: 'center',
+                    headerAlign: 'center'
                 },
                 {
                     headerName: 'Actions',
                     field: 'actions',
-                    width: 300,
+                    width: 400,
+                    headerAlign: 'center',
                     renderCell: ({ value }) => (
-                        <Fragment>
+                        <Container style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
                             <Link to={`/admin/supplier/${value}`}>
                                 <Button
                                     variant='contained'
@@ -128,7 +137,7 @@ const SupplierList = () => {
                             >
                                 <DeleteIcon />
                             </Button>
-                        </Fragment>
+                        </Container>
                     ),
                 },
             ],
@@ -151,7 +160,7 @@ const SupplierList = () => {
 
     return (
         <ThemeProvider theme={defaultTheme}>
-            <MetaData title={'Supplier List'} />
+            <MetaData title={'List of Suppliers'} />
             <Box sx={{ display: 'flex' }}>
                 <Navigation />
                 <Box
@@ -167,24 +176,26 @@ const SupplierList = () => {
                     }}
                 >
                     {loading ? <Loader /> : (
-                        <div style={{ height: 'auto', width: '100%', marginTop: 68 }}>
-                            <Box textAlign="center" style={{ margin: 20 }}>
-                                <Typography variant='h3' style={{ fontWeight: 1000 }}>List of Suppliers</Typography>
-                                <Link to="/admin/supply" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                    <Button variant='contained' startIcon={<AddCircleIcon />} style={{ marginTop:10 }}>Add Supplier</Button>
-                                </Link>
-                            </Box>
-                            <DataGrid
-                                rows={supplierList().rows}
-                                columns={supplierList().columns}
-                                initialState={{
-                                    pagination: {
-                                        paginationModel: { page: 0, pageSize: 10 },
-                                    },
-                                }}
-                                pageSizeOptions={[10, 20]}
-                            />
-                        </div>
+                        <Container>
+                            <div style={{ height: 'auto', width: '100%', marginTop: 100 }}>
+                                <Box textAlign="center" style={{ margin: 20 }}>
+                                    <Typography variant='h3' style={{ fontWeight: 1000 }}>List of Suppliers</Typography>
+                                    <Link to="/admin/supply" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                        <Button variant='contained' startIcon={<AddCircleIcon />} style={{ marginTop: 10 }}>Add Supplier</Button>
+                                    </Link>
+                                </Box>
+                                <DataGrid
+                                    rows={supplierList().rows}
+                                    columns={supplierList().columns}
+                                    initialState={{
+                                        pagination: {
+                                            paginationModel: { page: 0, pageSize: 10 },
+                                        },
+                                    }}
+                                    pageSizeOptions={[10, 20]}
+                                />
+                            </div>
+                        </Container>
                     )}
                 </Box>
             </Box>

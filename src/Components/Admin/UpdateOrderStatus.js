@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { InputLabel, Card, Select, MenuItem, CardContent, createTheme, ThemeProvider, Typography, Container, Box, Button } from '@mui/material';
+import { InputLabel, Card, TextField, MenuItem, CardContent, createTheme, ThemeProvider, Typography, Container, Box, Button } from '@mui/material';
 import { MDBCol, MDBRow } from 'mdb-react-ui-kit';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import MetaData from '../Layout/Metadata';
@@ -151,15 +151,16 @@ const UpdateOrderStatus = () => {
                                     <Card variant='outlined' style={{ borderRadius: '10px', border: '1px solid black' }}>
                                         <CardContent>
                                             <InputLabel>Select Status</InputLabel>
-                                            <Select
+                                            <TextField
                                                 fullWidth
+                                                select
                                                 value={status}
                                                 onChange={(e) => setStatus(e.target.value)}
                                             >
                                                 <MenuItem value={'Processing'}>Processing</MenuItem>
                                                 <MenuItem value={'Shipped'}>Shipped</MenuItem>
                                                 <MenuItem value={'Delivered'}>Delivered</MenuItem>
-                                            </Select>
+                                            </TextField>
                                             <Button
                                                 variant='contained'
                                                 style={{ marginTop: 10 }}

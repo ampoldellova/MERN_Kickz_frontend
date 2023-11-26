@@ -13,6 +13,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { getToken } from '../../utils/helpers';
 import Navigation from './Navigation';
 import Loader from '../Layout/Loader';
+import { Container } from '@mui/system';
 
 const defaultTheme = createTheme();
 
@@ -93,32 +94,46 @@ const ProductList = () => {
                     headerName: 'Product ID',
                     field: 'id',
                     width: 300,
-                    sort: 'asc'
+                    sort: 'asc',
+                    align: 'center',
+                    headerAlign: 'center',
                 },
                 {
                     headerName: 'Product Name',
                     field: 'name',
                     width: 300,
-                    sort: 'asc'
+                    sort: 'asc',
+                    align: 'center',
+                    headerAlign: 'center',
                 },
                 {
                     headerName: 'Price',
                     field: 'price',
-                    width: 300,
-                    sort: 'asc'
+                    width: 150,
+                    sort: 'asc',
+                    align: 'center',
+                    headerAlign: 'center',
                 },
                 {
                     headerName: 'Stock',
                     field: 'stock',
-                    width: 300,
-                    sort: 'asc'
+                    width: 150,
+                    sort: 'asc',
+                    align: 'center',
+                    headerAlign: 'center'
                 },
                 {
                     headerName: 'Actions',
                     field: 'actions',
-                    width: 300,
+                    width: 200,
+                    headerAlign: 'center',
+
                     renderCell: ({ value }) => (
-                        <Fragment>
+                        <Container style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
                             <Link to={`/admin/product/${value}`}>
                                 <Button
                                     variant='contained'
@@ -139,7 +154,7 @@ const ProductList = () => {
                             >
                                 <DeleteIcon />
                             </Button>
-                        </Fragment>
+                        </Container >
                     ),
                 },
             ],
@@ -165,7 +180,7 @@ const ProductList = () => {
 
     return (
         <ThemeProvider theme={defaultTheme}>
-            <MetaData title={'Product List'} />
+            <MetaData title={'List of Products'} />
             <Box sx={{ display: 'flex' }}>
                 <Navigation />
                 <Box
@@ -181,24 +196,26 @@ const ProductList = () => {
                     }}
                 >
                     {loading ? <Loader /> : (
-                        <div style={{ height: 'auto', width: '100%', marginTop: 68 }}>
-                            <Box textAlign="center" style={{ margin: 20 }}>
-                                <Typography variant='h3' style={{ fontWeight: 1000 }}>List of Products</Typography>
-                                <Link to="/admin/product" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                    <Button variant='contained' startIcon={<AddCircleIcon />}>Add Shoe Product</Button>
-                                </Link>
-                            </Box>
-                            <DataGrid
-                                rows={productsList().rows}
-                                columns={productsList().columns}
-                                initialState={{
-                                    pagination: {
-                                        paginationModel: { page: 0, pageSize: 10 },
-                                    },
-                                }}
-                                pageSizeOptions={[10, 20]}
-                            />
-                        </div>
+                        <Container>
+                            <div style={{ height: 'auto', width: '100%', marginTop: 100 }}>
+                                <Box textAlign="center" style={{ margin: 20 }}>
+                                    <Typography variant='h3' style={{ fontWeight: 1000 }}>List of Products</Typography>
+                                    <Link to="/admin/product" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                        <Button variant='contained' startIcon={<AddCircleIcon />}>Add Shoe Product</Button>
+                                    </Link>
+                                </Box>
+                                <DataGrid
+                                    rows={productsList().rows}
+                                    columns={productsList().columns}
+                                    initialState={{
+                                        pagination: {
+                                            paginationModel: { page: 0, pageSize: 10 },
+                                        },
+                                    }}
+                                    pageSizeOptions={[10, 20]}
+                                />
+                            </div>
+                        </Container>
                     )}
                 </Box>
             </Box>

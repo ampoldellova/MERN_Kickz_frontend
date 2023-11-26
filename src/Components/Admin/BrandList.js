@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { createTheme, ThemeProvider, Box, Button, Typography } from '@mui/material';
+import { createTheme, ThemeProvider, Box, Button, Typography, Container } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { DataGrid } from '@mui/x-data-grid';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -92,22 +92,31 @@ const BrandList = () => {
                 {
                     headerName: 'Brand ID',
                     field: 'id',
-                    width: 300,
-                    sort: 'asc'
+                    width: 400,
+                    sort: 'asc',
+                    align: 'center',
+                    headerAlign: 'center'
                 },
 
                 {
                     headerName: 'Brand Name',
                     field: 'name',
-                    width: 300,
-                    sort: 'asc'
+                    width: 350,
+                    sort: 'asc',
+                    align: 'center',
+                    headerAlign: 'center'
                 },
                 {
                     headerName: 'Actions',
                     field: 'actions',
-                    width: 300,
+                    width: 400,
+                    headerAlign: 'center',
                     renderCell: ({ value }) => (
-                        <Fragment>
+                        <Container style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
                             <Link to={`/admin/brand/${value}`}>
                                 <Button
                                     variant='contained'
@@ -128,7 +137,7 @@ const BrandList = () => {
                             >
                                 <DeleteIcon />
                             </Button>
-                        </Fragment>
+                        </Container>
                     ),
                 },
             ],
@@ -167,24 +176,26 @@ const BrandList = () => {
                     }}
                 >
                     {loading ? <Loader /> : (
-                        <div style={{ height: 'auto', width: '100%', marginTop: 68 }}>
-                            <Box textAlign="center" style={{ margin: 20 }}>
-                                <Typography variant='h3' style={{ fontWeight: 1000 }}>List of Shoe Brands</Typography>
-                                <Link to="/admin/brand" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                    <Button variant='contained' startIcon={<AddCircleIcon />}>Add brand</Button>
-                                </Link>
-                            </Box>
-                            <DataGrid
-                                rows={brandList().rows}
-                                columns={brandList().columns}
-                                initialState={{
-                                    pagination: {
-                                        paginationModel: { page: 0, pageSize: 10 },
-                                    },
-                                }}
-                                pageSizeOptions={[10, 20]}
-                            />
-                        </div>
+                        <Container>
+                            <div style={{ height: 'auto', width: '100%', marginTop: 100 }}>
+                                <Box textAlign="center" style={{ margin: 20 }}>
+                                    <Typography variant='h3' style={{ fontWeight: 1000 }}>List of Shoe Brands</Typography>
+                                    <Link to="/admin/brand" style={{ textDecoration: 'none', color: 'inherit' }}>
+                                        <Button variant='contained' startIcon={<AddCircleIcon />}>Add brand</Button>
+                                    </Link>
+                                </Box>
+                                <DataGrid
+                                    rows={brandList().rows}
+                                    columns={brandList().columns}
+                                    initialState={{
+                                        pagination: {
+                                            paginationModel: { page: 0, pageSize: 10 },
+                                        },
+                                    }}
+                                    pageSizeOptions={[10, 20]}
+                                />
+                            </div>
+                        </Container>
                     )}
                 </Box>
             </Box>

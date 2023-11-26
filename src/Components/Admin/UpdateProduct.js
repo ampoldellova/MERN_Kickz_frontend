@@ -78,9 +78,6 @@ const UpdateProduct = () => {
     let { id } = useParams();
     let navigate = useNavigate();
 
-    const errMsg = (message = '') => toast.error(message, {
-        position: toast.POSITION.BOTTOM_CENTER
-    });
     const successMsg = (message = '') => toast.success(message, {
         position: toast.POSITION.BOTTOM_CENTER
     });

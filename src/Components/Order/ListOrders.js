@@ -46,14 +46,37 @@ const ListOrders = () => {
     const setOrders = () => {
         const data = {
             columns: [
-                { field: 'id', headerName: 'Order ID', width: 300, sort: 'asc' },
-                { field: 'numOfItems', headerName: 'Number of Items', width: 130, sort: 'asc', align: 'center' },
-                { field: 'amount', headerName: 'Amount', width: 200, sort: 'asc', align: 'center', headerAlign: 'center' },
+                {
+                    field: 'id',
+                    headerName: 'Order ID',
+                    width: 300,
+                    sort: 'asc',
+                    align: 'center',
+                    headerAlign: 'center'
+                },
+                {
+                    field: 'numOfItems',
+                    headerName: 'Number of Items',
+                    width: 130,
+                    sort: 'asc',
+                    align: 'center',
+                    headerAlign: 'center'
+                },
+                {
+                    field: 'amount',
+                    headerName: 'Amount',
+                    width: 300,
+                    sort: 'asc',
+                    align: 'center',
+                    headerAlign: 'center'
+                },
                 {
                     field: 'status',
                     headerName: 'Status',
                     width: 200,
                     sort: 'asc',
+                    align: 'center',
+                    headerAlign: 'center',
                     renderCell: ({ value }) => {
                         return value && String(value).includes('Delivered') ? (
                             <Typography style={{ color: 'green' }}>{value}</Typography>
@@ -67,10 +90,17 @@ const ListOrders = () => {
                     headerName: 'Actions',
                     width: 200,
                     sort: 'asc',
+                    headerAlign: 'center',
                     renderCell: ({ value }) => (
-                        <Link to={`/order/${value}`} className="btn btn-primary">
-                            <Button endIcon={<VisibilityIcon />} sx={{ color: 'white', height: 20 }}>View</Button>
-                        </Link>
+                        <Container style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <Link to={`/order/${value}`} className="btn btn-primary">
+                                <Button endIcon={<VisibilityIcon />} sx={{ color: 'white', height: 20 }}>View</Button>
+                            </Link>
+                        </Container>
                     ),
                 },
             ],
@@ -96,7 +126,15 @@ const ListOrders = () => {
             <MetaData title={'My Orders'} />
             {loading ? <Loader /> : (
                 <Container style={{ marginTop: 100 }}>
-                    <Typography variant="h5" style={{marginBottom: 10}}>My Orders</Typography>
+                    <Typography
+                        variant="h3"
+                        style={{
+                            marginBottom: 30,
+                            textAlign: 'center',
+                            fontWeight: 1000
+                        }}>
+                        My Orders
+                    </Typography>
                     <DataGrid
                         rows={setOrders().rows}
                         columns={setOrders().columns}
@@ -105,8 +143,7 @@ const ListOrders = () => {
                                 paginationModel: { page: 0, pageSize: 5 },
                             },
                         }}
-                        pageSizeOptions={[5, 10]}
-                        checkboxSelection
+                        pageSizeOptions={[10, 20]}
                     />
 
                 </Container>

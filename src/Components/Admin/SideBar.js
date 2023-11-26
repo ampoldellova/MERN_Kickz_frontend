@@ -29,7 +29,7 @@ const Sidebar = () => {
                 <ListItemIcon>
                     <PeopleIcon />
                 </ListItemIcon>
-                <ListItemText primary="Users" />
+                <ListItemText primary="Customers" />
             </ListItemButton>
             <ListItemButton component={Link} to="/admin/products" >
                 <ListItemIcon>
