@@ -13,6 +13,9 @@ const UpdateProfile = () => {
     const [email, setEmail] = useState('')
     const [avatar, setAvatar] = useState('')
     const [avatarPreview, setAvatarPreview] = useState('')
+    const [images, setImages] = useState([]);
+    const [oldImages, setOldImages] = useState([]);
+    const [imagesPreview, setImagesPreview] = useState([]);
     const [error, setError] = useState('')
     const [user, setUser] = useState({})
     const [loading, setLoading] = useState(false)
@@ -77,6 +80,9 @@ const UpdateProfile = () => {
         formData.set('name', name);
         formData.set('email', email);
         formData.set('avatar', avatar);
+        images.forEach(image => {
+            formData.append('images', image)
+        })
         updateProfile(formData)
     }
 
@@ -92,6 +98,24 @@ const UpdateProfile = () => {
 
         reader.readAsDataURL(e.target.files[0])
 
+    }
+
+    const imagesOnChange = e => {
+        const files = Array.from(e.target.files)
+        setImagesPreview([]);
+        setImages([])
+        files.forEach(file => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                if (reader.readyState === 2) {
+                    setImagesPreview(oldArray => [...oldArray, reader.result])
+                    setImages(oldArray => [...oldArray, reader.result])
+                }
+            }
+
+            reader.readAsDataURL(file)
+            // console.log(reader)
+        })
     }
     console.log(user)
     return (
@@ -149,6 +173,24 @@ const UpdateProfile = () => {
                                 onChange={onChange}
                             />
                             <InputLabel htmlFor="customFile">Upload an image</InputLabel>
+                            <TextField
+                                type='file'
+                                name='images'
+                                fullWidth
+                                inputProps={{
+                                    multiple: true
+                                }}
+                                id='customFile'
+                                accept="images/*"
+                                onChange={imagesOnChange}
+                            />
+                            <InputLabel>Upload Cover Image(s)</InputLabel>
+                            {oldImages && oldImages.map(img => (
+                                <img key={img} src={img.url} alt={img.url} className="mt-3 mr-2" width="75" height="75" />
+                            ))}
+                            {imagesPreview.map(img => (
+                                <img src={img} key={img} alt="Images Preview" className="mt-3 mr-2" width="75" height="75" />
+                            ))}
                             <Button
                                 type="submit"
                                 fullWidth

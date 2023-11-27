@@ -107,10 +107,10 @@ function App() {
 
           <Route path="/login" element={<Login />} exact />
           <Route path="/password/forgot" element={<ForgotPassword />} exact />
-          <Route path="/me" element={<Profile />} exact />
+          <Route path="/me" element={<ProtectedRoute><Profile /></ProtectedRoute>} exact />
           <Route path="/register" element={<Register />} exact />
           <Route path="/password/update" element={<UpdatePassword />} />
-          <Route path="/me/update" element={<UpdateProfile />} exact />
+          <Route path="/me/update" element={<ProtectedRoute><UpdateProfile /></ProtectedRoute>} exact />
 
           <Route path="/cart" element={<Cart cartItems={state.cartItems} addItemToCart={addItemToCart} removeItemFromCart={removeItemFromCart} />} exact />
           <Route path="/shipping" element={<Shipping shipping={state.shippingInfo} saveShippingInfo={saveShippingInfo} />} />

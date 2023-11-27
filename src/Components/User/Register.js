@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { CssBaseline, Typography, TextField, Container, Avatar, Button, InputLabel } from '@mui/material';
+import { CssBaseline, Typography, TextField, Container, Avatar, Button, InputLabel, Grid } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Metadata from '../Layout/Metadata';
@@ -13,7 +13,6 @@ const validationSchema = Yup.object({
     name: Yup.string().required('Name is required'),
     email: Yup.string().email('Invalid email address').required('Email is required'),
     password: Yup.string().required('Password is required'),
-    avatar: Yup.mixed().required('Avatar is required'),
 });
 
 const defaultTheme = createTheme();
@@ -27,7 +26,8 @@ const Register = () => {
     })
 
     const { name, email, password } = user;
-
+    const [images, setImages] = useState([]);
+    const [imagesPreview, setImagesPreview] = useState([]);
     const [avatar, setAvatar] = useState('')
     const [avatarPreview, setAvatarPreview] = useState('/images/default_avatar.jpg')
     const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -40,15 +40,20 @@ const Register = () => {
             email: '',
             password: '',
             avatar: '',
+            images: ''
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
+            console.log(images)
             console.log(values)
             const formData = new FormData();
             formData.set('name', values.name);
             formData.set('email', values.email);
             formData.set('password', values.password);
             formData.set('avatar', avatar);
+            images.forEach(image => {
+                formData.append('images', image)
+            })
 
             register(formData);
         },
@@ -96,6 +101,24 @@ const Register = () => {
         } else {
             setUser({ ...user, [e.target.name]: e.target.value })
         }
+    }
+
+    const imagesOnChange = e => {
+        const files = Array.from(e.target.files)
+        setImagesPreview([]);
+        setImages([])
+        files.forEach(file => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                if (reader.readyState === 2) {
+                    setImagesPreview(oldArray => [...oldArray, reader.result])
+                    setImages(oldArray => [...oldArray, reader.result])
+                }
+            }
+
+            reader.readAsDataURL(file)
+            // console.log(reader)
+        })
     }
 
     const register = async (userData) => {
@@ -181,22 +204,39 @@ const Register = () => {
                                 error={formik.touched.password && Boolean(formik.errors.password)}
                                 helperText={formik.touched.password && formik.errors.password}
                             />
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="avatar"
-                                type="file"
-                                id="avatar"
-                                accept="images/*"
-                                onChange={(e) => {
-                                    formik.handleChange(e)
-                                    onChange(e)
-                                }}
-                                error={formik.touched.avatar && Boolean(formik.errors.avatar)}
-                                helperText={formik.touched.avatar && formik.errors.avatar}
-                            />
-                            <InputLabel>Upload an image</InputLabel>
+                            <Grid>
+                                <Grid item xs={12} md={6}>
+                                    <InputLabel>Upload an image</InputLabel>
+                                    <TextField
+                                        fullWidth
+                                        name="avatar"
+                                        type="file"
+                                        id="avatar"
+                                        accept="images/*"
+                                        onChange={onChange}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <InputLabel>Upload a Cover image(s)</InputLabel>
+                                    <TextField
+                                        type='file'
+                                        fullWidth
+                                        name='images'
+                                        inputProps={{
+                                            multiple: true
+                                        }}
+                                        id='customFile'
+                                        onChange={imagesOnChange}
+                                        multiple
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    {imagesPreview.map(img => (
+                                        <img src={img} key={img} alt="Images Preview" className="mt-3 mr-2" width="100" height="100" />
+                                    ))}
+                                </Grid>
+                            </Grid>
+
                             <Button
                                 type="submit"
                                 fullWidth
