@@ -64,7 +64,7 @@ function OAuth() {
                 fullWidth
                 sx={{ mb: 3, backgroundColor: 'black' }}
             >
-                CONTINUE WITH GOOGLE
+                LOGIN WITH GOOGLE
             </Button>
         </Fragment>
 
