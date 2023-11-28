@@ -78,65 +78,71 @@ const ProductDetails = ({ addItemToCart, cartItems }) => {
         <Fragment>
             <Metadata title={product.name} />
             {loading ? <Loader /> : (
-                <Container className="py-5" style={{ height: '100vh', justifyContent: 'center', alignItems: 'center', display: 'flex', marginTop: 30 }}>
-                    <div className="container px-4 px-lg-5 my-5">
-                        <div className="row gx-4 gx-lg-5 align-items-center">
-                            <div className="col-md-6">
-                                <Carousel data-bs-theme="dark" pause='hover'>
-                                    {product.images && product.images.map(image => (
-                                        <Carousel.Item key={image.public_id}>
-                                            <img className="d-block w-100" src={image.url} alt={product.title} />
-                                        </Carousel.Item>
-                                    ))}
-                                </Carousel>
-                            </div>
-                            <div className="col-md-6">
-                                <Typography variant='h3' style={{ fontWeight: 1000, fontStyle: 'italic' }}>{product.name}</Typography>
-                                <Typography variant='subtitle1'>Colorway: {product.colorway}</Typography>
-                                <Typography variant='subtitle1'>Type: {product.type}</Typography>
-                                <Typography variant='subtitle1'>Made by: {product.brand.name}</Typography>
-                                <Typography variant='subtitle1'>Size: {product.size}</Typography><hr />
-                                <Typography variant='subtitle2' style={{ textAlign: 'justify' }}>{product.description}</Typography>
-                                <div class="mt-2 mb-3">
-                                    <Typography variant='h6'>Price: ₱ {product.price}</Typography>
-                                    <Typography variant='h6'>Status: <span style={{ color: product.stock > 0 ? 'green' : 'red' }}>{product.stock > 0 ? 'In Stock' : 'Out of Stock'}</span></Typography>
+                <div className="gradient-custom-2"
+                    style={{
+                        background: 'linear-gradient(109.6deg, rgb(245, 239, 249) 30.1%, rgb(207, 211, 236) 100.2%)',
+                        height: '100%'
+                    }}>
+                    <Container className="py-5" style={{ height: '100vh', justifyContent: 'center', alignItems: 'center', display: 'flex', marginTop: 30 }}>
+                        <div className="container px-4 px-lg-5 my-5">
+                            <div className="row gx-4 gx-lg-5 align-items-center">
+                                <div className="col-md-6">
+                                    <Carousel data-bs-theme="dark" pause='hover'>
+                                        {product.images && product.images.map(image => (
+                                            <Carousel.Item key={image.public_id}>
+                                                <img className="d-block w-100" src={image.url} alt={product.title} />
+                                            </Carousel.Item>
+                                        ))}
+                                    </Carousel>
                                 </div>
-                                <div className="d-flex">
-                                    <ButtonGroup style={{ marginRight: 10 }}>
-                                        <StyledButton onClick={decreaseQty} style={{ marginRight: -5 }}>
-                                            <RemoveIcon fontSize="small" />
-                                        </StyledButton>
-                                        <input
-                                            type='number'
-                                            size="small"
-                                            className="count"
-                                            style={{
-                                                width: 100,
-                                                textAlign: 'center'
-                                            }}
-                                            value={quantity}
-                                            readOnly />
-                                        <StyledButton onClick={increaseQty} style={{ marginLeft: -17 }}>
-                                            <AddIcon fontSize="small" />
-                                        </StyledButton>
-                                    </ButtonGroup>
+                                <div className="col-md-6">
+                                    <Typography variant='h3' style={{ fontWeight: 1000, fontStyle: 'italic' }}>{product.name}</Typography>
+                                    <Typography variant='subtitle1'>Colorway: {product.colorway}</Typography>
+                                    <Typography variant='subtitle1'>Type: {product.type}</Typography>
+                                    <Typography variant='subtitle1'>Made by: {product.brand.name}</Typography>
+                                    <Typography variant='subtitle1'>Size: {product.size}</Typography><hr />
+                                    <Typography variant='subtitle2' style={{ textAlign: 'justify' }}>{product.description}</Typography>
+                                    <div class="mt-2 mb-3">
+                                        <Typography variant='h6'>Price: ₱ {product.price}</Typography>
+                                        <Typography variant='h6'>Status: <span style={{ color: product.stock > 0 ? 'green' : 'red' }}>{product.stock > 0 ? 'In Stock' : 'Out of Stock'}</span></Typography>
+                                    </div>
+                                    <div className="d-flex">
+                                        <ButtonGroup style={{ marginRight: 10 }}>
+                                            <StyledButton onClick={decreaseQty} style={{ marginRight: -5 }}>
+                                                <RemoveIcon fontSize="small" />
+                                            </StyledButton>
+                                            <input
+                                                type='number'
+                                                size="small"
+                                                className="count"
+                                                style={{
+                                                    width: 100,
+                                                    textAlign: 'center'
+                                                }}
+                                                value={quantity}
+                                                readOnly />
+                                            <StyledButton onClick={increaseQty} style={{ marginLeft: -17 }}>
+                                                <AddIcon fontSize="small" />
+                                            </StyledButton>
+                                        </ButtonGroup>
 
-                                    <Button
-                                        type="button"
-                                        id="cart_btn"
-                                        disabled={product.stock === 0}
-                                        onClick={addToCart}
-                                        variant="contained"
-                                        sx={{ backgroundColor: 'black' }}
-                                        startIcon={<AddShoppingCartIcon />}
-                                    >
-                                        Add to cart
-                                    </Button>
+                                        <Button
+                                            type="button"
+                                            id="cart_btn"
+                                            disabled={product.stock === 0}
+                                            onClick={addToCart}
+                                            variant="contained"
+                                            sx={{ backgroundColor: 'black' }}
+                                            startIcon={<AddShoppingCartIcon />}
+                                        >
+                                            Add to cart
+                                        </Button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </Container>
+                    </Container>
+                </div>
             )}
         </Fragment >
     )

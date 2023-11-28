@@ -15,6 +15,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Metadata from '../Layout/Metadata';
 import 'react-toastify/dist/ReactToastify.css';
+import OAuth from "./OAuth";
 import axios from 'axios';
 
 import { useFormik } from 'formik';
@@ -141,6 +142,7 @@ const Login = (email, password) => {
                                     error={formik.touched.password && Boolean(formik.errors.password)}
                                     helperText={formik.touched.password && formik.errors.password}
                                 />
+                                {/* <OAuth /> */}
                                 <Button
                                     type="submit"
                                     fullWidth
@@ -149,6 +151,7 @@ const Login = (email, password) => {
                                 >
                                     Login
                                 </Button>
+                                <OAuth />
                                 <Grid container>
                                     <Grid item xs>
                                         <Link to="/password/forgot" variant="body2">
